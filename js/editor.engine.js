@@ -1,5 +1,6 @@
 //
 var selectedObject = 0;
+var openedProjectId = 0;
 
 //no matter what the heck happens, editor code stays seperate!!
 function updateMeasurement() {
@@ -26,7 +27,7 @@ var gProjects = {
     code : [
         {
             moveWhen : "buttonPress",
-            moveKeyBind: [{ whichKey: "A", keyCodeA: 65, toX : 0, toY : 10}],
+            moveKeyBind: [],
             directionKeyBind : []
         }
     ]
@@ -102,7 +103,7 @@ document.getElementById("whatToCDir").onchange = function () {
 }
 
 
-var keyCodeSelectorFullHtml = '>< option value = "13" > Enter</option> <option value="8">Backspace / Delete</option> <option value="9">Tab</option> <option value="16">Shift</option> <option value="17">Ctrl</option> <option value="18">Alt</option> <option value="27">esc (Escape)</option> <option value="32">スペース</option> <option value="37">左矢印</option> <option value="38">上矢印</option> <option value="39">右矢印</option> <option value="40">下矢印</option> <option value="48">0</option> <option value="49">1</option> <option value="50">2</option> <option value="51">3</option> <option value="52">4</option> <option value="53">5</option> <option value="54">6</option> <option value="55">7</option> <option value="56">8</option> <option value="57">9</option> <option value="65">A</option> <option value="66">B</option> <option value="67">C</option> <option value="68">D</option> <option value="69">E</option> <option value="70">F</option> <option value="71">G</option> <option value="72">H</option> <option value="73">I</option> <option value="74">J</option> <option value="75">K</option> <option value="76">L</option> <option value="77">M</option> <option value="78">N</option> <option value="79">O</option> <option value="80">P</option> <option value="81">Q</option> <option value="82">R</option> <option value="83">S</option> <option value="84">T</option> <option value="85">U</option> <option value="86">V</option> <option value="87">W</option> <option value="88">X</option> <option value="89">Y</option> <option value="90">Z</option></select >';
+var keyCodeSelectorFullHtml = '><option value="13">Enter</option> <option value="8">Backspace / Delete</option> <option value="9">Tab</option> <option value="16">Shift</option> <option value="17">Ctrl</option> <option value="18">Alt</option> <option value="27">esc (Escape)</option> <option value="32">スペース</option> <option value="37">左矢印</option> <option value="38">上矢印</option> <option value="39">右矢印</option> <option value="40">下矢印</option> <option value="48">0</option> <option value="49">1</option> <option value="50">2</option> <option value="51">3</option> <option value="52">4</option> <option value="53">5</option> <option value="54">6</option> <option value="55">7</option> <option value="56">8</option> <option value="57">9</option> <option value="65">A</option> <option value="66">B</option> <option value="67">C</option> <option value="68">D</option> <option value="69">E</option> <option value="70">F</option> <option value="71">G</option> <option value="72">H</option> <option value="73">I</option> <option value="74">J</option> <option value="75">K</option> <option value="76">L</option> <option value="77">M</option> <option value="78">N</option> <option value="79">O</option> <option value="80">P</option> <option value="81">Q</option> <option value="82">R</option> <option value="83">S</option> <option value="84">T</option> <option value="85">U</option> <option value="86">V</option> <option value="87">W</option> <option value="88">X</option> <option value="89">Y</option> <option value="90">Z</option></select >';
 var allKeyCodeList = [13, 8, 9, 16, 17, 18, 27, 32, 37, 38, 39, 40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90];
 
 function updateCodeBlocks(pID) {
@@ -110,20 +111,26 @@ function updateCodeBlocks(pID) {
     if( gProjects.code[pID].moveKeyBind.length != 0 ) {
         document.getElementById("keyControlsWrapper").innerHTML = "";
         for (i = 0; i < gProjects.code[pID].moveKeyBind.length; i++ ) {
-            document.getElementById("keyControlsWrapper").innerHTML += '<div class="keyBindWrapper"><select class="miniselect"'+'id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'directionPlayerChooseRL'+i+'" class="miniselect"><option value="right">右</option><option value="left">左</option></select>に<input type="number" placeholder="速度を入力" class="textput textminiput nomargin"><br><select id="'+pID+'directionPlayerChooseUD'+i+'"  class="miniselect"><option>上</option><option>下</option></select>に<input class="textput textminiput nomargin" type="number" placeholder="速度を入力"><hr class="whiteHR"><button class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
-            var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].moveKeyBind[i].keyCodeA)-1;
+            document.getElementById("keyControlsWrapper").innerHTML += '<div class="keyBindWrapper"><select class="miniselect"'+'id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'directionPlayerChooseRL'+i+'" class="miniselect"><option value="right">右</option><option value="left">左</option></select>に<input id="'+pID+'RLspeedPlayer'+i+'" type="number" placeholder="速度を入力" class="textput textminiput nomargin"><br><select id="'+pID+'directionPlayerChooseUD'+i+'"  class="miniselect"><option>上</option><option>下</option></select>に<input id="'+pID+'UDspeedPlayer'+i+'" class="textput textminiput nomargin" type="number" placeholder="速度を入力"><hr class="whiteHR"><button class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
+            var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].moveKeyBind[i].keyCodeA);
+            console.log(preSelectedCode);
+            console.log(pID + "selectorBlockKeyBind" + i);
             document.getElementById(pID + "selectorBlockKeyBind" + i).selectedIndex = preSelectedCode;
 
-            if( gProjects.code[pID].moveKeyBind[i].toX > 0 ) {
-
+            if( gProjects.code[pID].moveKeyBind[i].toX >= 0 ) {
+                document.getElementById(pID+'directionPlayerChooseRL'+i).selectedIndex = 0;
+                document.getElementById(pID+'RLspeedPlayer'+i).value = gProjects.code[pID].moveKeyBind[i].toX;
             } else {
-
+                document.getElementById(pID+'directionPlayerChooseRL'+i).selectedIndex = 1;
+                document.getElementById(pID+'RLspeedPlayer'+i).value = gProjects.code[pID].moveKeyBind[i].toX * -1;
             }
 
-            if( gProjects.code[pID].moveKeyBind[i].toY > 0 ) {
-
+            if( gProjects.code[pID].moveKeyBind[i].toY >= 0 ) {
+                document.getElementById(pID+'directionPlayerChooseUD'+i).selectedIndex = 0;
+                document.getElementById(pID+'UDspeedPlayer'+i).value = gProjects.code[pID].moveKeyBind[i].toY;
             } else {
-
+                document.getElementById(pID+'directionPlayerChooseUD'+i).selectedIndex = 1;
+                document.getElementById(pID+'UDspeedPlayer'+i).value = gProjects.code[pID].moveKeyBind[i].toY * -1;
             }
 
         }
@@ -132,7 +139,9 @@ function updateCodeBlocks(pID) {
 
 //add more player movement keybind controls
 document.getElementById("newKeybindForMovementPlayer").onclick = function () {
-    db.push({ type : "newMoveKeyBind", user : loggedUser });
+
+    db.push({ type : "newMoveKeyBind", user : loggedUser, oprojectID : openedProjectId });
+
 }
 
 /* <select>

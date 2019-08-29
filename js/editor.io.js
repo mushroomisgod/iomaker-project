@@ -13,8 +13,11 @@ var updateData = function () {
                 gProjects.name.push( dataInput.gname );
                 updateGameLaunchers();
             }
-        } else if( dataInput ) {
-
+        } else if( dataInput.type == "newMoveKeyBind" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.oprojectID].moveKeyBind.push({ whichKey: "Enter", keyCodeA: 65, toX : -10, toY : 10});
+                updateCodeBlocks(dataInput.oprojectID);
+            }
         }
     });
 }

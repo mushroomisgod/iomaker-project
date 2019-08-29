@@ -129,12 +129,14 @@ function updateGameLaunchers() {
 function openEditor(pID) {
     dashboardPage.style.display = "none";
     editorPage.style.display = "block";
-    
+
     //load everything
     var oProjectName = gProjects.name[pID];
 
     //show project name in editor
     document.getElementById("projectName").innerHTML = oProjectName;
+
+    openedProjectId = pID;
 
     updateCodeBlocks(pID);
 }
