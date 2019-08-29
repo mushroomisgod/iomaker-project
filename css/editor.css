@@ -647,6 +647,7 @@ button:disabled, input:disabled {
     margin-left: auto;
     border-radius: 6px;
     padding: 15px;
+    box-shadow: inset 0px 0px 4px #ddd;
 }
 #changeDirectionOptionWrap {
     margin-top: 10px;
@@ -682,6 +683,8 @@ button:disabled, input:disabled {
     background: #e168a8;
     border-radius: 50%;
     outline: none;
+    width: 37px;
+    height: 38px;
 }
 .deleteBtn:active {
     filter: brightness(90%);
