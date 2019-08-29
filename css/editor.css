@@ -663,7 +663,7 @@ button:disabled, input:disabled {
     border-radius: 6px;
     background: #b7cd78;
     color: #fff;
-    box-shadow: 0 2px 4px #888;
+    /* box-shadow: 0 2px 4px #888; */ /*kinda looks like windows vista so no more of this*/
     margin-top: 10px;
     margin-bottom: 10px;
 }

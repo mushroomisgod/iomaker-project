@@ -7,12 +7,14 @@ var updateData = function () {
             acc.usr.push(dataInput.usr);
             acc.psw.push(dataInput.psw);
         } else if (dataInput.type == "makeNewGame" ) {
-            console.log(dataInput.user); 
+            console.log(dataInput.user);
             console.log(dataInput.user == loggedUser);
             if( dataInput.user == loggedUser ) {
                 gProjects.name.push( dataInput.gname );
                 updateGameLaunchers();
             }
+        } else if( dataInput ) {
+
         }
     });
 }
