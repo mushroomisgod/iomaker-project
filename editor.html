@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>.io game maker - editor</title>
+        <meta name="viewport" content="width=device-width,user-scalable=no">
+        <script src='https://cdn.firebase.com/js/client/2.4.0/firebase.js'></script>
+        <link rel="stylesheet" href="./css/editor.css">
+    </head>
+    <body>
+        <div id="accounts">
+            <div id="accountsLoginLogoWrap">
+                <h1 class="headerLogo"><span class="grey">make</span>io</h1>
+            </div>
+            <form id="createAccPort" action="javascript:makeNewAccount()">
+                <h3 class="modalTitleSpan">新しいアカウントを作成</h3>
+                <input onkeyup="chkCA()" class="textput" id="usernameCAinput" placeholder="ユーザー名">
+                <span class="alertMessage" id="userNameIsUsed">このユーザー名はすでに使用されています</span>
+                <input onkeyup="chkCA()" class="textput" id="passwordCAinput" type="password" placeholder="パスワード">
+                <input onkeyup="chkCA()" class="textput" id="passwordCAinputC" type="password" placeholder="パスワードの確認">
+                <span class="alertMessage" id="passwordsDontMatch">パスワードが一致していません</span>
+                <input type="submit" id="crtAcc" value="アカウントを作成" class="formSubmitBtn" disabled>
+                <h3 class="formOptionSpan">アカウントをお持ちですか？</h3>
+                <button type="button" class="formSubmitBtn playColor" id="loginSwitchBtn">ログインする</button>
+            </form>
+            <form id="loginPort" action="javascript:loginToAccount()">
+                <h3 class="modalTitleSpan">ログイン</h3>
+                <input onkeyup="chkLG()" class="textput" id="usernameLGinput" placeholder="ユーザー名">
+                <input onkeyup="chkLG()" class="textput" id="passwordLGinput" type="password" placeholder="パスワード">
+                <input id="lgiAcc" type="submit" value="ログイン" class="formSubmitBtn shareColor" disabled>
+                <span class="alertMessage" id="wrongLogCred">ユーザー名またはパスワードが違います</span>
+                <h3 class="formOptionSpan">新しいユーザーですか？</h3>
+                <button type="button" id="createAccountSwitchBtn" class="formSubmitBtn">アカウントを作成する</button>
+            </form>
+        </div>
+        <div id="dashboard">
+            <div class="dashHeader">
+                <h1 class="headerLogo"><span class="grey">make</span>io</h1>
+                <input placeholder="Search" class="dashSearchBar">
+            </div>
+            <div>
+                <div id="gameProjectLabel">
+                    Your Projects
+                    <button id="createNewProject">新しいゲームを作成</button>
+                </div>
+                <div id="gameProjectLauncherWrap">
+                    <div id="launcherWrapper"></div>
+                    <!-- reference of game launcher wrapper -->
+                    <!-- <div class="projectLauncher">
+                        <span class="projectTitle">新しいゲーム</span>
+                        <button class="openBtn deleteColor">削除</button><button class="openBtn shareColor">共有</button><button class="openBtn playColor">プレイ</button><button class="openBtn editColor">編集</button>
+                    </div> -->
+                    <div id="noGamesCreated">
+                        作成されたゲームがまだありません。
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="editor">
+            <div class="dashHeader">
+                <h1 class="headerLogo"><span class="grey">make</span>io</h1>
+                <button class="headerEditorbtn" >ダッシュボードに戻る</button>
+                <button class="headerEditorbtn">保存</button>
+                <button class="headerEditorbtn">プレイ</button>
+            </div>
+            <div id="assetsFolder">
+                <div class="assetsControlBar">
+                    <button class="assetsControlBarBtn">ゲームオブジェクトを追加</button>
+                </div>
+                <div id="assetsWrapper">
+                    <button class="assetSelector assetSelected">
+                        プレイヤー
+                        <span class="objectTag pcTag">PC/NPCアセット</span>
+                    </button>
+                    <button class="assetSelector">
+                        シーン
+                        <span class="objectTag sceneTag">環境アセット</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="codeArea">
+                <!-- tabs -->
+                <div id="codeTabWrapper">
+                    <button class="codeAreaTab selectedCodeTab" id="codeTab">コード</button>
+                    <button class="codeAreaTab" id="graphicTab">見た目</button>
+                </div>
+                <div class="selectCodeTypeWrapper">
+                    <h3 class="codeTypeSelectLabel">オンラインまたはオフラインコードの表示</h3>
+                    <select class="selectCodeType">
+                        <option>オフラインコード</option>
+                        <option>オンラインコード</option>
+                    </select>
+                    <div class="filler10"></div>
+                </div>
+                <div id="codeAreaParentWrapper">
+                    <div id="initCode">
+                        <div class="startPointCode">
+                            初期コード
+                            <div class="codeStem inactiveStem"></div>
+                        </div>
+                    </div>
+                    <div id="updateCode"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="simpleEditor">
+            <button id="returnToDashboardBtn" class="brighterBoi">ダッシュボードに戻る</button>
+
+            <div id="simplePreviewPort">
+                <div id="simplePreviewWrap">
+                    <iframe id="simplePreviewScreen" src="./play.html"></iframe>
+                </div>
+
+                <div class="previewScreenController">
+                    <button class="fullScreenBtn brighterBoi">
+                        フルスクリーン
+                        <img src="./assets/editorMisc/full-size.svg" class="fullScreenPrevIcon">
+                    </button>
+                    <button class="fullScreenBtn appearanceBlock brighterBoi">
+                        共有
+                        <img src="./assets/editorMisc/network.svg" class="fullScreenPrevIcon">
+                    </button>
+                </div>
+
+                <div class="projectNameControl">
+                    <div class="projectNameControlWrap">
+                        プロジェクト名：<strong id="projectName">null</strong>
+                    </div>
+                </div>
+            </div>
+            <div id="simpleAssetCtrl">
+
+                <button class="assetSelectorSimple simpleSelected" id="assetSelectorSimple0" onclick="selectAssetSimple(this)" disabled>
+                    <div class="assetNameTag">
+                        プレイヤー（PC）
+                    </div>
+                    <div class="selectedLabelWrapper">
+                        <img class="selectedLabelIcon" src="./assets/editorMisc/selectedArrow.svg">
+                    </div>
+                </button>
+
+                <button class="assetSelectorSimple" style="top: 50px;"  id="assetSelectorSimple1" onclick="selectAssetSimple(this)">
+                    <div class="assetNameTag">
+                        集めるもの
+                    </div>
+                    <div class="selectedLabelWrapper">
+                        <img class="selectedLabelIcon" src="./assets/editorMisc/selectedArrow.svg">
+                    </div>
+                </button>
+
+
+                <button class="assetSelectorSimple" style="top: 100px;" id="assetSelectorSimple2" onclick="selectAssetSimple(this)">
+                    <div class="assetNameTag">
+                        コンピューター（NPC）
+                    </div>
+                    <div class="selectedLabelWrapper">
+                        <img class="selectedLabelIcon" src="./assets/editorMisc/selectedArrow.svg">
+                    </div>
+                </button>
+
+                <button class="assetSelectorSimple" style="top: 150px;" id="assetSelectorSimple3" onclick="selectAssetSimple(this)">
+                    <div class="assetNameTag">
+                        その他
+                    </div>
+                    <div class="selectedLabelWrapper">
+                        <img class="selectedLabelIcon" src="./assets/editorMisc/selectedArrow.svg">
+                    </div>
+                </button>
+
+
+            </div>
+            <div id="simpleCodePort">
+                <div class="codeTabControl">
+                    <button class="codeAreaTab selectedCodeTab" id="switchSettingTab">設定</button>
+                    <button class="codeAreaTab" id="switchAppearTab">見た目</button>
+                </div>
+                <div id="codeAreaSimp">
+                    <div id="assetControl0">
+                        <div class="codeBlockSimple movementBlock">
+                            移動
+                            <button class="codeBlockSettingBtn" id="movementPlayerSettingLaunch">設定を開く</button>
+                        </div>
+                        <div class="codeBlockSimple attackBlock">
+                            攻撃
+                            <button class="codeBlockSettingBtn" onclick="">設定を開く</button>
+                        </div>
+                        <div class="codeBlockSimple appearanceBlock">
+                            ポイント
+                            <button class="codeBlockSettingBtn">設定を開く</button>
+                        </div>
+                    </div>
+                    <div id="assetControl1" style="display: none;">
+                        <div class="codeBlockSimple appearanceBlock">
+                            ポイント設定
+                            <button class="codeBlockSettingBtn">設定を開く</button>
+                        </div>
+                    </div>
+                    <div id="assetControl2" style="display: none;">
+                        <div class="codeBlockSimple movementBlock">
+                            移動
+                            <button class="codeBlockSettingBtn">設定を開く</button>
+                        </div>
+                        <div class="codeBlockSimple attackBlock">
+                            攻撃
+                            <button class="codeBlockSettingBtn">設定を開く</button>
+                        </div>
+                    </div>
+                    <div id="assetControl3" style="display: none;">
+
+                    </div>
+                </div>
+                <div id="appearAreaSimp"></div>
+            </div>
+        </div>
+
+        <!-- modal code goes below -->
+        <!-- make new game project modal -->
+        <div id="newGameModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span id="closeNewGameModal" class="close">&times;</span>
+                <form action="javascript:createNewGame()">
+                    <h3 class="modalTitleSpan">新しいゲームを作成</h3>
+                    <div class="alignCenter">
+                        <input class="textput" type="text" id="gamenamecreate" placeholder="ゲーム名">
+                        <input type="submit" value="作成" class="formSubmitBtn">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- editor engine modal -->
+        <div id="playerMoveSetting" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span id="closeplayerMoveSetting" class="close">&times;</span>
+                <form action="javascript:savePlayerMove()">
+                    <h3 class="modalTitleSpan">プレイヤーの移動設定</h3>
+                    <div class="alignCenter">
+                        <select class="miniselect" id="whatToMove">
+                            <option value="whenButtonPressed">ボタンが押されたら</option>
+                            <option value="always">常に</option>
+                        </select>
+                        <span>移動する</span>
+                        <div id="keyControlsWrapper" class="controlOptionWrappers">
+                            <strong>移動</strong>のボタンの入力が設定されていません
+                        </div>
+                        <div id="changeDirectionControls">
+                            <div id="changeDirectionOptionWrap">
+                                <select class="miniselect" id="whatToCDir">
+                                    <option value="whenButtonPressed">ボタンが押されたら</option>
+                                    <option value="always">マウスに向かって</option>
+                                </select>
+                                方向転換する
+                            </div>
+                            <div id="keyDirectionWrapper" class="controlOptionWrappers">
+                                <strong>方向転換</strong>のボタンの入力が設定されていません
+                            </div>
+                        </div>
+                        <div id="keyControlEnb">
+                            <button type="button" class="modalBigBtn" id="newKeybindForMovementPlayer">新しい入力設定</button>
+                        </div>
+                        <input type="submit" value="保存" class="formSubmitBtn">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script src="./js/editor.data.js"></script>
+        <script src="./js/editor.ui.js"></script>
+        <script src="./js/editor.io.js"></script>
+        <script src="./js/editor.modal.js"></script>
+        <script src="./js/editor.engine.js"></script>
+    </body>
+</html>
