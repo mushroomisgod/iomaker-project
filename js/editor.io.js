@@ -15,9 +15,12 @@ var updateData = function () {
             }
         } else if( dataInput.type == "newMoveKeyBind" ) {
             if( dataInput.user == loggedUser ) {
-                gProjects.code[dataInput.oprojectID].moveKeyBind.push({ whichKey: "Enter", keyCodeA: 65, toX : -10, toY : 10});
+                gProjects.code[dataInput.oprojectID].moveKeyBind.push({ whichKey: "Enter", keyCodeA: 13, toX : 0, toY : 0});
                 updateCodeBlocks(dataInput.oprojectID);
             }
+        } else if( dataInput.type == "deletePlayerMovementCodeBlock" ) {
+            gProjects.code[dataInput.pID].moveKeyBind.splice( dataInput.whichI, 1 );
+            updateCodeBlocks(dataInput.pID);
         }
     });
 }
