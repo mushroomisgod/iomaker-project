@@ -647,7 +647,6 @@ button:disabled, input:disabled {
     margin-left: auto;
     border-radius: 6px;
     padding: 15px;
-    box-shadow: inset 0px 0px 4px #ddd;
 }
 #changeDirectionOptionWrap {
     margin-top: 10px;

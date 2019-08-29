@@ -26,7 +26,7 @@ var gProjects = {
     code : [
         {
             moveWhen : "buttonPress",
-            moveKeyBind: [{ whichKey: "A", keyCodeA: 65, toX : 0, toY : 10},{ whichKey: "A", keyCodeA: 65, toX : 0, toY : 10},{ whichKey: "A", keyCodeA: 65, toX : 0, toY : 10}],
+            moveKeyBind: [{ whichKey: "A", keyCodeA: 65, toX : 0, toY : 10}],
             directionKeyBind : []
         }
     ]
@@ -128,6 +128,11 @@ function updateCodeBlocks(pID) {
 
         }
     }
+}
+
+//add more player movement keybind controls
+document.getElementById("newKeybindForMovementPlayer").onclick = function () {
+    db.push({ type : "newMoveKeyBind", user : loggedUser });
 }
 
 /* <select>
