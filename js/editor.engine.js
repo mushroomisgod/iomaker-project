@@ -40,7 +40,6 @@ function selectAssetSimple(ele) {
     document.getElementById("assetSelectorSimple" + selectedObject).disabled = false;
     var whichAsset = ele.id.split("assetSelectorSimple")[1];
     selectedObject = whichAsset;
-    console.log(whichAsset);
 
     document.getElementById("assetControl"+whichAsset).style.display = "block";
 }
@@ -111,10 +110,22 @@ function updateCodeBlocks(pID) {
     if( gProjects.code[pID].moveKeyBind.length != 0 ) {
         document.getElementById("keyControlsWrapper").innerHTML = "";
         for (i = 0; i < gProjects.code[pID].moveKeyBind.length; i++ ) {
-            document.getElementById("keyControlsWrapper").innerHTML += '<div id="keyBindWrapper"><select class="miniselect"'+'id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="directionPlayerChooseRL" class="miniselect"><option value="right">右</option><option value="left">左</option></select>に<input type="number" placeholder="速度を入力" class="textput textminiput nomargin"><br><select id="directionPlayerChooseUD"  class="miniselect"><option>上</option><option>下</option></select>に<input class="textput textminiput nomargin" type="number" placeholder="速度を入力"></div>';
+            document.getElementById("keyControlsWrapper").innerHTML += '<div class="keyBindWrapper"><select class="miniselect"'+'id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'directionPlayerChooseRL'+i+'" class="miniselect"><option value="right">右</option><option value="left">左</option></select>に<input type="number" placeholder="速度を入力" class="textput textminiput nomargin"><br><select id="'+pID+'directionPlayerChooseUD'+i+'"  class="miniselect"><option>上</option><option>下</option></select>に<input class="textput textminiput nomargin" type="number" placeholder="速度を入力"></div>';
             var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].moveKeyBind[i].keyCodeA)-1;
-            console.log(preSelectedCode);
             document.getElementById(pID + "selectorBlockKeyBind" + i).selectedIndex = preSelectedCode;
+
+            if( gProjects.code[pID].moveKeyBind[i].toX > 0 ) {
+
+            } else {
+
+            }
+
+            if( gProjects.code[pID].moveKeyBind[i].toY > 0 ) {
+
+            } else {
+
+            }
+
         }
     }
 }

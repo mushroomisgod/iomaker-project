@@ -610,11 +610,13 @@ button:disabled, input:disabled {
     width: 100px;
     display: inline-block;
     margin-left: 15px;
+    outline: none;
 }
 .miniselect {
     font-size: 15px;
     padding: 0px;
     height: 30px;
+    outline: none;
 }
 /* #keyControlEnb {
     display: none;
@@ -654,4 +656,13 @@ button:disabled, input:disabled {
 .nomargin {
     margin-right: 0px;
     margin-left: 0px;
+}
+.keyBindWrapper {
+    padding: 10px;
+    border-radius: 6px;
+    background: #e168a8;
+    color: #fff;
+    box-shadow: 0 2px 4px #888;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
