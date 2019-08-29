@@ -111,7 +111,7 @@ function updateCodeBlocks(pID) {
     if( gProjects.code[pID].moveKeyBind.length != 0 ) {
         document.getElementById("keyControlsWrapper").innerHTML = "";
         for (i = 0; i < gProjects.code[pID].moveKeyBind.length; i++ ) {
-            document.getElementById("keyControlsWrapper").innerHTML += '<div id="keyBindWrapper"><select class="miniselect"'+'id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時、<br><select id="directionPlayerChooseRL"><option value="right">右</option><option value="left">左</option></select>に<input type="number" placeholder="速度を入力">、<select id="directionPlayerChooseUD"><option>上</option><option>下</option></select></div>';
+            document.getElementById("keyControlsWrapper").innerHTML += '<div id="keyBindWrapper"><select class="miniselect"'+'id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時、<br><select id="directionPlayerChooseRL" class="miniselect"><option value="right">右</option><option value="left">左</option></select>に<input type="number" placeholder="速度を入力">、<select id="directionPlayerChooseUD"  class="miniselect"><option>上</option><option>下</option></select>に<input class="textput textminiput" type="number" placeholder="速度を入力"></div>';
             var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].moveKeyBind[i].keyCodeA)-1;
             console.log(preSelectedCode);
             document.getElementById(pID + "selectorBlockKeyBind" + i).selectedIndex = preSelectedCode;
