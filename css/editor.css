@@ -660,9 +660,28 @@ button:disabled, input:disabled {
 .keyBindWrapper {
     padding: 10px;
     border-radius: 6px;
-    background: #e168a8;
+    background: #b7cd78;
     color: #fff;
     box-shadow: 0 2px 4px #888;
     margin-top: 5px;
     margin-bottom: 5px;
+}
+.whiteHR {
+    border-style: solid;
+    border-color: #fff;
+}
+.deleteIcon {
+    height: 18px;
+}
+.deleteBtn {
+    padding: 10px 10px;
+    box-shadow: 0px 2px 4px #888;
+    margin-top: 10px;
+    border: none;
+    background: #e168a8;
+    border-radius: 50%;
+    outline: none;
+}
+.deleteBtn:active {
+    filter: brightness(90%);
 }
