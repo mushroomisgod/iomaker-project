@@ -159,6 +159,7 @@ body {
     border-radius: 6px;
   width: 80%;
     max-width: 500px;
+    margin-bottom: 70px;
 }
 
 /* The Close Button */
@@ -663,8 +664,8 @@ button:disabled, input:disabled {
     background: #b7cd78;
     color: #fff;
     box-shadow: 0 2px 4px #888;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .whiteHR {
     border-style: solid;
