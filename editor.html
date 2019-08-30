@@ -3,6 +3,7 @@
     <head>
         <title>.io game maker - editor</title>
         <meta name="viewport" content="width=device-width,user-scalable=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src='https://cdn.firebase.com/js/client/2.4.0/firebase.js'></script>
         <link rel="stylesheet" href="./css/editor.css">
     </head>
@@ -236,11 +237,12 @@
                         <h3 class="modalTitleSpan">画像をアップロード</h3>
                         <div class="alignCenter">
                             <div class="controlOptionWrappers">
-                                <input type="file">
+                                <input type="file" onclick=""><br>
+                                <img src="" id="">
                             </div>
                             <br><span>または</span><br>
                         </div>
-                        <h3 class="modalTitleSpan">ライブラりから選ぶ</h3>
+                        <h3 class="modalTitleSpan">ライブラリから選ぶ</h3>
                         <div class="controlOptionWrappers libraryWrapper">
                             <div class="alignCenter">
                                 <strong>乗り物</strong><br>
@@ -399,10 +401,10 @@
                             <option value="90">Z</option>
                         </select>
                         が押されたら<br>
-                        <select class="miniselect" id="playerPointNAppearSetting" onchange="changePointAppearSettingPlayer(this)">
-                            <option value="size">撃って</option>
-                            <option value="length">殴って</option>
-                            <option value="nothing">食べて（常時発動、ポイントが30以上の時）</option>
+                        <select class="miniselect" id="playerAttackTypeSelect" onchange="changePointAppearSettingPlayer(this)">
+                            <option value="shoot">撃って</option>
+                            <option value="punch">殴って</option>
+                            <option value="eat">食べて（常時発動、ポイントが30以上の時）</option>
                         </select>
                         攻撃する
                     </div>
@@ -411,7 +413,8 @@
                         <hr class="whiteHR">
                         <br>
                         <strong>画像をアップロード</strong><br>
-                        <input type="file"><br>
+                        <input type="file" onchange="covertDataURI(this,'#previewImagePlayerWeapon','playerAttackWeapon')"><br>
+                        <img id="previewImagePlayerWeapon" class="previewImageObject"><br>
                         <span>または</span><br>
                         <strong>ライブラリから選ぶ</strong><br>
                         <div class="controlOptionWrappers libraryWrapper whiteBackground">

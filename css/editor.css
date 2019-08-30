@@ -714,3 +714,6 @@ button:disabled, input:disabled {
     background: #fff;
     color: #111;
 }
+.previewImageObject {
+    height: 50px;
+}

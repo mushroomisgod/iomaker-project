@@ -144,6 +144,9 @@ function openEditor(pID) {
     updatePlayerPointAppearance();
     whichSpriteTypeToUseForPlayerAttackUpdate();
     updatePlayerAttackLibrarySelectedSprite();
+    updatePlayerAttackTriggerKeyCode();
+    updatePlayerAttackTypeSelector();
+    updateUploadedDataScheme();
 }
 
 document.getElementById("returnToDashboardBtn").onclick = function () {

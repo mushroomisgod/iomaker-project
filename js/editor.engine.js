@@ -374,5 +374,54 @@ document.getElementById("whichToUseForPlayerAttackSprite").onchange = function (
     db.push({type:"setWhichSourceToUsePlayerAttack",user:loggedUser,pID:openedProjectId,value:document.getElementById("whichToUseForPlayerAttackSprite").value});
 }
 function whichSpriteTypeToUseForPlayerAttackUpdate() {
-    gProjects.code[]
+    if(gProjects.code[openedProjectId].usePlayerAttackSprite == "uploadedImage" ) {
+        document.getElementById("whichToUseForPlayerAttackSprite").selectedIndex = 0;
+    } else {
+        document.getElementById("whichToUseForPlayerAttackSprite").selectedIndex = 1;
+    }
+}
+document.getElementById("attackKeyBindSelector").onchange = function () {
+    db.push({type:"changePlayerAttackKeyBind",user:loggedUser,pID:openedProjectId,keyCode:document.getElementById("attackKeyBindSelector").value})
+}
+function updatePlayerAttackTriggerKeyCode() {
+    document.getElementById("attackKeyBindSelector").selectedIndex = allKeyCodeList.indexOf(gProjects.code[openedProjectId].playerAttackSetting.keyCode);
+}
+document.getElementById("playerAttackTypeSelect").onchange = function () {
+    db.push({type:"changePlayerAttackType",user:loggedUser,pID:openedProjectId,value:document.getElementById("playerAttackTypeSelect").value});
+}
+function updatePlayerAttackTypeSelector() {
+    if( gProjects.code[openedProjectId].playerAttackSetting.type == "shoot" ) {
+        document.getElementById("playerAttackTypeSelect").selectedIndex = 0;
+    } else if( gProjects.code[openedProjectId].playerAttackSetting.type == "punch" ) {
+        document.getElementById("playerAttackTypeSelect").selectedIndex = 1;
+    } else if( gProjects.code[openedProjectId].playerAttackSetting.type == "nothing" ) {
+        document.getElementById("playerAttackTypeSelect").selectedIndex = 2;
+    }
+}
+
+//image datauri converter scripts
+function covertDataURI(input,targetElement,redirectFunctionKey) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $(targetElement).attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+
+    updateImageCodeHolders(redirectFunctionKey);
+  }
+}
+
+function updateImageCodeHolders(RFK) {
+    setTimeout( function () {
+        console.log(document.getElementById("previewImagePlayerWeapon").src);
+        if( RFK == "playerAttackWeapon" ) {
+            db.push({ type:"uploadPlayerWeaponImage",user:loggedUser,pID:openedProjectId,value:document.getElementById("previewImagePlayerWeapon").src });
+        }
+    },400)
+}
+function updateUploadedDataScheme() {
+    document.getElementById("previewImagePlayerWeapon").src = gProjects.code[openedProjectId].playerAttackuploadSprite;
 }

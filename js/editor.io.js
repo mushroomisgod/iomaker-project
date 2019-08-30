@@ -156,6 +156,21 @@ var updateData = function () {
                 }
                 whichSpriteTypeToUseForPlayerAttackUpdate();
             }
+        } else if( dataInput.type == "changePlayerAttackKeyBind" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].playerAttackSetting.keyCode = parseInt(dataInput.keyCode);
+            }
+            updatePlayerAttackTriggerKeyCode();
+        } else if( dataInput.type == "changePlayerAttackType" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].playerAttackSetting.type = dataInput.value;
+                updatePlayerAttackTypeSelector();
+            }
+        } else if( dataInput.type == "uploadPlayerWeaponImage" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].playerAttackuploadSprite = dataInput.value;
+                updateUploadedDataScheme();
+            }
         }
     });
 }
