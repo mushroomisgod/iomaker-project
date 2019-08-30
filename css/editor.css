@@ -720,3 +720,12 @@ button:disabled, input:disabled {
 #appearAreaSimp {
     display: none;
 }
+.noSettingAvailable {
+    margin-top: 20px;
+    text-align: center;
+    color: #586069;
+}
+.noSettingIcon {
+    height: 100px;
+    margin-top: 40px;
+}

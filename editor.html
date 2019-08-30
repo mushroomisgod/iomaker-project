@@ -56,54 +56,6 @@
                 </div>
             </div>
         </div>
-        <div id="editor">
-            <div class="dashHeader">
-                <h1 class="headerLogo"><span class="grey">make</span>io</h1>
-                <button class="headerEditorbtn" >ダッシュボードに戻る</button>
-                <button class="headerEditorbtn">保存</button>
-                <button class="headerEditorbtn">プレイ</button>
-            </div>
-            <div id="assetsFolder">
-                <div class="assetsControlBar">
-                    <button class="assetsControlBarBtn">ゲームオブジェクトを追加</button>
-                </div>
-                <div id="assetsWrapper">
-                    <button class="assetSelector assetSelected">
-                        プレイヤー
-                        <span class="objectTag pcTag">PC/NPCアセット</span>
-                    </button>
-                    <button class="assetSelector">
-                        シーン
-                        <span class="objectTag sceneTag">環境アセット</span>
-                    </button>
-                </div>
-            </div>
-
-            <div id="codeArea">
-                <!-- tabs -->
-                <div id="codeTabWrapper">
-                    <button class="codeAreaTab selectedCodeTab" id="codeTab">コード</button>
-                    <button class="codeAreaTab" id="graphicTab">見た目</button>
-                </div>
-                <div class="selectCodeTypeWrapper">
-                    <h3 class="codeTypeSelectLabel">オンラインまたはオフラインコードの表示</h3>
-                    <select class="selectCodeType">
-                        <option>オフラインコード</option>
-                        <option>オンラインコード</option>
-                    </select>
-                    <div class="filler10"></div>
-                </div>
-                <div id="codeAreaParentWrapper">
-                    <div id="initCode">
-                        <div class="startPointCode">
-                            初期コード
-                            <div class="codeStem inactiveStem"></div>
-                        </div>
-                    </div>
-                    <div id="updateCode"></div>
-                </div>
-            </div>
-        </div>
 
         <div id="simpleEditor">
             <button id="returnToDashboardBtn" class="brighterBoi">ダッシュボードに戻る</button>
@@ -152,15 +104,6 @@
 
 
                 <button class="assetSelectorSimple" style="top: 100px;" id="assetSelectorSimple2" onclick="selectAssetSimple(this)">
-                    <div class="assetNameTag">
-                        コンピューター（NPC）
-                    </div>
-                    <div class="selectedLabelWrapper">
-                        <img class="selectedLabelIcon" src="./assets/editorMisc/selectedArrow.svg">
-                    </div>
-                </button>
-
-                <button class="assetSelectorSimple" style="top: 150px;" id="assetSelectorSimple3" onclick="selectAssetSimple(this)">
                     <div class="assetNameTag">
                         その他
                     </div>
@@ -219,17 +162,7 @@
                         </div>
                     </div>
                     <div id="assetControl2" style="display: none;">
-                        <div class="codeBlockSimple movementBlock">
-                            移動
-                            <button class="codeBlockSettingBtn">設定を開く</button>
-                        </div>
-                        <div class="codeBlockSimple attackBlock">
-                            攻撃
-                            <button class="codeBlockSettingBtn">設定を開く</button>
-                        </div>
-                    </div>
-                    <div id="assetControl3" style="display: none;">
-
+                        <h3 class=""></h3>
                     </div>
                 </div>
                 <div id="appearAreaSimp">
@@ -307,8 +240,12 @@
                             画像を使用する
                         </div>
                     </div>
-                    <div id="assetApControl2"></div>
-                    <div id="assetApControl3"></div>
+                    <div id="assetApControl2">
+                        <div class="alignCenter">
+                            <img src="./assets/editorMisc/settings-gears.svg" class="noSettingIcon">
+                        </div>
+                        <div class="noSettingAvailable">変更できる設定はありません</div>
+                    </div>
                 </div>
             </div>
         </div>
