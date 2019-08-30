@@ -369,3 +369,10 @@ function updatePlayerAttackLibrarySelectedSprite() {
         document.getElementById("playerAttackSpriteBullet").classList.add("migAssetLibraryPickerSelected");
     }
 }
+
+document.getElementById("whichToUseForPlayerAttackSprite").onchange = function () {
+    db.push({type:"setWhichSourceToUsePlayerAttack",user:loggedUser,pID:openedProjectId,value:document.getElementById("whichToUseForPlayerAttackSprite").value});
+}
+function whichSpriteTypeToUseForPlayerAttackUpdate() {
+    gProjects.code[]
+}

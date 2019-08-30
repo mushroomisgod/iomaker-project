@@ -142,6 +142,8 @@ function openEditor(pID) {
     updateCodeBlocks(pID);
     updateWhenToCDirOption();
     updatePlayerPointAppearance();
+    whichSpriteTypeToUseForPlayerAttackUpdate();
+    updatePlayerAttackLibrarySelectedSprite();
 }
 
 document.getElementById("returnToDashboardBtn").onclick = function () {

@@ -147,6 +147,15 @@ var updateData = function () {
                 }
                 updatePlayerAttackLibrarySelectedSprite();
             }
+        } else if( dataInput.type == "setWhichSourceToUsePlayerAttack" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "uploadedImage" ) {
+                    gProjects.code[dataInput.pID].usePlayerAttackSprite = "uploadedImage";
+                } else if( dataInput.value == "libraryImage" ) {
+                    gProjects.code[dataInput.pID].usePlayerAttackSprite = "libraryImage";
+                }
+                whichSpriteTypeToUseForPlayerAttackUpdate();
+            }
         }
     });
 }
