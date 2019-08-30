@@ -33,7 +33,10 @@ var gProjects = {
             directionKeyBindEnabled : false,
             directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }],
             playerAppearPointSettings : "size",
-            playerAttackSetting : { type:"shoot", keyCode:13 }
+            playerAttackSetting : { type:"shoot", keyCode:13 },
+            playerAttackLibrarySprite : "./assets/samplePack/axe.png",
+            playerAttackuploadSprite : "none",
+            usePlayerAttackSprite : "library"
         }
     ]
 };
@@ -338,5 +341,31 @@ function updatePlayerPointAppearance() {
     }
 }
 function updatePlayerAttackSetting() {
-    var data = gProjects.code[openedProjectId].playerAttackSetting
+    var data = gProjects.code[openedProjectId].playerAttackSetting;
+}
+function chooseSpriteForPlayerAttack(type) {
+    db.push({type:"chooseSpriteForPlayerAttack",user:loggedUser,pID:openedProjectId,value:type})
+}
+function updatePlayerAttackLibrarySelectedSprite() {
+    if( gProjects.code[openedProjectId].playerAttackLibrarySprite == "./assets/samplePack/axe.png" ) {
+        document.getElementById("playerAttackSpriteAxe").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteSword").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteFlame").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteBullet").classList.remove("migAssetLibraryPickerSelected");
+    } else if( gProjects.code[openedProjectId].playerAttackLibrarySprite == "./assets/samplePack/sword.png" ) {
+        document.getElementById("playerAttackSpriteAxe").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteSword").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteFlame").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteBullet").classList.remove("migAssetLibraryPickerSelected");
+    } else if( gProjects.code[openedProjectId].playerAttackLibrarySprite == "./assets/samplePack/flame.png" ) {
+        document.getElementById("playerAttackSpriteAxe").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteSword").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteFlame").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteBullet").classList.remove("migAssetLibraryPickerSelected");
+    } else if( gProjects.code[openedProjectId].playerAttackLibrarySprite == "./assets/samplePack/bullet.png"  ) {
+        document.getElementById("playerAttackSpriteAxe").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteSword").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteFlame").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteBullet").classList.add("migAssetLibraryPickerSelected");
+    }
 }

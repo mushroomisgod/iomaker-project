@@ -134,6 +134,19 @@ var updateData = function () {
                 }
                 updatePlayerPointAppearance();
             }
+        } else if( dataInput.type == "chooseSpriteForPlayerAttack" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "axe" ) {
+                    gProjects.code[dataInput.pID].playerAttackLibrarySprite = "./assets/samplePack/axe.png";
+                } else if( dataInput.value == "sword" ) {
+                    gProjects.code[dataInput.pID].playerAttackLibrarySprite = "./assets/samplePack/sword.png";
+                } else if( dataInput.value == "flame" ) {
+                    gProjects.code[dataInput.pID].playerAttackLibrarySprite = "./assets/samplePack/flame.png";
+                } else if( dataInput.value == "bullet" ) {
+                    gProjects.code[dataInput.pID].playerAttackLibrarySprite = "./assets/samplePack/bullet.png";
+                }
+                updatePlayerAttackLibrarySelectedSprite();
+            }
         }
     });
 }

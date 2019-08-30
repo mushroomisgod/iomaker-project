@@ -703,7 +703,14 @@ button:disabled, input:disabled {
     height: 80px;
     width: 80px;
 }
+.migAssetLibraryPickerSelected {
+    border-color: #60c9da;
+}
 .libraryWrapper {
     height: 170px;
     overflow: auto;
+}
+.whiteBackground {
+    background: #fff;
+    color: #111;
 }

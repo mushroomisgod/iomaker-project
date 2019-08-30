@@ -244,16 +244,24 @@
                         <div class="controlOptionWrappers libraryWrapper">
                             <div class="alignCenter">
                                 <strong>乗り物</strong><br>
-                                <button class="migAssetLibraryPicker">
-                                    <img class="migSamplePreview" src="./assets/samplePack/MIG_car_asset.png">
+                                <button class="migAssetLibraryPicker migAssetLibraryPickerSelected">
+                                    <img class="migSamplePreview" src="./assets/samplePack/car.png">
                                 </button>
                                 <button class="migAssetLibraryPicker">
-                                    <img class="migSamplePreview" src="./assets/samplePack/MIG tank asset.png">
+                                    <img class="migSamplePreview" src="./assets/samplePack/tank.png">
                                 </button>
                                 <button class="migAssetLibraryPicker">
-                                    <img class="migSamplePreview" src="./assets/samplePack/MIG plane asset.png">
+                                    <img class="migSamplePreview" src="./assets/samplePack/plane.png">
                                 </button>
                             </div>
+                        </div>
+                        <hr>
+                        <div class="alignCenter">
+                            <select class="miniselect" id="whichTouseForPlayerSprite">
+                                <option>アップロードした</option>
+                                <option>ライブラリで選択した</option>
+                            </select>
+                            画像を使用する
                         </div>
                     </div>
                     <div id="assetApControl1"></div>
@@ -397,6 +405,37 @@
                             <option value="nothing">食べて（常時発動、ポイントが30以上の時）</option>
                         </select>
                         攻撃する
+                    </div>
+                    <div class="keyBindWrapper">
+                        <h3 class="modalTitleSpan">銃弾・武器の見た目</h3>
+                        <hr class="whiteHR">
+                        <br>
+                        <strong>画像をアップロード</strong><br>
+                        <input type="file"><br>
+                        <span>または</span><br>
+                        <strong>ライブラリから選ぶ</strong><br>
+                        <div class="controlOptionWrappers libraryWrapper whiteBackground">
+                            <strong>武器</strong><br>
+                            <button class="migAssetLibraryPicker migAssetLibraryPickerSelected" onclick="chooseSpriteForPlayerAttack('axe')" id="playerAttackSpriteAxe">
+                                <img class="migSamplePreview" src="./assets/samplePack/axe.png">
+                            </button>
+                            <button class="migAssetLibraryPicker" onclick="chooseSpriteForPlayerAttack('sword')" id="playerAttackSpriteSword">
+                                <img class="migSamplePreview" src="./assets/samplePack/sword.png">
+                            </button>
+                            <br><strong>銃弾</strong><br>
+                            <button class="migAssetLibraryPicker" onclick="chooseSpriteForPlayerAttack('flame')" id="playerAttackSpriteFlame">
+                                <img class="migSamplePreview" src="./assets/samplePack/flame.svg">
+                            </button>
+                            <button class="migAssetLibraryPicker" onclick="chooseSpriteForPlayerAttack('bullet')" id="playerAttackSpriteBullet">
+                                <img class="migSamplePreview" src="./assets/samplePack/bullet.png">
+                            </button>
+                        </div>
+                        <hr class="whiteHR">
+                        <select class="miniselect" id="whichToUseForPlayerAttackSprite">
+                            <option>アップロードした</option>
+                            <option>ライブラリで選択した</option>
+                        </select>
+                        画像を使用する
                     </div>
                 </div>
             </div>
