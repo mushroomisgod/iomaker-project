@@ -338,5 +338,5 @@ function updatePlayerPointAppearance() {
     }
 }
 function updatePlayerAttackSetting() {
-    var data = gProjects.
+    var data = gProjects.code[openedProjectId].playerAttackSetting
 }

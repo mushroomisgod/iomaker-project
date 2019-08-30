@@ -108,6 +108,7 @@ function chkLG() {
 //create projects
 function createNewGame() {
     var nGameName = document.getElementById("gamenamecreate").value;
+    document.getElementById("gamenamecreate").value = "";
     db.push({ type : "makeNewGame", user : loggedUser, gname : nGameName });
 
     //hide modal
@@ -146,4 +147,11 @@ function openEditor(pID) {
 document.getElementById("returnToDashboardBtn").onclick = function () {
     editorPage.style.display = "none";
     dashboardPage.style.display = "block";
+}
+document.getElementById("gamenamecreate").onkeyup = function () {
+    if( document.getElementById("gamenamecreate").value.length != 0 && gProjects.name.indexOf(document.getElementById("gamenamecreate").value) == -1 ) {
+        document.getElementById("makeNewGameSubmitBtn").disabled = false;
+    } else {
+        document.getElementById("makeNewGameSubmitBtn").disabled = true;
+    }
 }
