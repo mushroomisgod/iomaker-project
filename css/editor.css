@@ -692,3 +692,14 @@ button:disabled, input:disabled {
 .colorPurple {
     background: #ba74d4!important;
 }
+.migSamplePreview {
+    height: 40px;
+}
+.migAssetLibraryPicker {
+    background: #f2f2f2;
+    border: 3px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    height: 80px;
+    width: 80px;
+}

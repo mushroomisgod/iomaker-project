@@ -191,9 +191,30 @@
                         </div>
                     </div>
                     <div id="assetControl1" style="display: none;">
-                        <div class="codeBlockSimple appearanceBlock">
-                            ポイント設定
-                            <button class="codeBlockSettingBtn">設定を開く</button>
+                        <h3 class="modalTitleSpan">スポーン設定</h3>
+                        <div class="alignCenter">
+                            <div class="controlOptionWrappers">
+                                <select class="miniselect">
+                                    <option>ランダムな地点</option>
+                                    <option>プレイヤーが死んだ地点</option>
+                                </select>
+                                にスポーンする<br>
+                                スポーンする量は
+                                <select class="miniselect">
+                                    <option>多い（各エリア15個）</option>
+                                    <option>普通（各エリア10個）</option>
+                                    <option>少ない（各エリア5個）</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h3 class="modalTitleSpan">点数の設定</h3>
+                        <div class="alignCenter">
+                            <div class="controlOptionWrappers">
+                                １個につき
+                                <input type="number" class="textput textminiput nomargin" placeholder="点数を入力">
+                                点
+                            </div>
                         </div>
                     </div>
                     <div id="assetControl2" style="display: none;">
@@ -210,7 +231,35 @@
 
                     </div>
                 </div>
-                <div id="appearAreaSimp"></div>
+                <div id="appearAreaSimp">
+                    <div id="assetApControl0">
+                        <h3 class="modalTitleSpan">画像をアップロード</h3>
+                        <div class="alignCenter">
+                            <div class="controlOptionWrappers">
+                                <input type="file">
+                            </div>
+                            <br><span>または</span><br>
+                        </div>
+                        <h3 class="modalTitleSpan">ライブラりから選ぶ</h3>
+                        <div class="controlOptionWrappers">
+                            <div class="alignCenter">
+                                <strong>乗り物</strong><br>
+                                <button class="migAssetLibraryPicker">
+                                    <img class="migSamplePreview" src="./assets/samplePack/MIG_car_asset.png">
+                                </button>
+                                <button class="migAssetLibraryPicker">
+                                    <img class="migSamplePreview" src="./assets/samplePack/MIG tank asset.png">
+                                </button>
+                                <button class="migAssetLibraryPicker">
+                                    <img class="migSamplePreview" src="./assets/samplePack/MIG plane asset.png">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="assetApControl1"></div>
+                    <div id="assetApControl2"></div>
+                    <div id="assetApControl3"></div>
+                </div>
             </div>
         </div>
 
