@@ -195,6 +195,11 @@ var updateData = function () {
                 gProjects.code[dataInput.pID].playerUploadSprite = dataInput.value;
                 updateUploadedDataScheme();
             }
+        } else if( dataInput.type == "uploadCollectablesSprite" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].collectablesUploadSprite = dataInput.value;
+                updateUploadedDataScheme();
+            }
         } else if( dataInput.type == "collectableSpawnOptionUpdate" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].howCollectablesSpawn = dataInput.value;
@@ -210,7 +215,7 @@ var updateData = function () {
                 gProjects.code[dataInput.pID].howManyCollectablePoint = parseInt(dataInput.value);
                 updateHowManyPointsPerCollectSelector();
             }
-        } else if( dataInput.type = "chooseLibrarySpriteForCollectables" ) {
+        } else if( dataInput.type == "chooseLibrarySpriteForCollectables" ) {
             if( dataInput.user == loggedUser ) {
                 if( dataInput.value == "coin" ) {
                     gProjects.code[dataInput.pID].collectablesLibrarySprite = "./assets/samplePack/coin.png";
@@ -221,6 +226,13 @@ var updateData = function () {
                 } else if( dataInput.value == "peach" ) {
                     gProjects.code[dataInput.pID].collectablesLibrarySprite = "./assets/samplePack/peach.png";
                 }
+                updateLibraryCollectableSpriteSelector();
+            }
+        } else if( dataInput.type == "whichUseCollectable" ) {
+            if( dataInput.user == loggedUser ) {
+                console.log("wiee")
+                gProjects.code[dataInput.pID].collectablesSpriteType = dataInput.value;
+                updateCollectablesSpriteTypeSelector();
             }
         }
     });

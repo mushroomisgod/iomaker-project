@@ -155,6 +155,9 @@ function openEditor(pID) {
     updateHowSpawnSelector();
     updateHowMuchSpawnSelector();
     updateHowManyPointsPerCollectSelector();
+    //collectables appearance
+    updateLibraryCollectableSpriteSelector();
+    updateCollectablesSpriteTypeSelector();
 }
 
 document.getElementById("returnToDashboardBtn").onclick = function () {

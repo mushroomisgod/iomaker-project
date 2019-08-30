@@ -274,8 +274,8 @@
                         <h3 class="modalTitleSpan">画像をアップロード</h3>
                         <div class="alignCenter">
                             <div class="controlOptionWrappers">
-                                <input type="file" onchange="covertDataURI(this,'#playerSpritePreview','playerSprite')"><br>
-                                <img src="" id="playerSpritePreview" class="previewImageObject">
+                                <input type="file" onchange="covertDataURI(this,'#collectablesSpritePreview','collectablesSprite')"><br>
+                                <img src="" id="collectablesSpritePreview" class="previewImageObject">
                             </div>
                             <br><span>または</span><br>
                         </div>
@@ -283,24 +283,24 @@
                         <div class="controlOptionWrappers libraryWrapper">
                             <div class="alignCenter">
                                 <strong>コイン</strong><br>
-                                <button id="playerAttackSpriteCar" onclick="chooseSpriteForCollectables('coin')" class="migAssetLibraryPicker migAssetLibraryPickerSelected">
+                                <button id="playerAttackSpriteCoin" onclick="chooseSpriteForCollectables('coin')" class="migAssetLibraryPicker migAssetLibraryPickerSelected">
                                     <img class="migSamplePreview" src="./assets/samplePack/coin.png">
                                 </button>
                                 <br><strong>食べ物</strong><br>
-                                <button id="playerAttackSpriteCar" onclick="chooseSpriteForCollectables('apple')" class="migAssetLibraryPicker">
+                                <button id="playerAttackSpriteApple" onclick="chooseSpriteForCollectables('apple')" class="migAssetLibraryPicker">
                                     <img class="migSamplePreview" src="./assets/samplePack/apple.png">
                                 </button>
-                                <button id="playerAttackSpriteCar" onclick="chooseSpriteForCollectables('orange')" class="migAssetLibraryPicker">
+                                <button id="playerAttackSpriteOrange" onclick="chooseSpriteForCollectables('orange')" class="migAssetLibraryPicker">
                                     <img class="migSamplePreview" src="./assets/samplePack/orange.png">
                                 </button>
-                                <button id="playerAttackSpriteCar" onclick="chooseSpriteForCollectables('peach')" class="migAssetLibraryPicker">
+                                <button id="playerAttackSpritePeach" onclick="chooseSpriteForCollectables('peach')" class="migAssetLibraryPicker">
                                     <img class="migSamplePreview" src="./assets/samplePack/peach.png">
                                 </button>
                             </div>
                         </div>
                         <hr>
                         <div class="alignCenter">
-                            <select class="miniselect" id="whichTouseForPlayerSprite" onchange="updateWhichPlayerSprite()">
+                            <select class="miniselect" id="whichUseCollectable">
                                 <option value="uploadedImage">アップロードした</option>
                                 <option value="libraryImage">ライブラリで選択した</option>
                             </select>

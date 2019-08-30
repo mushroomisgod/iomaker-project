@@ -401,6 +401,30 @@ function updatePlayerLibrarySelectedSprite() {
     }
 }
 
+function updateLibraryCollectableSpriteSelector() {
+    if( gProjects.code[openedProjectId].collectablesLibrarySprite == "./assets/samplePack/coin.png" ) {
+        document.getElementById("playerAttackSpriteCoin").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteApple").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteOrange").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePeach").classList.remove("migAssetLibraryPickerSelected");
+    } else if( gProjects.code[openedProjectId].collectablesLibrarySprite == "./assets/samplePack/apple.png" ) {
+        document.getElementById("playerAttackSpriteCoin").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteApple").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteOrange").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePeach").classList.remove("migAssetLibraryPickerSelected");
+    } else if( gProjects.code[openedProjectId].collectablesLibrarySprite == "./assets/samplePack/orange.png" ) {
+        document.getElementById("playerAttackSpriteCoin").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteApple").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteOrange").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePeach").classList.remove("migAssetLibraryPickerSelected");
+    } else if( gProjects.code[openedProjectId].collectablesLibrarySprite == "./assets/samplePack/peach.png"  ) {
+        document.getElementById("playerAttackSpriteCoin").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteApple").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteOrange").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePeach").classList.add("migAssetLibraryPickerSelected");
+    }
+}
+
 document.getElementById("whichToUseForPlayerAttackSprite").onchange = function () {
     db.push({type:"setWhichSourceToUsePlayerAttack",user:loggedUser,pID:openedProjectId,value:document.getElementById("whichToUseForPlayerAttackSprite").value});
 }
@@ -451,12 +475,15 @@ function updateImageCodeHolders(RFK) {
             db.push({ type:"uploadPlayerWeaponImage",user:loggedUser,pID:openedProjectId,value:document.getElementById("previewImagePlayerWeapon").src });
         } else if( RFK == "playerSprite" ) {
             db.push({ type:"uploadPlayerSprite",user:loggedUser,pID:openedProjectId,value:document.getElementById("playerSpritePreview").src });
+        } else if( RFK == "collectablesSprite" ) {
+            db.push({ type:"uploadCollectablesSprite",user:loggedUser,pID:openedProjectId,value:document.getElementById("collectablesSpritePreview").src });
         }
     },400)
 }
 function updateUploadedDataScheme() {
     document.getElementById("previewImagePlayerWeapon").src = gProjects.code[openedProjectId].playerAttackuploadSprite;
     document.getElementById("playerSpritePreview").src = gProjects.code[openedProjectId].playerUploadSprite;
+    document.getElementById("collectablesSpritePreview").src = gProjects.code[openedProjectId].collectablesUploadSprite;
 }
 
 function chooseSpriteForPlayer(type) {
@@ -512,4 +539,14 @@ function updateHowManyPointsPerCollectSelector() {
 
 function chooseSpriteForCollectables(type) {
     db.push({type:"chooseLibrarySpriteForCollectables",user:loggedUser,pID:openedProjectId,value:type});
+}
+document.getElementById("whichUseCollectable").onchange = function () {
+    db.push({type:"whichUseCollectable",user:loggedUser,pID:openedProjectId,value:document.getElementById("whichUseCollectable").value})
+}
+function updateCollectablesSpriteTypeSelector() {
+    if( gProjects.code[openedProjectId].collectablesSpriteType == "uploadedImage" ) {
+        document.getElementById("whichUseCollectable").selectedIndex = 0;
+    } else {
+        document.getElementById("whichUseCollectable").selectedIndex = 1;
+    }
 }
