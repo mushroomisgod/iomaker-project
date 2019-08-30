@@ -29,8 +29,9 @@ var gProjects = {
             moveWhen : "buttonPress",
             moveKeyBindEnabled : true,
             moveKeyBind: [],
-            directionKeyBind : false,
-            directionKeyBind : []
+            changeDirWhen : "buttonPress",
+            directionKeyBindEnabled : false,
+            directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }]
         }
     ]
 };
@@ -72,11 +73,17 @@ document.getElementById("movementPlayerSettingLaunch").onclick = function () {
 document.getElementById("closeplayerMoveSetting").onclick = function () {
     document.getElementById("playerMoveSetting").style.display = "none";
 }
+document.getElementById("whatToMove").onchange = function () {
+    db.push({type:"changeWhatToMovePlayer",pID:openedProjectId,user:loggedUser, which:document.getElementById("whatToMove").value});
+}
 
 //@player settings > move : change move when
-document.getElementById("whatToMove").onchange = function () {
+function changeWhatToMoveCondition() {
     var whichCondition = document.getElementById("whatToMove").value;
     if ( whichCondition == "always" ) {
+        //change game save data Content
+
+        //ui based scripts
         document.getElementById("keyControlsWrapper").style.display = "none";
         document.getElementById("changeDirectionControls").style.display = "block";
         if (document.getElementById("whatToCDir").value = "whenButtonPressed" ) {
@@ -113,10 +120,8 @@ function updateCodeBlocks(pID) {
     if( gProjects.code[pID].moveKeyBind.length != 0 ) {
         document.getElementById("keyControlsWrapper").innerHTML = "";
         for (i = 0; i < gProjects.code[pID].moveKeyBind.length; i++ ) {
-            document.getElementById("keyControlsWrapper").innerHTML += '<div class="keyBindWrapper"><select class="miniselect"'+'id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'directionPlayerChooseRL'+i+'" class="miniselect"><option value="right">右</option><option value="left">左</option></select>に<input id="'+pID+'RLspeedPlayer'+i+'" type="number" placeholder="速度を入力" class="textput textminiput nomargin"><br><select id="'+pID+'directionPlayerChooseUD'+i+'"  class="miniselect"><option>上</option><option>下</option></select>に<input id="'+pID+'UDspeedPlayer'+i+'" class="textput textminiput nomargin" type="number" placeholder="速度を入力"><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerMovementCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
+            document.getElementById("keyControlsWrapper").innerHTML += '<div class="keyBindWrapper"><select onchange="updatePlayerMovementKeyBindOption(this)" class="miniselect"'+' id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'directionPlayerChooseRL'+i+'" class="miniselect" onchange="updateRLdirectionPlayer(this)"><option value="right">右</option><option value="left">左</option></select>に<input onchange="changeRLspeedPlayer(this)" id="'+pID+'RLspeedPlayer'+i+'" type="number" placeholder="速度を入力" class="textput textminiput nomargin"><br><select onchange="updateUDdirectionPlayer(this)" id="'+pID+'directionPlayerChooseUD'+i+'"  class="miniselect"><option>上</option><option>下</option></select>に<input id="'+pID+'UDspeedPlayer'+i+'" class="textput textminiput nomargin" type="number" placeholder="速度を入力" onchange="changeUDspeedPlayer(this)"><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerMovementCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
             var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].moveKeyBind[i].keyCodeA);
-            console.log(preSelectedCode);
-            console.log(pID + "selectorBlockKeyBind" + i);
             document.getElementById(pID + "selectorBlockKeyBind" + i).selectedIndex = preSelectedCode;
 
             if( gProjects.code[pID].moveKeyBind[i].toX >= 0 ) {
@@ -137,13 +142,28 @@ function updateCodeBlocks(pID) {
 
         }
     }
+    //direction control blocks
+    document.getElementById("keyDirectionWrapper").innerHTML = "<strong>方向転換</strong>のボタンの入力が設定されていません";
+    if( gProjects.code[pID].directionKeyBind.length != 0 ) {
+        document.getElementById("keyDirectionWrapper").innerHTML = "";
+        console.log("yoyo " + gProjects.code[pID].directionKeyBind.length);
+        for( i=0;i<gProjects.code[pID].directionKeyBind.length;i++) {
+            document.getElementById("keyDirectionWrapper").innerHTML += '<div class="keyBindWrapper"><select onchange="updateDirection(this)" class="miniselect"'+' id="'+ pID +'changeDirectionKeyBindBlock'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'changeDirectionKeyRL'+i+'" class="miniselect"><option value="right">右</option><option value="left">左</option></select>に<select id="'+pID+'moveRLorNot'+i+'" class="miniselect"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><br><select id="'+pID+'changeDirectionKeyUD'+i+'" class="miniselect"><option value="up">上</option><option value="down">下</option></select>に<select id="'+pID+'moveUDorNot'+i+'" class="miniselect"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerMovementCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
+
+            var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].directionKeyBind[i].keyCodeB);
+            console.log(preSelectedCode);
+            document.getElementById(pID + "changeDirectionKeyBindBlock" + i).selectedIndex = preSelectedCode;
+        }
+    }
 }
 
 //add more player movement keybind controls
 document.getElementById("newKeybindForMovementPlayer").onclick = function () {
-
-    db.push({ type : "newMoveKeyBind", user : loggedUser, oprojectID : openedProjectId });
-
+    if( gProjects.code[openedProjectId].moveWhen == "buttonPress" ) {
+        db.push({ type : "newMoveKeyBind", user : loggedUser, oprojectID : openedProjectId });
+    } else if( gProjects.code[openedProjectId].moveWhen == "always" && gProjects.code[openedProjectId].changeDirWhen == "buttonPress" ) {
+        db.push({ type : "newChangeDirKeyBind", user : loggedUser, oprojectID : openedProjectId });
+    }
 }
 
 /* <select>
@@ -200,5 +220,40 @@ document.getElementById("newKeybindForMovementPlayer").onclick = function () {
 
 function deleteThisPlayerMovementCodeBlock(ele) {
     var idHolder = ele.id.split("deleteBtnTrigger");
-    db.push({type:"deletePlayerMovementCodeBlock",pID:idHolder[0],whichI:idHolder[1]})
+    db.push({type:"deletePlayerMovementCodeBlock",user:loggedUser,pID:idHolder[0],whichI:idHolder[1]});
+}
+
+function updatePlayerMovementKeyBindOption(ele) {
+    var idHolder = ele.id.split("selectorBlockKeyBind");
+    var valueKeyCode = ele.value;
+    db.push({type:"updatePlayerMovementKeyBindOption",user:loggedUser,pID:idHolder[0],whichI:idHolder[1], keyCodeAA:valueKeyCode});
+}
+
+function updateRLdirectionPlayer(ele) {
+    var idHolder = ele.id.split("directionPlayerChooseRL");
+    var valueRL = ele.value;
+    db.push({type:"updateRLdirectionPlayer",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],whichDirection:valueRL})
+}
+
+function updateUDdirectionPlayer(ele) {
+    var idHolder = ele.id.split("directionPlayerChooseUD");
+    var valueUD = ele.value;
+    db.push({type:"updateUDdirectionPlayer",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],whichDirection:valueUD})
+}
+function changeRLspeedPlayer(ele) {
+    ele.value = Math.abs(parseInt(ele.value));
+    var idHolder= ele.id.split("RLspeedPlayer");
+    var valueVelRL = ele.value;
+    db.push({type:"changeRLspeedPlayer",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],speed:valueVelRL});
+}
+function changeUDspeedPlayer(ele) {
+    ele.value = Math.abs(parseInt(ele.value));
+    var idHolder= ele.id.split("UDspeedPlayer");
+    var valueVelUD = ele.value;
+    db.push({type:"changeUDspeedPlayer",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],speed:valueVelUD});
+}
+function updateDirection(ele) {
+    var idHolder = ele.id.split("changeDirectionKeyBindBlock");
+    var valueHolder = ele.value;
+    db.push({type:"updateKeyForDirectionKeyBindBlock",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],value:valueHolder});
 }

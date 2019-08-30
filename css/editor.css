@@ -618,6 +618,7 @@ button:disabled, input:disabled {
     padding: 0px;
     height: 30px;
     outline: none;
+    margin-top: 10px;
 }
 /* #keyControlEnb {
     display: none;
@@ -687,4 +688,7 @@ button:disabled, input:disabled {
 }
 .deleteBtn:active {
     filter: brightness(90%);
+}
+.colorPurple {
+    background: #ba74d4!important;
 }
