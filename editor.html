@@ -195,16 +195,16 @@
                         <h3 class="modalTitleSpan">スポーン設定</h3>
                         <div class="alignCenter">
                             <div class="controlOptionWrappers">
-                                <select class="miniselect">
-                                    <option>ランダムな地点</option>
-                                    <option>プレイヤーが死んだ地点</option>
+                                <select id="howCollectablesSpawnSelector" class="miniselect">
+                                    <option value="randomPoint">ランダムな地点</option>
+                                    <option value="deathPoint">プレイヤーが死んだ地点</option>
                                 </select>
                                 にスポーンする<br>
                                 スポーンする量は
-                                <select class="miniselect">
-                                    <option>多い（各エリア15個）</option>
-                                    <option>普通（各エリア10個）</option>
-                                    <option>少ない（各エリア5個）</option>
+                                <select class="miniselect" id="howMuchCollectablesSpawnSelector">
+                                    <option value="alot">多い（各エリア15個）</option>
+                                    <option value="normal">普通（各エリア10個）</option>
+                                    <option value="little">少ない（各エリア5個）</option>
                                 </select>
                             </div>
                         </div>
@@ -213,7 +213,7 @@
                         <div class="alignCenter">
                             <div class="controlOptionWrappers">
                                 １個につき
-                                <input type="number" class="textput textminiput nomargin" placeholder="点数を入力">
+                                <input id="howManyPointsPerInput" value="0" type="number" class="textput textminiput nomargin" placeholder="点数を入力">
                                 点
                             </div>
                         </div>
@@ -270,7 +270,43 @@
                             画像を使用する
                         </div>
                     </div>
-                    <div id="assetApControl1"></div>
+                    <div id="assetApControl1">
+                        <h3 class="modalTitleSpan">画像をアップロード</h3>
+                        <div class="alignCenter">
+                            <div class="controlOptionWrappers">
+                                <input type="file" onchange="covertDataURI(this,'#playerSpritePreview','playerSprite')"><br>
+                                <img src="" id="playerSpritePreview" class="previewImageObject">
+                            </div>
+                            <br><span>または</span><br>
+                        </div>
+                        <h3 class="modalTitleSpan">ライブラリから選ぶ</h3>
+                        <div class="controlOptionWrappers libraryWrapper">
+                            <div class="alignCenter">
+                                <strong>コイン</strong><br>
+                                <button id="playerAttackSpriteCar" onclick="chooseSpriteForCollectables('coin')" class="migAssetLibraryPicker migAssetLibraryPickerSelected">
+                                    <img class="migSamplePreview" src="./assets/samplePack/coin.png">
+                                </button>
+                                <br><strong>食べ物</strong><br>
+                                <button id="playerAttackSpriteCar" onclick="chooseSpriteForCollectables('apple')" class="migAssetLibraryPicker">
+                                    <img class="migSamplePreview" src="./assets/samplePack/apple.png">
+                                </button>
+                                <button id="playerAttackSpriteCar" onclick="chooseSpriteForCollectables('orange')" class="migAssetLibraryPicker">
+                                    <img class="migSamplePreview" src="./assets/samplePack/orange.png">
+                                </button>
+                                <button id="playerAttackSpriteCar" onclick="chooseSpriteForCollectables('peach')" class="migAssetLibraryPicker">
+                                    <img class="migSamplePreview" src="./assets/samplePack/peach.png">
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="alignCenter">
+                            <select class="miniselect" id="whichTouseForPlayerSprite" onchange="updateWhichPlayerSprite()">
+                                <option value="uploadedImage">アップロードした</option>
+                                <option value="libraryImage">ライブラリで選択した</option>
+                            </select>
+                            画像を使用する
+                        </div>
+                    </div>
                     <div id="assetApControl2"></div>
                     <div id="assetApControl3"></div>
                 </div>

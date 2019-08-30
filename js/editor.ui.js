@@ -151,6 +151,10 @@ function openEditor(pID) {
     updatePlayerAttackTypeSelector();
     updateUploadedDataScheme();
     updateWhichPlayerSpriteType();
+    //collectables code
+    updateHowSpawnSelector();
+    updateHowMuchSpawnSelector();
+    updateHowManyPointsPerCollectSelector();
 }
 
 document.getElementById("returnToDashboardBtn").onclick = function () {

@@ -717,3 +717,6 @@ button:disabled, input:disabled {
 .previewImageObject {
     height: 50px;
 }
+#appearAreaSimp {
+    display: none;
+}

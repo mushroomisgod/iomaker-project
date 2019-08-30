@@ -39,7 +39,13 @@ var gProjects = {
             playerAttackSetting : { type:"shoot", keyCode:13 },
             playerAttackLibrarySprite : "./assets/samplePack/axe.png",
             playerAttackuploadSprite : "none",
-            usePlayerAttackSprite : "library"
+            usePlayerAttackSprite : "library",
+            howCollectablesSpawn : "randomPoint",
+            howMuchCollectablesSpawn : "alot",
+            howManyCollectablePoint : 0,
+            collectablesLibrarySprite : "./assets/samplePack/coin.png",
+            collectablesUploadSprite : "none",
+            collectablesSpriteType : "library"
         }
     ]
 };
@@ -467,4 +473,43 @@ function updateWhichPlayerSpriteType() {
     } else {
         document.getElementById("whichTouseForPlayerSprite").selectedIndex = 1;
     }
+}
+
+//collectables code
+document.getElementById("howCollectablesSpawnSelector").onchange = function () {
+    db.push({type:"collectableSpawnOptionUpdate",user:loggedUser,pID:openedProjectId,value:document.getElementById("howCollectablesSpawnSelector").value});
+}
+
+function updateHowSpawnSelector() {
+    if( gProjects.code[openedProjectId].howCollectablesSpawn == "randomPoint" ) {
+        document.getElementById("howCollectablesSpawnSelector").selectedIndex = 0;
+    } else {
+        document.getElementById("howCollectablesSpawnSelector").selectedIndex = 1;
+    }
+}
+
+document.getElementById("howMuchCollectablesSpawnSelector").onchange = function () {
+    db.push({type:"changeHowMuchCollectablesSpawn",user:loggedUser,pID:openedProjectId,value:document.getElementById("howMuchCollectablesSpawnSelector").value});
+}
+
+function updateHowMuchSpawnSelector() {
+    if( gProjects.code[openedProjectId].howMuchCollectablesSpawn == "alot" ) {
+        document.getElementById("howMuchCollectablesSpawnSelector").selectedIndex = 0;
+    } else if( gProjects.code[openedProjectId].howMuchCollectablesSpawn == "normal" ) {
+        document.getElementById("howMuchCollectablesSpawnSelector").selectedIndex = 1;
+    } else {
+        document.getElementById("howMuchCollectablesSpawnSelector").selectedIndex = 2;
+    }
+}
+
+document.getElementById("howManyPointsPerInput").onchange = function () {
+    db.push({type:"changeHowManyPointsPerInput",pID:openedProjectId,user:loggedUser,value:document.getElementById("howManyPointsPerInput").value});
+}
+
+function updateHowManyPointsPerCollectSelector() {
+    document.getElementById("howManyPointsPerInput").value = gProjects.code[openedProjectId].howManyCollectablePoint;
+}
+
+function chooseSpriteForCollectables(type) {
+    db.push({type:"chooseLibrarySpriteForCollectables",user:loggedUser,pID:openedProjectId,value:type});
 }

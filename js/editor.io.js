@@ -195,6 +195,33 @@ var updateData = function () {
                 gProjects.code[dataInput.pID].playerUploadSprite = dataInput.value;
                 updateUploadedDataScheme();
             }
+        } else if( dataInput.type == "collectableSpawnOptionUpdate" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].howCollectablesSpawn = dataInput.value;
+                updateHowSpawnSelector();
+            }
+        } else if( dataInput.type == "changeHowMuchCollectablesSpawn" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].howMuchCollectablesSpawn = dataInput.value;
+                updateHowMuchSpawnSelector();
+            }
+        } else if( dataInput.type == "changeHowManyPointsPerInput" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].howManyCollectablePoint = parseInt(dataInput.value);
+                updateHowManyPointsPerCollectSelector();
+            }
+        } else if( dataInput.type = "chooseLibrarySpriteForCollectables" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "coin" ) {
+                    gProjects.code[dataInput.pID].collectablesLibrarySprite = "./assets/samplePack/coin.png";
+                } else if( dataInput.value == "apple" ) {
+                    gProjects.code[dataInput.pID].collectablesLibrarySprite = "./assets/samplePack/apple.png";
+                } else if( dataInput.value == "orange" ) {
+                    gProjects.code[dataInput.pID].collectablesLibrarySprite = "./assets/samplePack/orange.png";
+                } else if( dataInput.value == "peach" ) {
+                    gProjects.code[dataInput.pID].collectablesLibrarySprite = "./assets/samplePack/peach.png";
+                }
+            }
         }
     });
 }
