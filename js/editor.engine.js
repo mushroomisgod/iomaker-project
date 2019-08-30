@@ -32,7 +32,8 @@ var gProjects = {
             changeDirWhen : "buttonPress",
             directionKeyBindEnabled : false,
             directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }],
-            playerAppearPointSettings : "size"
+            playerAppearPointSettings : "size",
+            playerAttackSetting : { type:"shoot", keyCode:13 }
         }
     ]
 };
@@ -335,4 +336,7 @@ function updatePlayerPointAppearance() {
     } else if ( gProjects.code[openedProjectId].playerAppearPointSettings == "nothing" ) {
         document.getElementById("playerPointNAppearSetting").selectedIndex = 2;
     }
+}
+function updatePlayerAttackSetting() {
+    var data = gProjects.
 }

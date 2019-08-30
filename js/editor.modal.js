@@ -7,8 +7,6 @@ var createNewProject = document.getElementById("createNewProject");
 // you see the little X at the right upper part of modal? it makes the modal disappear
 var closeNewGameModal = document.getElementById("closeNewGameModal");
 
-
-
 //newGameModal script
 createNewProject.onclick = function () {
     newGameModal.style.display = "block";
@@ -29,4 +27,11 @@ document.getElementById("pointAppearancePlayerSettingLaunch").onclick = function
 }
 document.getElementById("closePlayerPointEffectSetting").onclick = function () {
     document.getElementById("playerPointEffectSetting").style.display = "none";
+}
+
+document.getElementById("playerAttackSettingLaunch").onclick = function () {
+    document.getElementById("playerAttackSetting").style.display = "block";
+}
+document.getElementById("closePlayerAttackSetting").onclick = function () {
+    document.getElementById("playerAttackSetting").style.display = "none";
 }

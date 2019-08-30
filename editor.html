@@ -183,7 +183,7 @@
                         </div>
                         <div class="codeBlockSimple attackBlock">
                             攻撃
-                            <button class="codeBlockSettingBtn" onclick="">設定を開く</button>
+                            <button class="codeBlockSettingBtn" id="playerAttackSettingLaunch">設定を開く</button>
                         </div>
                         <div class="codeBlockSimple appearanceBlock">
                             ポイントによる見た目
@@ -326,9 +326,77 @@
                         プレイヤーは
                         <select class="miniselect" id="playerPointNAppearSetting" onchange="changePointAppearSettingPlayer(this)">
                             <option value="size">大きくなる</option>
-                            <option value="length">長くなる</option>
+                            <option value="length">早くなる</option>
                             <option value="nothing">何も変わらない</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="playerAttackSetting" class="modal">
+            <div class="modal-content">
+                <span id="closePlayerAttackSetting" class="close">&times;</span>
+                <h3 class="modalTitleSpan">プレイヤーの攻撃設定</h3>
+                <div class="alignCenter">
+                    <div class="keyBindWrapper colorPurple">
+                        <select class="miniselect" id="attackKeyBindSelector">
+                            <option value="13">Enter</option>
+                            <option value="8">Backspace / Delete</option>
+                            <option value="9">Tab</option>
+                            <option value="16">Shift</option>
+                            <option value="17">Ctrl</option>
+                            <option value="18">Alt</option>
+                            <option value="27">esc (Escape)</option>
+                            <option value="32">スペース</option>
+                            <option value="37">左矢印</option>
+                            <option value="38">上矢印</option>
+                            <option value="39">右矢印</option>
+                            <option value="40">下矢印</option>
+                            <option value="48">0</option>
+                            <option value="49">1</option>
+                            <option value="50">2</option>
+                            <option value="51">3</option>
+                            <option value="52">4</option>
+                            <option value="53">5</option>
+                            <option value="54">6</option>
+                            <option value="55">7</option>
+                            <option value="56">8</option>
+                            <option value="57">9</option>
+                            <option value="65">A</option>
+                            <option value="66">B</option>
+                            <option value="67">C</option>
+                            <option value="68">D</option>
+                            <option value="69">E</option>
+                            <option value="70">F</option>
+                            <option value="71">G</option>
+                            <option value="72">H</option>
+                            <option value="73">I</option>
+                            <option value="74">J</option>
+                            <option value="75">K</option>
+                            <option value="76">L</option>
+                            <option value="77">M</option>
+                            <option value="78">N</option>
+                            <option value="79">O</option>
+                            <option value="80">P</option>
+                            <option value="81">Q</option>
+                            <option value="82">R</option>
+                            <option value="83">S</option>
+                            <option value="84">T</option>
+                            <option value="85">U</option>
+                            <option value="86">V</option>
+                            <option value="87">W</option>
+                            <option value="88">X</option>
+                            <option value="89">Y</option>
+                            <option value="90">Z</option>
+                        </select>
+                        が押されたら<br>
+                        <select class="miniselect" id="playerPointNAppearSetting" onchange="changePointAppearSettingPlayer(this)">
+                            <option value="size">撃って</option>
+                            <option value="length">殴って</option>
+                            <option value="nothing">食べて（常時発動、ポイントが30以上の時）</option>
+                        </select>
+                        攻撃する
                     </div>
                 </div>
             </div>
