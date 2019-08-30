@@ -141,11 +141,25 @@ var updateData = function () {
                 } else if( dataInput.value == "sword" ) {
                     gProjects.code[dataInput.pID].playerAttackLibrarySprite = "./assets/samplePack/sword.png";
                 } else if( dataInput.value == "flame" ) {
-                    gProjects.code[dataInput.pID].playerAttackLibrarySprite = "./assets/samplePack/flame.png";
+                    gProjects.code[dataInput.pID].playerAttackLibrarySprite = "./assets/samplePack/flame.svg";
                 } else if( dataInput.value == "bullet" ) {
                     gProjects.code[dataInput.pID].playerAttackLibrarySprite = "./assets/samplePack/bullet.png";
                 }
                 updatePlayerAttackLibrarySelectedSprite();
+            }
+        } else if( dataInput.type == "chooseSpriteForPlayer" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "car" ) {
+                    gProjects.code[dataInput.pID].playerLibrarySprite = "./assets/samplePack/car.png";
+                } else if( dataInput.value == "tank" ) {
+                    gProjects.code[dataInput.pID].playerLibrarySprite = "./assets/samplePack/tank.png";
+                } else if( dataInput.value == "plane" ) {
+                    gProjects.code[dataInput.pID].playerLibrarySprite = "./assets/samplePack/plane.png";
+                } else if( dataInput.value == "person" ) {
+                    gProjects.code[dataInput.pID].playerLibrarySprite = "./assets/samplePack/person.png";
+                }
+                console.log(gProjects.code[dataInput.pID].playerLibrarySprite);
+                updatePlayerLibrarySelectedSprite();
             }
         } else if( dataInput.type == "setWhichSourceToUsePlayerAttack" ) {
             if( dataInput.user == loggedUser ) {
@@ -169,6 +183,16 @@ var updateData = function () {
         } else if( dataInput.type == "uploadPlayerWeaponImage" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].playerAttackuploadSprite = dataInput.value;
+                updateUploadedDataScheme();
+            }
+        } else if( dataInput.type == "updateWhichPlayerSprite" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].usePlayerSprite = dataInput.value;
+                updateWhichPlayerSpriteType();
+            }
+        } else if( dataInput.type == "uploadPlayerSprite" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].playerUploadSprite = dataInput.value;
                 updateUploadedDataScheme();
             }
         }

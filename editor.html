@@ -110,7 +110,7 @@
 
             <div id="simplePreviewPort">
                 <div id="simplePreviewWrap">
-                    <iframe id="simplePreviewScreen" src="./play.html"></iframe>
+                    <iframe id="simplePreviewScreen" src="./play.html" scrolling="no" frameborder="0"></iframe>
                 </div>
 
                 <div class="previewScreenController">
@@ -237,8 +237,8 @@
                         <h3 class="modalTitleSpan">画像をアップロード</h3>
                         <div class="alignCenter">
                             <div class="controlOptionWrappers">
-                                <input type="file" onclick=""><br>
-                                <img src="" id="">
+                                <input type="file" onchange="covertDataURI(this,'#playerSpritePreview','playerSprite')"><br>
+                                <img src="" id="playerSpritePreview" class="previewImageObject">
                             </div>
                             <br><span>または</span><br>
                         </div>
@@ -246,22 +246,26 @@
                         <div class="controlOptionWrappers libraryWrapper">
                             <div class="alignCenter">
                                 <strong>乗り物</strong><br>
-                                <button class="migAssetLibraryPicker migAssetLibraryPickerSelected">
+                                <button id="playerAttackSpriteCar" onclick="chooseSpriteForPlayer('car')" class="migAssetLibraryPicker migAssetLibraryPickerSelected">
                                     <img class="migSamplePreview" src="./assets/samplePack/car.png">
                                 </button>
-                                <button class="migAssetLibraryPicker">
+                                <button id="playerAttackSpriteTank" onclick="chooseSpriteForPlayer('tank')" class="migAssetLibraryPicker">
                                     <img class="migSamplePreview" src="./assets/samplePack/tank.png">
                                 </button>
-                                <button class="migAssetLibraryPicker">
+                                <button id="playerAttackSpritePlane" onclick="chooseSpriteForPlayer('plane')" class="migAssetLibraryPicker">
                                     <img class="migSamplePreview" src="./assets/samplePack/plane.png">
+                                </button>
+                                <br><strong>人物</strong><br>
+                                <button id="playerAttackSpritePerson" onclick="chooseSpriteForPlayer('person')" class="migAssetLibraryPicker">
+                                    <img class="migSamplePreview" src="./assets/samplePack/person.png">
                                 </button>
                             </div>
                         </div>
                         <hr>
                         <div class="alignCenter">
-                            <select class="miniselect" id="whichTouseForPlayerSprite">
-                                <option>アップロードした</option>
-                                <option>ライブラリで選択した</option>
+                            <select class="miniselect" id="whichTouseForPlayerSprite" onchange="updateWhichPlayerSprite()">
+                                <option value="uploadedImage">アップロードした</option>
+                                <option value="libraryImage">ライブラリで選択した</option>
                             </select>
                             画像を使用する
                         </div>

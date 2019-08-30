@@ -33,6 +33,9 @@ var gProjects = {
             directionKeyBindEnabled : false,
             directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }],
             playerAppearPointSettings : "size",
+            playerLibrarySprite : "./assets/samplePack/car.png",
+            playerUploadSprite : "none",
+            usePlayerSprite : "library",
             playerAttackSetting : { type:"shoot", keyCode:13 },
             playerAttackLibrarySprite : "./assets/samplePack/axe.png",
             playerAttackuploadSprite : "none",
@@ -151,12 +154,10 @@ function updateCodeBlocks(pID) {
     document.getElementById("keyDirectionWrapper").innerHTML = "<strong>方向転換</strong>のボタンの入力が設定されていません";
     if( gProjects.code[pID].directionKeyBind.length != 0 ) {
         document.getElementById("keyDirectionWrapper").innerHTML = "";
-        console.log("yoyo " + gProjects.code[pID].directionKeyBind.length);
         for( i=0;i<gProjects.code[pID].directionKeyBind.length;i++) {
             document.getElementById("keyDirectionWrapper").innerHTML += '<div class="keyBindWrapper"><select onchange="updateDirection(this)" class="miniselect"'+' id="'+ pID +'changeDirectionKeyBindBlock'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'changeDirectionKeyRL'+i+'" class="miniselect" onchange="updateRLdirectionPlayerReal(this)"><option value="right">右</option><option value="left">左</option></select>に<select id="'+pID+'moveRLorNot'+i+'" class="miniselect" onchange="RLmoveOrNotUpdate(this)"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><br><select onchange="updateUDdirectionPlayerReal(this)" id="'+pID+'changeDirectionKeyUD'+i+'" class="miniselect"><option value="up">上</option><option value="down">下</option></select>に<select id="'+pID+'moveUDorNot'+i+'" class="miniselect" onchange="UDmoveOrNotUpdate(this)"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerDirectionCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
 
             var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].directionKeyBind[i].keyCodeB);
-            console.log(preSelectedCode);
             document.getElementById(pID + "changeDirectionKeyBindBlock" + i).selectedIndex = preSelectedCode;
 
             if( gProjects.code[pID].directionKeyBind[i].directionRL == "right" ) {
@@ -357,7 +358,7 @@ function updatePlayerAttackLibrarySelectedSprite() {
         document.getElementById("playerAttackSpriteSword").classList.add("migAssetLibraryPickerSelected");
         document.getElementById("playerAttackSpriteFlame").classList.remove("migAssetLibraryPickerSelected");
         document.getElementById("playerAttackSpriteBullet").classList.remove("migAssetLibraryPickerSelected");
-    } else if( gProjects.code[openedProjectId].playerAttackLibrarySprite == "./assets/samplePack/flame.png" ) {
+    } else if( gProjects.code[openedProjectId].playerAttackLibrarySprite == "./assets/samplePack/flame.svg" ) {
         document.getElementById("playerAttackSpriteAxe").classList.remove("migAssetLibraryPickerSelected");
         document.getElementById("playerAttackSpriteSword").classList.remove("migAssetLibraryPickerSelected");
         document.getElementById("playerAttackSpriteFlame").classList.add("migAssetLibraryPickerSelected");
@@ -367,6 +368,30 @@ function updatePlayerAttackLibrarySelectedSprite() {
         document.getElementById("playerAttackSpriteSword").classList.remove("migAssetLibraryPickerSelected");
         document.getElementById("playerAttackSpriteFlame").classList.remove("migAssetLibraryPickerSelected");
         document.getElementById("playerAttackSpriteBullet").classList.add("migAssetLibraryPickerSelected");
+    }
+}
+
+function updatePlayerLibrarySelectedSprite() {
+    if( gProjects.code[openedProjectId].playerLibrarySprite == "./assets/samplePack/car.png" ) {
+        document.getElementById("playerAttackSpriteCar").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteTank").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePlane").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePerson").classList.remove("migAssetLibraryPickerSelected");
+    } else if( gProjects.code[openedProjectId].playerLibrarySprite == "./assets/samplePack/tank.png" ) {
+        document.getElementById("playerAttackSpriteCar").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteTank").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePlane").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePerson").classList.remove("migAssetLibraryPickerSelected");
+    } else if( gProjects.code[openedProjectId].playerLibrarySprite == "./assets/samplePack/plane.png" ) {
+        document.getElementById("playerAttackSpriteCar").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteTank").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePlane").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePerson").classList.remove("migAssetLibraryPickerSelected");
+    } else if( gProjects.code[openedProjectId].playerLibrarySprite == "./assets/samplePack/person.png"  ) {
+        document.getElementById("playerAttackSpriteCar").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpriteTank").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePlane").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("playerAttackSpritePerson").classList.add("migAssetLibraryPickerSelected");
     }
 }
 
@@ -416,12 +441,30 @@ function covertDataURI(input,targetElement,redirectFunctionKey) {
 
 function updateImageCodeHolders(RFK) {
     setTimeout( function () {
-        console.log(document.getElementById("previewImagePlayerWeapon").src);
         if( RFK == "playerAttackWeapon" ) {
             db.push({ type:"uploadPlayerWeaponImage",user:loggedUser,pID:openedProjectId,value:document.getElementById("previewImagePlayerWeapon").src });
+        } else if( RFK == "playerSprite" ) {
+            db.push({ type:"uploadPlayerSprite",user:loggedUser,pID:openedProjectId,value:document.getElementById("playerSpritePreview").src });
         }
     },400)
 }
 function updateUploadedDataScheme() {
     document.getElementById("previewImagePlayerWeapon").src = gProjects.code[openedProjectId].playerAttackuploadSprite;
+    document.getElementById("playerSpritePreview").src = gProjects.code[openedProjectId].playerUploadSprite;
+}
+
+function chooseSpriteForPlayer(type) {
+    db.push({type:"chooseSpriteForPlayer",user:loggedUser,pID:openedProjectId,value:type})
+}
+function updateWhichPlayerSprite() {
+    db.push({type:"updateWhichPlayerSprite",user:loggedUser,pID:openedProjectId,value:document.getElementById("whichTouseForPlayerSprite").value})
+}
+function updateWhichPlayerSpriteType() {
+    console.log("check one");
+    if( gProjects.code[openedProjectId].usePlayerSprite == "uploadedImage" ) {
+        document.getElementById("whichTouseForPlayerSprite").selectedIndex = 0;
+        console.log("check two");
+    } else {
+        document.getElementById("whichTouseForPlayerSprite").selectedIndex = 1;
+    }
 }

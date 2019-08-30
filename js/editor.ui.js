@@ -143,10 +143,14 @@ function openEditor(pID) {
     updateWhenToCDirOption();
     updatePlayerPointAppearance();
     whichSpriteTypeToUseForPlayerAttackUpdate();
+    //sprite settings
     updatePlayerAttackLibrarySelectedSprite();
+    updatePlayerLibrarySelectedSprite();
+
     updatePlayerAttackTriggerKeyCode();
     updatePlayerAttackTypeSelector();
     updateUploadedDataScheme();
+    updateWhichPlayerSpriteType();
 }
 
 document.getElementById("returnToDashboardBtn").onclick = function () {
