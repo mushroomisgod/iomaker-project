@@ -41,12 +41,14 @@ function selectAssetSimple(ele) {
     ele.classList.add("simpleSelected");
     ele.disabled = true;
     document.getElementById("assetControl" + selectedObject).style.display = "none";
+    document.getElementById("assetApControl"+selectedObject).style.display = "none";
     document.getElementById("assetSelectorSimple" + selectedObject).classList.remove("simpleSelected");
     document.getElementById("assetSelectorSimple" + selectedObject).disabled = false;
     var whichAsset = ele.id.split("assetSelectorSimple")[1];
     selectedObject = whichAsset;
 
     document.getElementById("assetControl"+whichAsset).style.display = "block";
+    document.getElementById("assetApControl"+whichAsset).style.display = "block";
 }
 
 //change tabs

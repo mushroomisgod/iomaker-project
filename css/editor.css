@@ -703,3 +703,7 @@ button:disabled, input:disabled {
     height: 80px;
     width: 80px;
 }
+.libraryWrapper {
+    height: 170px;
+    overflow: auto;
+}
