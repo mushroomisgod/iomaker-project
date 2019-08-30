@@ -24,3 +24,9 @@ window.onclick = function (event) {
     }
 }
 
+document.getElementById("pointAppearancePlayerSettingLaunch").onclick = function () {
+    document.getElementById("playerPointEffectSetting").style.display = "block";
+}
+document.getElementById("closePlayerPointEffectSetting").onclick = function () {
+    document.getElementById("playerPointEffectSetting").style.display = "none";
+}

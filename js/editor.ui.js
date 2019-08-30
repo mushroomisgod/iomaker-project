@@ -140,6 +140,7 @@ function openEditor(pID) {
 
     updateCodeBlocks(pID);
     updateWhenToCDirOption();
+    updatePlayerPointAppearance();
 }
 
 document.getElementById("returnToDashboardBtn").onclick = function () {

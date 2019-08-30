@@ -123,6 +123,17 @@ var updateData = function () {
                 }
                 updateWhenToCDirOption();
             }
+        } else if( dataInput.type == "changePointAppearSettingPlayer" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "size" ) {
+                    gProjects.code[dataInput.pID].playerAppearPointSettings = "size";
+                } else if( dataInput.value == "length" ) {
+                    gProjects.code[dataInput.pID].playerAppearPointSettings = "length";
+                } else if( dataInput.value == "nothing" ) {
+                    gProjects.code[dataInput.pID].playerAppearPointSettings = "nothing";
+                }
+                updatePlayerPointAppearance();
+            }
         }
     });
 }

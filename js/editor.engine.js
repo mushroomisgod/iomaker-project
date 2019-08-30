@@ -31,7 +31,8 @@ var gProjects = {
             moveKeyBind: [],
             changeDirWhen : "buttonPress",
             directionKeyBindEnabled : false,
-            directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }]
+            directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }],
+            playerAppearPointSettings : "size"
         }
     ]
 };
@@ -313,5 +314,23 @@ function updateWhenToCDirOption() {
         document.getElementById("keyDirectionWrapper").style.display = "block";
         document.getElementById("newKeybindForMovementPlayer").style.display = "inline-block";
         document.getElementById("whatToCDir").selectedIndex = 0;
+    }
+}
+function changePointAppearSettingPlayer(ele) {
+    if( ele.value == "size" ) {
+        db.push({type:"changePointAppearSettingPlayer",user:loggedUser,pID:openedProjectId,value:"size"});
+    } else if( ele.value == "length" ) {
+        db.push({type:"changePointAppearSettingPlayer",user:loggedUser,pID:openedProjectId,value:"length"});
+    } else {
+        db.push({type:"changePointAppearSettingPlayer",user:loggedUser,pID:openedProjectId,value:"nothing"});
+    }
+}
+function updatePlayerPointAppearance() {
+    if( gProjects.code[openedProjectId].playerAppearPointSettings == "size" ) {
+        document.getElementById("playerPointNAppearSetting").selectedIndex = 0;
+    } else if( gProjects.code[openedProjectId].playerAppearPointSettings == "length" ) {
+        document.getElementById("playerPointNAppearSetting").selectedIndex = 1;
+    } else if ( gProjects.code[openedProjectId].playerAppearPointSettings == "nothing" ) {
+        document.getElementById("playerPointNAppearSetting").selectedIndex = 2;
     }
 }

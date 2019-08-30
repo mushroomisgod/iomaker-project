@@ -186,8 +186,8 @@
                             <button class="codeBlockSettingBtn" onclick="">設定を開く</button>
                         </div>
                         <div class="codeBlockSimple appearanceBlock">
-                            ポイント
-                            <button class="codeBlockSettingBtn">設定を開く</button>
+                            ポイントによる見た目
+                            <button class="codeBlockSettingBtn" id="pointAppearancePlayerSettingLaunch">設定を開く</button>
                         </div>
                     </div>
                     <div id="assetControl1" style="display: none;">
@@ -264,6 +264,24 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <div id="playerPointEffectSetting" class="modal">
+            <div class="modal-content">
+                <span id="closePlayerPointEffectSetting" class="close">&times;</span>
+                <h3 class="modalTitleSpan">プレイヤーのポイント獲得設定</h3>
+                <div class="alignCenter">
+                    <div class="keyBindWrapper colorPurple">
+                        獲得したポイント分<br>
+                        プレイヤーは
+                        <select class="miniselect" id="playerPointNAppearSetting" onchange="changePointAppearSettingPlayer(this)">
+                            <option value="size">大きくなる</option>
+                            <option value="length">長くなる</option>
+                            <option value="nothing">何も変わらない</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
 
