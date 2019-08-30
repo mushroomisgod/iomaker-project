@@ -28,6 +28,11 @@ var updateData = function () {
                 gProjects.code[dataInput.pID].moveKeyBind.splice( dataInput.whichI, 1 );
                 updateCodeBlocks(dataInput.pID);
             }
+        } else if( dataInput.type == "deletePlayerDirectionCodeBlock" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].directionKeyBind.splice( dataInput.whichI, 1 );
+                updateCodeBlocks(dataInput.pID);
+            }
         } else if( dataInput.type == "updatePlayerMovementKeyBindOption" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].moveKeyBind[dataInput.whichI].keyCodeA = parseInt(dataInput.keyCodeAA);
@@ -74,6 +79,49 @@ var updateData = function () {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].keyCodeB = parseInt(dataInput.value);
                 updateCodeBlocks(dataInput.pID);
+            }
+        } else if( dataInput.type == "updateRLdirectionPlayerChoose" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "right" ) {
+                    gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].directionRL = "right";
+                } else {
+                    gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].directionRL = "left";
+                }
+            }
+        } else if( dataInput.type == "updateUDdirectionPlayerChoose" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "up" ) {
+                    gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].directionUD = "up";
+                } else {
+                    gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].directionUD = "down";
+                }
+            }
+        } else if( dataInput.type == "RLmoveOrNotUpdate" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "noMove" ) {
+                    gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].moveRL = false;
+                } else if( dataInput.value == "yesMove" ) {
+                    gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].moveRL = true;
+                }
+                updateCodeBlocks(dataInput.pID);
+            }
+        } else if( dataInput.type == "UDmoveOrNotUpdate" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "noMove" ) {
+                    gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].moveUD = false;
+                } else if( dataInput.value == "yesMove" ) {
+                    gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].moveUD = true;
+                }
+                updateCodeBlocks(dataInput.pID);
+            }
+        } else if( dataInput.type == "whatToCDirUpdate" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == "always" ) {
+                    gProjects.code[dataInput.pID].changeDirWhen = "always";
+                } else {
+                    gProjects.code[dataInput.pID].changeDirWhen = "buttonPress";
+                }
+                updateWhenToCDirOption();
             }
         }
     });

@@ -139,6 +139,7 @@ function openEditor(pID) {
     openedProjectId = pID;
 
     updateCodeBlocks(pID);
+    updateWhenToCDirOption();
 }
 
 document.getElementById("returnToDashboardBtn").onclick = function () {

@@ -103,11 +103,9 @@ function changeWhatToMoveCondition() {
 document.getElementById("whatToCDir").onchange = function () {
     var whichCondition = document.getElementById("whatToCDir").value;
     if( whichCondition == "always" ) {
-        document.getElementById("keyDirectionWrapper").style.display = "none";
-        document.getElementById("newKeybindForMovementPlayer").style.display = "none";
+        db.push({type:"whatToCDirUpdate",pID:openedProjectId,user:loggedUser,value:"always"});
     } else {
-        document.getElementById("keyDirectionWrapper").style.display = "block";
-        document.getElementById("newKeybindForMovementPlayer").style.display = "inline-block";
+        db.push({type:"whatToCDirUpdate",pID:openedProjectId,user:loggedUser,value:"buttonPress"});
     }
 }
 
@@ -148,11 +146,35 @@ function updateCodeBlocks(pID) {
         document.getElementById("keyDirectionWrapper").innerHTML = "";
         console.log("yoyo " + gProjects.code[pID].directionKeyBind.length);
         for( i=0;i<gProjects.code[pID].directionKeyBind.length;i++) {
-            document.getElementById("keyDirectionWrapper").innerHTML += '<div class="keyBindWrapper"><select onchange="updateDirection(this)" class="miniselect"'+' id="'+ pID +'changeDirectionKeyBindBlock'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'changeDirectionKeyRL'+i+'" class="miniselect"><option value="right">右</option><option value="left">左</option></select>に<select id="'+pID+'moveRLorNot'+i+'" class="miniselect"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><br><select id="'+pID+'changeDirectionKeyUD'+i+'" class="miniselect"><option value="up">上</option><option value="down">下</option></select>に<select id="'+pID+'moveUDorNot'+i+'" class="miniselect"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerMovementCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
+            document.getElementById("keyDirectionWrapper").innerHTML += '<div class="keyBindWrapper"><select onchange="updateDirection(this)" class="miniselect"'+' id="'+ pID +'changeDirectionKeyBindBlock'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'changeDirectionKeyRL'+i+'" class="miniselect" onchange="updateRLdirectionPlayerReal(this)"><option value="right">右</option><option value="left">左</option></select>に<select id="'+pID+'moveRLorNot'+i+'" class="miniselect" onchange="RLmoveOrNotUpdate(this)"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><br><select onchange="updateUDdirectionPlayerReal(this)" id="'+pID+'changeDirectionKeyUD'+i+'" class="miniselect"><option value="up">上</option><option value="down">下</option></select>に<select id="'+pID+'moveUDorNot'+i+'" class="miniselect" onchange="UDmoveOrNotUpdate(this)"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerDirectionCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
 
             var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].directionKeyBind[i].keyCodeB);
             console.log(preSelectedCode);
             document.getElementById(pID + "changeDirectionKeyBindBlock" + i).selectedIndex = preSelectedCode;
+
+            if( gProjects.code[pID].directionKeyBind[i].directionRL == "right" ) {
+                document.getElementById(pID+"changeDirectionKeyRL"+i).selectedIndex = 0;
+            } else {
+                document.getElementById(pID+"changeDirectionKeyRL"+i).selectedIndex = 1;
+            }
+
+            if( gProjects.code[pID].directionKeyBind[i].directionUD == "up" ) {
+                document.getElementById(pID+"changeDirectionKeyUD"+i).selectedIndex = 0;
+            } else {
+                document.getElementById(pID+"changeDirectionKeyUD"+i).selectedIndex = 1;
+            }
+
+            if( gProjects.code[pID].directionKeyBind[i].moveRL == true ) {
+                document.getElementById(pID+"moveRLorNot"+i).selectedIndex = 1;
+            } else {
+                document.getElementById(pID+"moveRLorNot"+i).selectedIndex = 0;
+            }
+
+            if( gProjects.code[pID].directionKeyBind[i].moveUD == true ) {
+                document.getElementById(pID+"moveUDorNot"+i).selectedIndex = 1;
+            } else {
+                document.getElementById(pID+"moveUDorNot"+i).selectedIndex = 0;
+            }
         }
     }
 }
@@ -222,6 +244,10 @@ function deleteThisPlayerMovementCodeBlock(ele) {
     var idHolder = ele.id.split("deleteBtnTrigger");
     db.push({type:"deletePlayerMovementCodeBlock",user:loggedUser,pID:idHolder[0],whichI:idHolder[1]});
 }
+function deleteThisPlayerDirectionCodeBlock(ele) {
+    var idHolder = ele.id.split("deleteBtnTrigger");
+    db.push({type:"deletePlayerDirectionCodeBlock",user:loggedUser,pID:idHolder[0],whichI:idHolder[1]});
+}
 
 function updatePlayerMovementKeyBindOption(ele) {
     var idHolder = ele.id.split("selectorBlockKeyBind");
@@ -256,4 +282,36 @@ function updateDirection(ele) {
     var idHolder = ele.id.split("changeDirectionKeyBindBlock");
     var valueHolder = ele.value;
     db.push({type:"updateKeyForDirectionKeyBindBlock",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],value:valueHolder});
+}
+function updateRLdirectionPlayerReal(ele) {
+    var idHolder = ele.id.split("changeDirectionKeyRL");
+    var valueHolder = ele.value;
+    db.push({type:"updateRLdirectionPlayerChoose",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],value:valueHolder});
+}
+function updateUDdirectionPlayerReal(ele) {
+    var idHolder = ele.id.split("changeDirectionKeyUD");
+    var valueHolder = ele.value;
+    db.push({type:"updateUDdirectionPlayerChoose",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],value:valueHolder});
+}
+function RLmoveOrNotUpdate(ele) {
+    var idHolder= ele.id.split("moveRLorNot");
+    var valueHolder = ele.value;
+    db.push({type:"RLmoveOrNotUpdate",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],value:valueHolder});
+}
+function UDmoveOrNotUpdate(ele) {
+    var idHolder= ele.id.split("moveUDorNot");
+    var valueHolder = ele.value;
+    db.push({type:"UDmoveOrNotUpdate",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],value:valueHolder});
+}
+function updateWhenToCDirOption() {
+    var optionvalue = gProjects.code[openedProjectId].changeDirWhen;
+    if( optionvalue == "always" ) {
+        document.getElementById("keyDirectionWrapper").style.display = "none";
+        document.getElementById("newKeybindForMovementPlayer").style.display = "none";
+        document.getElementById("whatToCDir").selectedIndex = 1;
+    } else {
+        document.getElementById("keyDirectionWrapper").style.display = "block";
+        document.getElementById("newKeybindForMovementPlayer").style.display = "inline-block";
+        document.getElementById("whatToCDir").selectedIndex = 0;
+    }
 }
