@@ -1,10 +1,56 @@
 var db = new Firebase("https://makeio.firebaseio.com/");
 
-var loggedUser = "tomocode";
+//game object elements variebles
+var mainPlayer = document.getElementById("mainPlayer");
+var garea = document.getElementById("garea");
+var collectablesSpriteWrapper = document.getElementById("collectablesSpriteWrapper");
+
+var urlString = window.location.href;
+var urlParams = parseURLParams(urlString);
+var loggedUser = urlParams.u[0];
+var gameId = parseInt(urlParams.c[0]);
+var isHost = false;
+
+var playerPoints = 0;
+
+var cameraPos = {
+    x : 2500,
+    y : 1500
+}
+
+function parseURLParams(url) {
+    var queryStart = url.indexOf("?") + 1,
+        queryEnd   = url.indexOf("#") + 1 || url.length + 1,
+        query = url.slice(queryStart, queryEnd - 1),
+        pairs = query.replace(/\+/g, " ").split("&"),
+        parms = {}, i, n, v, nv;
+
+    if (query === url || query === "") return;
+
+    for (i = 0; i < pairs.length; i++) {
+        nv = pairs[i].split("=", 2);
+        n = decodeURIComponent(nv[0]);
+        v = decodeURIComponent(nv[1]);
+
+        if (!parms.hasOwnProperty(n)) parms[n] = [];
+        parms[n].push(nv.length === 2 ? v : null);
+    }
+    return parms;
+}
+
 
 var gProjects = {
     name : [],
     code : []
+}
+
+var namesRegistered = [];
+
+var myName = "";
+var isJoined = false;
+
+var playerData = {
+
 }
 
 var updateData = function () {
@@ -62,10 +108,8 @@ var updateData = function () {
         } else if( dataInput.type == "changeWhatToMovePlayer" ) {
             if( dataInput.user == loggedUser ) {
                 if( dataInput.which == "always" ) {
-                    document.getElementById("whatToMove").selectedIndex = 1;
                     gProjects.code[dataInput.pID].moveWhen = "always";
                 } else {
-                    document.getElementById("whatToMove").selectedIndex = 0;
                     gProjects.code[dataInput.pID].moveWhen = "buttonPress";
                 }
             }
@@ -234,13 +278,162 @@ var updateData = function () {
         }
     });
 }
-
 updateData();
 
 function initG() {
+    //initiate game interface setting, according to user code
+    //load game game title
+    if( gProjects.code[gameId].useGameTitle == "text" ) {
+        //hide image titkle show wrapper
+        document.getElementById("imageT").style.display = "none";
+        //change template name
+        document.getElementById("textBasedTitle").innerHTML = gProjects.name[gameId];
+    } else  {
+        //ToDO: image game title setting
+    }
+
+    //player settings inititatw
+    //load player playerSprite
+    if( gProjects.code[gameId].usePlayerSprite == "libraryImage" ) {
+        mainPlayer.src = gProjects.code[gameId].playerLibrarySprite;
+    } else {
+        mainPlayer.src = gProjects.code[gameId].playerUploadSprite;
+    }
+    //now align the player sprite position to center of the screen
+    mainPlayer.style.top = window.innerHeight/2 - 35 + "px";
+    mainPlayer.style.left = window.innerWidth/2 - mainPlayer.offsetWidth/2 + "px";
+
+    //useer position,  aka camera setting
+    //take user to random point in map
+    cameraPos.x = Math.floor(getRandomArbitrary( -4000, -1000 )/100)*100;
+    cameraPos.y = Math.floor(getRandomArbitrary( -2000, -1000 )/100)*100;
+    //update the gArea to that place for better scenery
+    garea.style.top = cameraPos.y + "px";
+    garea.style.left = cameraPos.x + "px";
+
 
 }
-
+var gCode;
 window.onload = function () {
-    initG();
+    setTimeout( function () {
+        initG();
+        document.getElementById("loadingCurtain").style.display = "none";
+
+        gCode = gProjects.code[gameId];
+
+        //collectables spawn function
+        if( gProjects.code[gameId].howCollectablesSpawn == "randomPoint" ) {
+            maintainCollectablesToRandomPoint();
+        }
+    },3000)
+}
+
+document.getElementById("nickput").onkeyup = function () {
+    if( document.getElementById("nickput").value.length != 0 && namesRegistered.indexOf(document.getElementById("nickput").value) == -1 ) {
+        document.getElementById("joinGameBtn").disabled = false;
+    } else {
+        document.getElementById("joinGameBtn").disabled = true;
+    }
+}
+
+document.getElementById("joinGameBtn").onclick = function () {
+    myName = document.getElementById("nickput").value;
+    isJoined = true;
+    document.getElementById("introG").style.display = "none";
+    gameLoop();
+}
+
+//random number function is useful
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function gameLoop() {
+    //player actual position, but floored
+    var pX = Math.floor( ((cameraPos.x*-1)+(window.innerWidth/2))/100 )*100;
+    var pY = Math.floor( ((cameraPos.y*-1)+(window.innerHeight/2))/100)*100;
+
+    document.getElementById("playerHitBox").style.top = pY + "px";
+    document.getElementById("playerHitBox").style.left = pX + "px";
+
+
+    //player movement
+    if( gProjects.code[gameId].moveWhen == "buttonPress" ) {
+        for( i=0;i<gProjects.code[gameId].moveKeyBind.length;i++ ) {
+            if( downKeyholder.indexOf(gProjects.code[gameId].moveKeyBind[i].keyCodeA) != -1 ) {
+                cameraPos.x -= parseInt(gProjects.code[gameId].moveKeyBind[i].toX);
+                cameraPos.y += parseInt(gProjects.code[gameId].moveKeyBind[i].toY);
+            }
+        }
+    }
+
+    //update camera position (move garea)
+    garea.style.top = cameraPos.y + "px";
+    garea.style.left = cameraPos.x + "px";
+
+    //checkIfPickUp
+    if( collectablesPosition.indexOf( String(pX+"!"+pY) ) != -1 ) {
+        collectablesPosition.splice(collectablesPosition.indexOf( pX+"!"+pY ),1);
+        document.getElementById(pX+"collectablesAppearanceHolder"+pY).remove();
+
+        playerPoints += parseInt(gCode.howManyCollectablePoint);
+        document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
+    }
+
+    setTimeout( function () {
+        gameLoop();
+    }, 300)
+}
+
+var downKeyholder = [];
+var onKeyDown = function ( event ) {
+    //event.keyCode
+    if( downKeyholder.indexOf( event.keyCode ) == -1 ) {
+        downKeyholder.push(event.keyCode);
+    }
+};
+var onKeyUp = function ( event ) {
+	//event.keyCode
+    if( downKeyholder.indexOf( event.keyCode ) != -1 ) {
+        downKeyholder.splice(downKeyholder.indexOf( event.keyCode ),1);
+    }
+};
+document.addEventListener( 'keydown', onKeyDown, false );
+document.addEventListener( 'keyup', onKeyUp, false );
+
+var collectablesPosition = [];
+var initiativeCFunction = true;
+
+function maintainCollectablesToRandomPoint() {
+    if( initiativeCFunction == true ) {
+        if( gProjects.code[gameId].howMuchCollectablesSpawn == "alot" ) {
+            if( collectablesPosition.length < 50 ) {
+                var cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
+                var cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
+                collectablesPosition.push(cX+"!"+cY);
+            }
+        } else if( gProjects.code[gameId].howMuchCollectablesSpawn == "normal" ) {
+            if( collectablesPosition.length < 30 ) {
+                var cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
+                var cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
+                collectablesPosition.push(cX+"!"+cY);
+            }
+        } else {
+            if( collectablesPosition.length < 10 ) {
+                var cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
+                var cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
+                collectablesPosition.push(cX+"!"+cY);
+            }
+        }
+        updateFruitsPosition();
+        setTimeout( function () {
+            maintainCollectablesToRandomPoint();
+        }, 50)
+    }
+}
+
+function updateFruitsPosition() {
+    if( gCode.collectablesSpriteType == "library" ) {
+        collectablesSpriteWrapper.innerHTML += "<img id='"+collectablesPosition[collectablesPosition.length-1].split("!")[0]+"collectablesAppearanceHolder"+collectablesPosition[collectablesPosition.length-1].split("!")[1]+"' src='"+gCode.collectablesLibrarySprite+"' class='collectableSpriteHolder' style='left:"+collectablesPosition[collectablesPosition.length-1].split("!")[0]+"px; top:"+collectablesPosition[collectablesPosition.length-1].split("!")[1]+"px;'>";
+    }
 }

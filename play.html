@@ -6,10 +6,41 @@
         <link rel="stylesheet" href="./js/player/player.css">
     </head>
     <body>
-        <div id="introG"></div>
+        <div id="loadingCurtain">Now Loading...</div>
+        <div id="introG">
+            <div>
+                <div id="textT" class="textBasedTitle"><span id="textBasedTitle">Test Game</span>.io</div>
+                <div id="imageT"><img src="" id="gameTitleImageHolder"></div>
+                <div class="namePortalParent">
+                    <div class="namePortalWrapper">
+                        <input placeholder="Nick" id="nickput" class="nickput">
+                        <button id="joinGameBtn" class="joinGameBtn" disabled>Play</button><br>
+                        <span class="littleNote">made with <a href="./editor.html">iomaker</a></span>
+                        <hr>
+                        <h3 class="TitleSpan">遊び方</h3>
+                        <div class="howToPlayWrappers">
+                            loading...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="gwindow">
-            <img id="mainPlayer">
-            <div id="garea"></div>
+            <img id="mainPlayer" src="">
+            <div id="garea">
+                <div id="playerHitBox"></div>
+                <div id="otherPlayersWrapper"></div>
+                <div id="collectablesSpriteWrapper"></div>
+            </div>
+            <div class="howManyPointsWrapper">
+                <span id="howManyPlayerPoints">0</span><span class="tenLabel">点</span>
+            </div>
+        </div>
+        <div class="rankingBoardWrapper">
+            <h3 class="TitleSpan">ランキング</h3>
+            <div id="rankingBoard">
+                loading...
+            </div>
         </div>
         <script src="./js/player/player.js"></script>
     </body>
