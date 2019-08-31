@@ -181,3 +181,9 @@ document.getElementById("gamenamecreate").onkeyup = function () {
 function playGameNewWindow(poID) {
     window.open("./play.html?u="+loggedUser+"&c="+poID);
 }
+
+//logout
+document.getElementById("logoutBtn").onclick = function () {
+    localStorage.clear();
+    location.reload();
+}

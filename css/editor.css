@@ -748,3 +748,21 @@ button:disabled, input:disabled {
     font-size: 10px;
     display: none;
 }
+.logoutBtn {
+    margin-top: 17px;
+    margin-right: 20px;
+    background: #eb2d55!important;
+    color: #fff!important;
+    border-color: #eb2d55!important;
+}
+.logoutBtn:active {
+    margin-top: 17px;
+    margin-right: 20px;
+    background: #eb2d55!important;
+    color: #fff!important;
+    border-color: #eb2d55!important;
+    filter: brightness(90%);
+}
+#assetApControl1, #assetApControl2 {
+    display: none;
+}
