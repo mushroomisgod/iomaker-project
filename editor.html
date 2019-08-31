@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="previewScreenController">
-                    <button class="fullScreenBtn brighterBoi">
+                    <button class="fullScreenBtn brighterBoi" onclick="playGameNewWindow(openedProjectId)">
                         フルスクリーン
                         <img src="./assets/editorMisc/full-size.svg" class="fullScreenPrevIcon">
                     </button>
@@ -302,7 +302,7 @@
                 <form action="javascript:createNewGame()">
                     <h3 class="modalTitleSpan">新しいゲームを作成</h3>
                     <div class="alignCenter">
-                        <input class="textput" type="text" id="gamenamecreate" placeholder="ゲーム名">
+                        <input class="textput newGameTitleInput" type="text" id="gamenamecreate" placeholder="ゲーム名"><span class="larger">.io</span>
                         <input type="submit" value="作成" id="makeNewGameSubmitBtn" class="formSubmitBtn" disabled>
                     </div>
                 </form>

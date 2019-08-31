@@ -766,3 +766,9 @@ button:disabled, input:disabled {
 #assetApControl1, #assetApControl2 {
     display: none;
 }
+.newGameTitleInput {
+    width: 300px;
+}
+.larger {
+    font-size: 30px;
+}
