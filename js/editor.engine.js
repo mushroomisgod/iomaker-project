@@ -45,7 +45,10 @@ var gProjects = {
             howManyCollectablePoint : 0,
             collectablesLibrarySprite : "./assets/samplePack/coin.png",
             collectablesUploadSprite : "none",
-            collectablesSpriteType : "library"
+            collectablesSpriteType : "library",
+            floorLibrarySprite : "./assets/samplePack/hexagon.png",
+            floorUploadSprite : "none",
+            useFloorTexture : "library"
         }
     ]
 };
@@ -477,6 +480,8 @@ function updateImageCodeHolders(RFK) {
             db.push({ type:"uploadPlayerSprite",user:loggedUser,pID:openedProjectId,value:document.getElementById("playerSpritePreview").src });
         } else if( RFK == "collectablesSprite" ) {
             db.push({ type:"uploadCollectablesSprite",user:loggedUser,pID:openedProjectId,value:document.getElementById("collectablesSpritePreview").src });
+        } else if( RFK == "floorTexture" ) {
+            db.push({ type:"uploadFloorTexture",user:loggedUser,pID:openedProjectId,value:document.getElementById("gameFloorTexturepreview").src });
         }
     },400)
 }
@@ -493,10 +498,8 @@ function updateWhichPlayerSprite() {
     db.push({type:"updateWhichPlayerSprite",user:loggedUser,pID:openedProjectId,value:document.getElementById("whichTouseForPlayerSprite").value})
 }
 function updateWhichPlayerSpriteType() {
-    console.log("check one");
     if( gProjects.code[openedProjectId].usePlayerSprite == "uploadedImage" ) {
         document.getElementById("whichTouseForPlayerSprite").selectedIndex = 0;
-        console.log("check two");
     } else {
         document.getElementById("whichTouseForPlayerSprite").selectedIndex = 1;
     }
@@ -548,5 +551,36 @@ function updateCollectablesSpriteTypeSelector() {
         document.getElementById("whichUseCollectable").selectedIndex = 0;
     } else {
         document.getElementById("whichUseCollectable").selectedIndex = 1;
+    }
+}
+
+function chooseFloorTexture(type) {
+    db.push({type:"whichLibraryFloorTexture",user:loggedUser,pID:openedProjectId,value:type});
+}
+function updateWhichLibraryTextureSelected() {
+    if( gProjects.code[openedProjectId].floorLibrarySprite == "./assets/samplePack/hexagon.png" ) {
+        document.getElementById("textureFloorGrassAA").classList.add("migAssetLibraryPickerSelected");
+        document.getElementById("textureFloorHexagonAA").classList.remove("migAssetLibraryPickerSelected");
+    } else {
+        document.getElementById("textureFloorGrassAA").classList.remove("migAssetLibraryPickerSelected");
+        document.getElementById("textureFloorHexagonAA").classList.add("migAssetLibraryPickerSelected");
+    }
+}
+function updateUploadedFloorTexturePreview() {
+    document.getElementById("gameFloorTexturepreview").src  = gProjects.code[openedProjectId].floorUploadSprite;
+}
+document.getElementById("whichTouseForFloorTexture").onchange = function () {
+    var valueHolder = document.getElementById("whichTouseForFloorTexture").value;
+    db.push({type:"whichTouseForFloorTextureUpdate",user:loggedUser,pID:openedProjectId,value:valueHolder});
+}
+function updateWhichFloorTextureTypeUseSelector() {
+    console.log("here we go");
+    console.log(document.getElementById("whichTouseForPlayerSprite"));
+    if( gProjects.code[openedProjectId].useFloorTexture == "uploadedImage" ) {
+        console.log("hmm")
+        document.getElementById("whichTouseForFloorTexture").selectedIndex = 0;
+    } else {
+        console.log("yays")
+        document.getElementById("whichTouseForFloorTexture").selectedIndex = 1;
     }
 }

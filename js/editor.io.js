@@ -7,8 +7,6 @@ var updateData = function () {
             acc.usr.push(dataInput.usr);
             acc.psw.push(dataInput.psw);
         } else if (dataInput.type == "makeNewGame" ) {
-            console.log(dataInput.user);
-            console.log(dataInput.user == loggedUser);
             if( dataInput.user == loggedUser ) {
                 gProjects.name.push( dataInput.gname );
                 updateGameLaunchers();
@@ -158,7 +156,6 @@ var updateData = function () {
                 } else if( dataInput.value == "person" ) {
                     gProjects.code[dataInput.pID].playerLibrarySprite = "./assets/samplePack/person.png";
                 }
-                console.log(gProjects.code[dataInput.pID].playerLibrarySprite);
                 updatePlayerLibrarySelectedSprite();
             }
         } else if( dataInput.type == "setWhichSourceToUsePlayerAttack" ) {
@@ -230,9 +227,27 @@ var updateData = function () {
             }
         } else if( dataInput.type == "whichUseCollectable" ) {
             if( dataInput.user == loggedUser ) {
-                console.log("wiee")
                 gProjects.code[dataInput.pID].collectablesSpriteType = dataInput.value;
                 updateCollectablesSpriteTypeSelector();
+            }
+        } else if( dataInput.type == "whichLibraryFloorTexture" ) {
+            if( dataInput.user == loggedUser ) {
+                if( dataInput.value == 'hexagon' ) {
+                    gProjects.code[dataInput.pID].floorLibrarySprite = "./assets/samplePack/hexagon.png";
+                } else {
+                    gProjects.code[dataInput.pID].floorLibrarySprite = "./assets/samplePack/grass.png";
+                }
+                updateWhichLibraryTextureSelected();
+            }
+        } else if( dataInput.type == "uploadFloorTexture" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].floorUploadSprite = dataInput.value;
+            }
+            updateUploadedFloorTexturePreview();
+        } else if( dataInput.type == "whichTouseForFloorTextureUpdate" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].useFloorTexture = dataInput.value;
+                updateWhichFloorTextureTypeUseSelector();
             }
         }
     });

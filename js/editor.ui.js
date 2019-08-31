@@ -158,6 +158,11 @@ function openEditor(pID) {
     //collectables appearance
     updateLibraryCollectableSpriteSelector();
     updateCollectablesSpriteTypeSelector();
+    //floor texture
+    updateWhichLibraryTextureSelected();
+    updateUploadedFloorTexturePreview();
+
+    updateWhichFloorTextureTypeUseSelector()
 }
 
 document.getElementById("returnToDashboardBtn").onclick = function () {

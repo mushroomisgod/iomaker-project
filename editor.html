@@ -162,7 +162,36 @@
                         </div>
                     </div>
                     <div id="assetControl2" style="display: none;">
-                        <h3 class=""></h3>
+                        <h3 class="modalTitleSpan">床のテクスチャー</h3>
+                        <div class="controlOptionWrappers alignCenter">
+                            <h3 class="modalTitleSpan">画像をアップロード</h3>
+                            <div class="controlOptionWrappers alignCenter">
+                                <input type="file" id="gameFloorTexture"  onchange="covertDataURI(this,'#gameFloorTexturepreview','floorTexture')"><br>
+                                <img src="" id="gameFloorTexturepreview" class="previewImageObject">
+                            </div>
+                            <div class="alignCenter">
+                                <br><span>または</span><br>
+                            </div>
+                            <h3 class="modalTitleSpan">ライブラリから選ぶ</h3>
+                            <div class="controlOptionWrappers libraryWrapper">
+                                <div class="alignCenter">
+                                    <strong>床テクスチャー</strong><br>
+                                    <button id="textureFloorGrassAA" onclick="chooseFloorTexture('hexagon')" class="migAssetLibraryPicker migAssetLibraryPickerSelected">
+                                        <img class="migSamplePreview" src="./assets/samplePack/hexagon.png">
+                                    </button>
+                                    <button id="textureFloorHexagonAA" onclick="chooseFloorTexture('grass')" class="migAssetLibraryPicker">
+                                        <img class="migSamplePreview" src="./assets/samplePack/grass.png">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="alignCenter">
+                                <select class="miniselect" id="whichTouseForFloorTexture">
+                                    <option value="uploadedImage">アップロードした</option>
+                                    <option value="libraryImage">ライブラリで選択した</option>
+                                </select>
+                                画像を使用する
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div id="appearAreaSimp">
