@@ -35,3 +35,22 @@ document.getElementById("playerAttackSettingLaunch").onclick = function () {
 document.getElementById("closePlayerAttackSetting").onclick = function () {
     document.getElementById("playerAttackSetting").style.display = "none";
 }
+document.getElementById("shareLinkShowInEditor").onclick = function () {
+    document.getElementById("shareLinkHolder").value = "https://mushroomisgod.github.io/iomaker-project/play.html?u="+loggedUser+"&c="+openedProjectId;
+    document.getElementById("shareLinkModal").style.display = "block";
+}
+function showShareLink(psID) {
+    document.getElementById("shareLinkHolder").value = "https://mushroomisgod.github.io/iomaker-project/play.html?u="+loggedUser+"&c="+psID;
+    document.getElementById("shareLinkModal").style.display = "block";
+}
+document.getElementById("closeShareLinkModal").onclick = function () {
+    document.getElementById("shareLinkModal").style.display = "none";
+    document.getElementById("copiedSpan").style.display = "none";
+}
+document.getElementById("copyShareLink").onclick = function () {
+    var copyText = document.getElementById("shareLinkHolder");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    document.getElementById("copiedSpan").style.display = "inline";
+}

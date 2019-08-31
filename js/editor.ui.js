@@ -121,8 +121,7 @@ function updateGameLaunchers() {
     document.getElementById("noGamesCreated").style.display = "block";
     for( i=0; i<gProjects.name.length; i++ ) {
         document.getElementById("noGamesCreated").style.display = "none";
-        document.getElementById("launcherWrapper").innerHTML += '<div class="projectLauncher"><span class="projectTitle">' + gProjects.name[i] + '</span><button class="openBtn deleteColor brighterBoi">削除</button><button class="openBtn shareColor brighterBoi">共有</button><button class="openBtn playColor">プレイ</button><button class="openBtn editColor brighterBoi" onclick="openEditor('+i+')">編集</button></div>';
-
+        document.getElementById("launcherWrapper").innerHTML += '<div class="projectLauncher"><span class="projectTitle">' + gProjects.name[i] + '</span><!--<button class="openBtn deleteColor brighterBoi">削除</button>--><button onclick="showShareLink('+i+')" class="openBtn shareColor brighterBoi">共有</button><button class="openBtn playColor" onclick="playGameNewWindow('+i+')">プレイ</button><button class="openBtn editColor brighterBoi" onclick="openEditor('+i+')">編集</button></div>';
     }
 }
 
@@ -178,4 +177,7 @@ document.getElementById("gamenamecreate").onkeyup = function () {
     } else {
         document.getElementById("makeNewGameSubmitBtn").disabled = true;
     }
+}
+function playGameNewWindow(poID) {
+    window.open("./play.html?u="+loggedUser+"&c="+poID);
 }

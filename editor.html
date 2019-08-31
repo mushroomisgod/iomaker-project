@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>.io game maker - editor</title>
+        <title>iomaker - Make your very own multiplayer game</title>
         <meta name="viewport" content="width=device-width,user-scalable=no">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src='https://cdn.firebase.com/js/client/2.4.0/firebase.js'></script>
@@ -69,7 +69,7 @@
                         フルスクリーン
                         <img src="./assets/editorMisc/full-size.svg" class="fullScreenPrevIcon">
                     </button>
-                    <button class="fullScreenBtn appearanceBlock brighterBoi">
+                    <button id="shareLinkShowInEditor" class="fullScreenBtn appearanceBlock brighterBoi">
                         共有
                         <img src="./assets/editorMisc/network.svg" class="fullScreenPrevIcon">
                     </button>
@@ -459,6 +459,17 @@
                         画像を使用する
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="shareLinkModal" class="modal">
+            <div class="modal-content">
+                <span id="closeShareLinkModal" class="close">&times;</span>
+                <h3 class="modalTitleSpan">共有リンク</h3>
+                <input id="shareLinkHolder" class="textput" value="https://mushroomisgod.github.io/iomaker-project/play.html?u=&c=" readonly><br>
+                <div class="filler10"></div>
+                <button class="justBtn shareColor brighterBoi" id="copyShareLink">コピーする</button>
+                <span id="copiedSpan">コピーされました</span>
             </div>
         </div>
 
