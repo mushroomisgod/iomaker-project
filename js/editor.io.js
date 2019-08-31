@@ -249,6 +249,16 @@ var updateData = function () {
                 gProjects.code[dataInput.pID].useFloorTexture = dataInput.value;
                 updateWhichFloorTextureTypeUseSelector();
             }
+        } else if( dataInput.type == "updateWhichTypeOfTitleImageToUseSelector" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].useGameTitle = dataInput.value;
+                updateWhichTitleTypeToUseSelector();
+            }
+        } else if( dataInput.type == "uploadGameTitleImage" ) {
+            if( dataInput.user == loggedUser ) {
+                gProjects.code[dataInput.pID].uploadedGameTitleImage = dataInput.value;
+                updateUploadedGameTitleImagePreview();
+            }
         }
     });
 }

@@ -48,7 +48,9 @@ var gProjects = {
             collectablesSpriteType : "library",
             floorLibrarySprite : "./assets/samplePack/hexagon.png",
             floorUploadSprite : "none",
-            useFloorTexture : "library"
+            useFloorTexture : "library",
+            useGameTitle : "text",
+            uploadedGameTitleImage : "none"
         }
     ]
 };
@@ -482,6 +484,8 @@ function updateImageCodeHolders(RFK) {
             db.push({ type:"uploadCollectablesSprite",user:loggedUser,pID:openedProjectId,value:document.getElementById("collectablesSpritePreview").src });
         } else if( RFK == "floorTexture" ) {
             db.push({ type:"uploadFloorTexture",user:loggedUser,pID:openedProjectId,value:document.getElementById("gameFloorTexturepreview").src });
+        } else if( RFK == "gameTitle" ) {
+            db.push({ type:"uploadGameTitleImage",user:loggedUser,pID:openedProjectId,value:document.getElementById("titleLogoPreview").src });
         }
     },400)
 }
@@ -574,13 +578,28 @@ document.getElementById("whichTouseForFloorTexture").onchange = function () {
     db.push({type:"whichTouseForFloorTextureUpdate",user:loggedUser,pID:openedProjectId,value:valueHolder});
 }
 function updateWhichFloorTextureTypeUseSelector() {
-    console.log("here we go");
-    console.log(document.getElementById("whichTouseForPlayerSprite"));
     if( gProjects.code[openedProjectId].useFloorTexture == "uploadedImage" ) {
-        console.log("hmm")
         document.getElementById("whichTouseForFloorTexture").selectedIndex = 0;
     } else {
-        console.log("yays")
         document.getElementById("whichTouseForFloorTexture").selectedIndex = 1;
     }
+}
+document.getElementById("whichTypeOfTitleImageToUseSelector").onchange = function () {
+    db.push({type:"updateWhichTypeOfTitleImageToUseSelector",user:loggedUser,pID:openedProjectId,value:document.getElementById("whichTypeOfTitleImageToUseSelector").value});
+}
+
+function updateWhichTitleTypeToUseSelector() {
+    console.log("ye")
+    if( gProjects.code[openedProjectId].useGameTitle == "text" ) {
+        console.log("ye1")
+        document.getElementById("whichTypeOfTitleImageToUseSelector").selectedIndex = 0;
+        document.getElementById("uploadCustomGameTitle").style.display = "none";
+    } else {
+        console.log("ye2")
+        document.getElementById("whichTypeOfTitleImageToUseSelector").selectedIndex = 1;
+        document.getElementById("uploadCustomGameTitle").style.display = "block";
+    }
+}
+function updateUploadedGameTitleImagePreview() {
+    document.getElementById("titleLogoPreview").src = gProjects.code[openedProjectId].uploadedGameTitleImage;
 }

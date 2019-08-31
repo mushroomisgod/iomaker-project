@@ -162,7 +162,10 @@ function openEditor(pID) {
     updateWhichLibraryTextureSelected();
     updateUploadedFloorTexturePreview();
 
-    updateWhichFloorTextureTypeUseSelector()
+    updateWhichFloorTextureTypeUseSelector();
+
+    updateWhichTitleTypeToUseSelector();
+    updateUploadedGameTitleImagePreview();
 }
 
 document.getElementById("returnToDashboardBtn").onclick = function () {

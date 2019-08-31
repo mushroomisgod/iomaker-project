@@ -36,7 +36,6 @@
         <div id="dashboard">
             <div class="dashHeader">
                 <h1 class="headerLogo"><span class="grey">make</span>io</h1>
-                <input placeholder="Search" class="dashSearchBar">
             </div>
             <div>
                 <div id="gameProjectLabel">
@@ -162,6 +161,19 @@
                         </div>
                     </div>
                     <div id="assetControl2" style="display: none;">
+                        <h3 class="modalTitleSpan">ゲームタイトル画像</h3>
+                        <div class="controlOptionWrappers alignCenter">
+                            <select class="miniselect" id="whichTypeOfTitleImageToUseSelector">
+                                <option value="text">デフォルト（文字）</option>
+                                <option value="uploadedImage">画像をアップロードする</option>
+                            </select>
+                            <div id="uploadCustomGameTitle" style="display: none;">
+                                <h3 class="modalTitleSpan">画像をアップロード</h3>
+                                <input type="file" id="loadUploadgameTitle" onchange="covertDataURI(this,'#titleLogoPreview','gameTitle')"><br>
+                                <img id="titleLogoPreview" src="" class="previewImageObject">
+                            </div>
+                        </div>
+                        <hr>
                         <h3 class="modalTitleSpan">床のテクスチャー</h3>
                         <div class="controlOptionWrappers alignCenter">
                             <h3 class="modalTitleSpan">画像をアップロード</h3>
