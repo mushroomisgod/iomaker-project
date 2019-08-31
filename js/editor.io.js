@@ -57,11 +57,11 @@ var updateData = function () {
             }
         } else if( dataInput.type == "changeRLspeedPlayer" ) {
             if( dataInput.user == loggedUser ) {
-                gProjects.code[dataInput.pID].moveKeyBind[dataInput.whichI].toX = dataInput.speed;
+                gProjects.code[dataInput.pID].moveKeyBind[dataInput.whichI].toX = parseInt(dataInput.speed);
             }
         } else if( dataInput.type == "changeUDspeedPlayer" ) {
             if( dataInput.user == loggedUser ) {
-                gProjects.code[dataInput.pID].moveKeyBind[dataInput.whichI].toY = dataInput.speed;
+                gProjects.code[dataInput.pID].moveKeyBind[dataInput.whichI].toY = parseInt(dataInput.speed);
             }
         } else if( dataInput.type == "changeWhatToMovePlayer" ) {
             if( dataInput.user == loggedUser ) {

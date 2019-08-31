@@ -110,8 +110,10 @@ function updateCodeBlocks(pID) {
     document.getElementById("keyControlsWrapper").innerHTML = "<strong>移動</strong>のボタンの入力が設定されていません";
     if( gProjects.code[pID].moveKeyBind.length != 0 ) {
         document.getElementById("keyControlsWrapper").innerHTML = "";
-        for (i = 0; i < gProjects.code[pID].moveKeyBind.length; i++ ) {
+        for(i=0;i<gProjects.code[pID].moveKeyBind.length;i++) {
             document.getElementById("keyControlsWrapper").innerHTML += '<div class="keyBindWrapper"><select onchange="updatePlayerMovementKeyBindOption(this)" class="miniselect"'+' id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'directionPlayerChooseRL'+i+'" class="miniselect" onchange="updateRLdirectionPlayer(this)"><option value="right">右</option><option value="left">左</option></select>に<input onchange="changeRLspeedPlayer(this)" id="'+pID+'RLspeedPlayer'+i+'" type="number" placeholder="速度を入力" class="textput textminiput nomargin"><br><select onchange="updateUDdirectionPlayer(this)" id="'+pID+'directionPlayerChooseUD'+i+'"  class="miniselect"><option>上</option><option>下</option></select>に<input id="'+pID+'UDspeedPlayer'+i+'" class="textput textminiput nomargin" type="number" placeholder="速度を入力" onchange="changeUDspeedPlayer(this)"><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerMovementCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
+        }
+        for (i = 0; i < gProjects.code[pID].moveKeyBind.length; i++ ) {
             var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].moveKeyBind[i].keyCodeA);
             document.getElementById(pID + "selectorBlockKeyBind" + i).selectedIndex = preSelectedCode;
 
@@ -131,15 +133,19 @@ function updateCodeBlocks(pID) {
                 document.getElementById(pID+'UDspeedPlayer'+i).value = gProjects.code[pID].moveKeyBind[i].toY * -1;
             }
 
+            console.log(i);
+
         }
+        console.log("end");
     }
     //direction control blocks
     document.getElementById("keyDirectionWrapper").innerHTML = "<strong>方向転換</strong>のボタンの入力が設定されていません";
     if( gProjects.code[pID].directionKeyBind.length != 0 ) {
         document.getElementById("keyDirectionWrapper").innerHTML = "";
-        for( i=0;i<gProjects.code[pID].directionKeyBind.length;i++) {
+        for( i=0;i<gProjects.code[pID].directionKeyBind.length;i++ ) {
             document.getElementById("keyDirectionWrapper").innerHTML += '<div class="keyBindWrapper"><select onchange="updateDirection(this)" class="miniselect"'+' id="'+ pID +'changeDirectionKeyBindBlock'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'changeDirectionKeyRL'+i+'" class="miniselect" onchange="updateRLdirectionPlayerReal(this)"><option value="right">右</option><option value="left">左</option></select>に<select id="'+pID+'moveRLorNot'+i+'" class="miniselect" onchange="RLmoveOrNotUpdate(this)"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><br><select onchange="updateUDdirectionPlayerReal(this)" id="'+pID+'changeDirectionKeyUD'+i+'" class="miniselect"><option value="up">上</option><option value="down">下</option></select>に<select id="'+pID+'moveUDorNot'+i+'" class="miniselect" onchange="UDmoveOrNotUpdate(this)"><option value="noMove">進まない</option><option value="yesMove">進む</option></select><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerDirectionCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
-
+        }
+        for( i=0;i<gProjects.code[pID].directionKeyBind.length;i++) {
             var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].directionKeyBind[i].keyCodeB);
             document.getElementById(pID + "changeDirectionKeyBindBlock" + i).selectedIndex = preSelectedCode;
 
@@ -561,13 +567,10 @@ document.getElementById("whichTypeOfTitleImageToUseSelector").onchange = functio
 }
 
 function updateWhichTitleTypeToUseSelector() {
-    console.log("ye")
     if( gProjects.code[openedProjectId].useGameTitle == "text" ) {
-        console.log("ye1")
         document.getElementById("whichTypeOfTitleImageToUseSelector").selectedIndex = 0;
         document.getElementById("uploadCustomGameTitle").style.display = "none";
     } else {
-        console.log("ye2")
         document.getElementById("whichTypeOfTitleImageToUseSelector").selectedIndex = 1;
         document.getElementById("uploadCustomGameTitle").style.display = "block";
     }
