@@ -13,6 +13,21 @@ var isHost = false;
 
 var playerPoints = 0;
 
+var lastRL = "none";
+var lastUD = "none"
+
+var udChanged = false;
+var rlChanged = false;
+
+var lastDirectionPointed = "null";
+var bulletId = 0;
+var bulletCooldown = 0;
+
+var bulletManagementClub = [];
+var bulletExpireManagement = [];
+
+var bulletTrashedCount = 0;
+
 var cameraPos = {
     x : 2500,
     y : 1500
@@ -59,7 +74,7 @@ var updateData = function () {
         if (dataInput.type == "makeNewGame" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.name.push( dataInput.gname );
-                gProjects.code.push( { moveWhen : "buttonPress", moveKeyBindEnabled : true, moveKeyBind: [], changeDirWhen : "buttonPress", directionKeyBindEnabled : false, directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }], playerAppearPointSettings : "size", playerLibrarySprite : "./assets/samplePack/car.png", playerUploadSprite : "none", usePlayerSprite : "library", playerAttackSetting : { type:"shoot", keyCode:13 }, playerAttackLibrarySprite : "./assets/samplePack/axe.png", playerAttackuploadSprite : "none", usePlayerAttackSprite : "library", howCollectablesSpawn : "randomPoint", howMuchCollectablesSpawn : "alot", howManyCollectablePoint : 0, collectablesLibrarySprite : "./assets/samplePack/coin.png", collectablesUploadSprite : "none", collectablesSpriteType : "library", floorLibrarySprite : "./assets/samplePack/hexagon.png", floorUploadSprite : "none", useFloorTexture : "library", useGameTitle : "text", uploadedGameTitleImage : "none" } );
+                gProjects.code.push( { moveWhen : "buttonPress", moveKeyBindEnabled : true, moveKeyBind: [], changeDirWhen : "buttonPress", directionKeyBindEnabled : false, directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }], playerAppearPointSettings : "size", playerLibrarySprite : "./assets/samplePack/car.png", playerUploadSprite : "none", usePlayerSprite : "libraryImage", playerAttackSetting : { type:"shoot", keyCode:13 }, playerAttackLibrarySprite : "./assets/samplePack/axe.png", playerAttackuploadSprite : "none", usePlayerAttackSprite : "libraryImage", howCollectablesSpawn : "randomPoint", howMuchCollectablesSpawn : "alot", howManyCollectablePoint : 0, collectablesLibrarySprite : "./assets/samplePack/coin.png", collectablesUploadSprite : "none", collectablesSpriteType : "libraryImage", floorLibrarySprite : "./assets/samplePack/hexagon.png", floorUploadSprite : "none", useFloorTexture : "libraryImage", useGameTitle : "text", uploadedGameTitleImage : "none" } );
             }
         } else if( dataInput.type == "newMoveKeyBind" ) {
             if( dataInput.user == loggedUser ) {
@@ -300,8 +315,8 @@ function initG() {
         mainPlayer.src = gProjects.code[gameId].playerUploadSprite;
     }
     //now align the player sprite position to center of the screen
-    mainPlayer.style.top = window.innerHeight/2 - 35 + "px";
-    mainPlayer.style.left = window.innerWidth/2 - mainPlayer.offsetWidth/2 + "px";
+    mainPlayer.style.top = window.innerHeight/2 - 95 + "px";
+    mainPlayer.style.left = window.innerWidth/2 - 60 - mainPlayer.offsetWidth/2 + "px";
 
     //useer position,  aka camera setting
     //take user to random point in map
@@ -361,9 +376,97 @@ function gameLoop() {
     if( gProjects.code[gameId].moveWhen == "buttonPress" ) {
         for( i=0;i<gProjects.code[gameId].moveKeyBind.length;i++ ) {
             if( downKeyholder.indexOf(gProjects.code[gameId].moveKeyBind[i].keyCodeA) != -1 ) {
-                cameraPos.x -= parseInt(gProjects.code[gameId].moveKeyBind[i].toX);
-                cameraPos.y += parseInt(gProjects.code[gameId].moveKeyBind[i].toY);
+                cameraPos.x -= Math.round(parseInt(gProjects.code[gameId].moveKeyBind[i].toX)/100)*100;
+                cameraPos.y += Math.round(parseInt(gProjects.code[gameId].moveKeyBind[i].toY)/100)*100;
+
+                //update direction
+                if( parseInt(gProjects.code[gameId].moveKeyBind[i].toX) > 0 ) {
+                    lastRL = "right";
+                } else if( parseInt(gProjects.code[gameId].moveKeyBind[i].toX) < 0 ) {
+                    lastRL = "left";
+                }
+
+                if( parseInt(gProjects.code[gameId].moveKeyBind[i].toY) > 0 ) {
+                    lastUD = "up";
+                } else if( parseInt(gProjects.code[gameId].moveKeyBind[i].toY) < 0 ) {
+                    lastUD = "down";
+                }
+
+                lastDirectionPointed = lastRL + "," + lastUD;
             }
+        }
+    }
+
+    lastRL = "none";
+    lastUD = "none";
+
+    //player attack
+    if( downKeyholder.indexOf(gCode.playerAttackSetting.keyCode) != -1 ) {
+        if( gCode.playerAttackSetting.type == "shoot" ) {
+            if( playerPoints > 10 ) {
+                if( gCode.usePlayerAttackSprite == "libraryImage" ) {
+                    var bulletStartX = Math.floor(pX/100)*100;
+                    var bulletStartY = Math.floor(pY/100)*100;
+                    document.getElementById("bulletWrapper").innerHTML += "<img id='bulletContent"+bulletId+"' src='" + gCode.playerAttackLibrarySprite + "' class='bulletAppearHolder' style='top: "+bulletStartY+"px; left: "+bulletStartX+"px;'>";
+                    bulletManagementClub.push( lastDirectionPointed );
+                    bulletExpireManagement.push( 0 );
+                    bulletId += 1;
+                } else {
+                    var bulletStartX = Math.floor(pX/100)*100;
+                    var bulletStartY = Math.floor(pY/100)*100;
+                    document.getElementById("bulletWrapper").innerHTML += "<img id='bulletContent"+bulletId+"' src='" + gCode.playerAttackuploadSprite + "' class='bulletAppearHolder' style='top: "+bulletStartY+"px; left: "+bulletStartX+"px;'>";
+                    bulletManagementClub.push( lastDirectionPointed );
+                    bulletExpireManagement.push( 0 );
+                    bulletId += 1;
+                }
+            }
+        }
+    }
+
+    var bulletRemoveMachine = 0;
+
+    //update bullets
+    if( gCode.playerAttackSetting.type == "shoot" ) {
+        for( i=0;i<bulletManagementClub.length;i++ ) {
+            if( bulletExpireManagement[i] < 6 ) {
+                if( bulletManagementClub[i] == "right,none" ) {
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + 100 + "px";
+                } else if( bulletManagementClub[i] == "right,up" ) {
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) - 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + 100 + "px";
+                } else if( bulletManagementClub[i] == "left,up" ) {
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) - 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) - 100 + "px";
+                } else if( bulletManagementClub[i] == "right,down" ) {
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + 100 + "px";
+                } else if( bulletManagementClub[i] == "left,down" ) {
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) - 100 + "px";
+                } else if( bulletManagementClub[i] == "none,up" ) {
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) - 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + "px";
+                } else if( bulletManagementClub[i] == "none,down" ) {
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + "px";
+                } else if( bulletManagementClub[i] == "left,none" ) {
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) - 100 + "px";
+                } else if( bulletManagementClub[i] == "none,none" ) {
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) - 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + "px";
+                }
+                bulletExpireManagement[i] += 1;
+            } else {
+                bulletRemoveMachine += 1;
+            }
+        }
+        for( i=0;i<bulletRemoveMachine;i++ ) {
+            document.getElementById("bulletContent"+(bulletId-bulletManagementClub.length)).remove();
+            bulletManagementClub.splice(0,1);
+            bulletExpireManagement.splice(0,1);
+            bulletTrashedCount += 1;
         }
     }
 
@@ -373,8 +476,13 @@ function gameLoop() {
 
     //checkIfPickUp
     if( collectablesPosition.indexOf( String(pX+"!"+pY) ) != -1 ) {
-        collectablesPosition.splice(collectablesPosition.indexOf( pX+"!"+pY ),1);
-        document.getElementById(pX+"collectablesAppearanceHolder"+pY).remove();
+        console.log("before remove: " + document.getElementById(pX+"collectablesAppearanceHolder"+pY));
+        if( document.getElementById(pX+"collectablesAppearanceHolder"+pY) != null ) {
+            document.getElementById(pX+"collectablesAppearanceHolder"+pY).remove();
+        }
+        // if( document.getElementById(pX+"collectablesAppearanceHolder"+pY) != null ) {
+        //     document.getElementById(pX+"collectablesAppearanceHolder"+pY).style.display = "none";
+        // }
 
         playerPoints += parseInt(gCode.howManyCollectablePoint);
         document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
@@ -404,25 +512,37 @@ document.addEventListener( 'keyup', onKeyUp, false );
 var collectablesPosition = [];
 var initiativeCFunction = true;
 
+var cX,cY;
+
 function maintainCollectablesToRandomPoint() {
     if( initiativeCFunction == true ) {
+        cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
+        cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
         if( gProjects.code[gameId].howMuchCollectablesSpawn == "alot" ) {
             if( collectablesPosition.length < 50 ) {
-                var cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
-                var cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
-                collectablesPosition.push(cX+"!"+cY);
+                if( collectablesPosition.indexOf(cX+"!"+cY) == -1 ) {
+                    cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
+                    cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
+                    collectablesPosition.push(cX+"!"+cY);
+                }
             }
         } else if( gProjects.code[gameId].howMuchCollectablesSpawn == "normal" ) {
             if( collectablesPosition.length < 30 ) {
-                var cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
-                var cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
-                collectablesPosition.push(cX+"!"+cY);
+
+                    if( collectablesPosition.indexOf(cX+"!"+cY) == -1 ) {
+                        cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
+                        cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
+                        collectablesPosition.push(cX+"!"+cY);
+                    }
             }
         } else {
             if( collectablesPosition.length < 10 ) {
-                var cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
-                var cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
-                collectablesPosition.push(cX+"!"+cY);
+
+                    if( collectablesPosition.indexOf(cX+"!"+cY) == -1 ) {
+                        cX = Math.floor(getRandomArbitrary( 10, 4990 )/100)*100;
+                        cY = Math.floor(getRandomArbitrary( 10, 2990 )/100)*100;
+                        collectablesPosition.push(cX+"!"+cY);
+                    }
             }
         }
         updateFruitsPosition();
@@ -433,7 +553,7 @@ function maintainCollectablesToRandomPoint() {
 }
 
 function updateFruitsPosition() {
-    if( gCode.collectablesSpriteType == "library" ) {
+    if( gCode.collectablesSpriteType == "libraryImage" ) {
         collectablesSpriteWrapper.innerHTML += "<img id='"+collectablesPosition[collectablesPosition.length-1].split("!")[0]+"collectablesAppearanceHolder"+collectablesPosition[collectablesPosition.length-1].split("!")[1]+"' src='"+gCode.collectablesLibrarySprite+"' class='collectableSpriteHolder' style='left:"+collectablesPosition[collectablesPosition.length-1].split("!")[0]+"px; top:"+collectablesPosition[collectablesPosition.length-1].split("!")[1]+"px;'>";
     }
 }
