@@ -318,10 +318,10 @@ function initG() {
     }
 
     //floortexture
-    if( gCode.useFloorTexture == "libraryImage" ) {
-        document.getElementById("garea").backgroundImage = "../." + gCode.floorLibrarySprite;
+    if( gProjects.code[gameId].useFloorTexture == "libraryImage" ) {
+        document.getElementById("garea").backgroundImage = "../." + gProjects.code[gameId].floorLibrarySprite;
     } else {
-        document.getElementById("garea").backgroundImage = gCode.floorUploadSprite;
+        document.getElementById("garea").backgroundImage = gProjects.code[gameId].floorUploadSprite;
     }
 
     //player settings inititatw
