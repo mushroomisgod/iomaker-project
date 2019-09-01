@@ -584,3 +584,10 @@ function updateWhichTitleTypeToUseSelector() {
 function updateUploadedGameTitleImagePreview() {
     document.getElementById("titleLogoPreview").src = gProjects.code[openedProjectId].uploadedGameTitleImage;
 }
+function saveProjectShou() {
+    document.getElementById('iframeid').src += '';
+    document.getElementById('saved').style.display = "block";
+    setTimeout( function () {
+        document.getElementById('saved').style.display = "none";
+    },1000)
+}

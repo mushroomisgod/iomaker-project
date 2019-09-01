@@ -136,6 +136,8 @@ function openEditor(pID) {
     //show project name in editor
     document.getElementById("projectName").innerHTML = oProjectName;
 
+    document.getElementById("simplePreviewScreen").src = "./play.html?u="+loggedUser+"&c="+pID;
+
     openedProjectId = pID;
 
     updateCodeBlocks(pID);

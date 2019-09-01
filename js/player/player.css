@@ -110,6 +110,7 @@ body {
     transition: 0.3s;
     height: 70px;
     z-index: 90;
+    transition-timing-function: linear;
 }
 .howToPlayWrappers {
     margin-top: 10px;
@@ -159,7 +160,7 @@ body {
     top: 20px;
     right: 20px;
     font-family: sans-serif;
-    width: 300px;
+    width: 200px;
     padding: 10px;
     background: rgba(0,0,0,0.8);
     border-radius: 6px;

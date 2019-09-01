@@ -104,7 +104,7 @@ body {
     font-size: 15px;
     width: 90px;
     border: none;
-    border-radius: 6px;
+    border-radius: 30px;
     color: #fff;
     outline: none;
     float:right;
@@ -455,8 +455,8 @@ button:disabled, input:disabled {
 }
 #simplePreviewScreen {
     border: none;
-    width: 420px;
-    height: 300px;
+    width: 840px;
+    height: 600px;
 }
 #simplePreviewWrap {
     position: absolute;
@@ -465,6 +465,8 @@ button:disabled, input:disabled {
     display: inline-block;
     background: #fff;
     padding: 15px;
+    width: 420px;
+    height: 300px;
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(27,31,35,.15);
     border: 1px solid #e0e4e8;
@@ -515,7 +517,7 @@ button:disabled, input:disabled {
     max-width: 400px;
     background: #f2f2f2;
     padding: 20px;
-    border-radius: 6px;
+    border-radius: 30px;
     box-shadow: 0px 2px 4px #888;
     margin-right: auto;
     margin-left: auto;
@@ -548,7 +550,7 @@ button:disabled, input:disabled {
 .codeBlockSettingBtn {
     background: rgba(255,255,255,0.6);
     padding: 10px;
-    border-radius: 6px;
+    border-radius: 30px;
     font-size: 15px;
     border: none;
     float: right;
@@ -581,7 +583,7 @@ button:disabled, input:disabled {
     background: #b7cd78;
     color: #fff;
     border: none;
-    border-radius: 6px;
+    border-radius: 30px;
     padding: 10px;
     box-shadow: 0px 2px 4px #888;
     font-size: 15px;
@@ -638,7 +640,7 @@ button:disabled, input:disabled {
 .modalBigBtn {
     font-size: 15px;
     padding: 15px 40px;
-    border-radius: 6px;
+    border-radius: 30px;
     background: #f67897;
     margin-bottom: 15px;
     margin-top: 15px;
@@ -771,4 +773,29 @@ button:disabled, input:disabled {
 }
 .larger {
     font-size: 30px;
+}
+#saved {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    text-align: center;
+    z-index: 900;
+    display: none;
+}
+.savedLabel {
+    color: #001870;
+    font-weight: lighter;
+    padding: 15px;
+    border-radius: 30px;
+    box-shadow: 0px 2px 4px #888;
+    background: #fff;
+}
+#simplePreviewScreen {
+    -ms-zoom: 0.75;
+    -moz-transform: scale(0.5);
+    -moz-transform-origin: 0 0;
+    -o-transform: scale(0.5);
+    -o-transform-origin: 0 0;
+    -webkit-transform: scale(0.5);
+    -webkit-transform-origin: 0 0;
 }

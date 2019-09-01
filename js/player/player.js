@@ -387,12 +387,13 @@ var playerAddSize = 0;
 
 function gameLoop() {
 
-    mainPlayer.style.top = window.innerHeight/2 - 95 - playerAddSize/2 + "px";
-    mainPlayer.style.left = window.innerWidth/2 - 82 - playerAddSize/2 - mainPlayer.offsetWidth/2 + "px";
-
     //player actual position, but floored
     var pX = Math.floor( ((cameraPos.x*-1)+(window.innerWidth/2))/100 )*100;
     var pY = Math.floor( ((cameraPos.y*-1)+(window.innerHeight/2))/100)*100;
+
+
+    mainPlayer.style.top = pY + "px";
+    mainPlayer.style.left = pX + "px";
 
     document.getElementById("playerHitBox").style.top = pY + "px";
     document.getElementById("playerHitBox").style.left = pX + "px";
@@ -671,3 +672,5 @@ window.onmousemove = function (e) {
     mousePosX = e.clientX;
     mousePosY = e.clientY;
 }
+
+var allKeyCodeList = [13, 8, 9, 16, 17, 18, 27, 32, 37, 38, 39, 40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90];

@@ -131,6 +131,7 @@ var updateData = function () {
                 } else if( dataInput.value == "nothing" ) {
                     gProjects.code[dataInput.pID].playerAppearPointSettings = "nothing";
                 }
+                document.getElementById('iframeid').src += '';
                 updatePlayerPointAppearance();
             }
         } else if( dataInput.type == "chooseSpriteForPlayerAttack" ) {
@@ -144,6 +145,7 @@ var updateData = function () {
                 } else if( dataInput.value == "bullet" ) {
                     gProjects.code[dataInput.pID].playerAttackLibrarySprite = "./assets/samplePack/bullet.png";
                 }
+                document.getElementById('iframeid').src += '';
                 updatePlayerAttackLibrarySelectedSprite();
             }
         } else if( dataInput.type == "chooseSpriteForPlayer" ) {
@@ -157,6 +159,7 @@ var updateData = function () {
                 } else if( dataInput.value == "person" ) {
                     gProjects.code[dataInput.pID].playerLibrarySprite = "./assets/samplePack/person.png";
                 }
+                document.getElementById('iframeid').src += '';
                 updatePlayerLibrarySelectedSprite();
             }
         } else if( dataInput.type == "setWhichSourceToUsePlayerAttack" ) {
@@ -166,26 +169,31 @@ var updateData = function () {
                 } else if( dataInput.value == "libraryImage" ) {
                     gProjects.code[dataInput.pID].usePlayerAttackSprite = "libraryImage";
                 }
+                document.getElementById('iframeid').src += '';
                 whichSpriteTypeToUseForPlayerAttackUpdate();
             }
         } else if( dataInput.type == "changePlayerAttackKeyBind" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].playerAttackSetting.keyCode = parseInt(dataInput.keyCode);
             }
+            document.getElementById('iframeid').src += '';
             updatePlayerAttackTriggerKeyCode();
         } else if( dataInput.type == "changePlayerAttackType" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].playerAttackSetting.type = dataInput.value;
+                document.getElementById('iframeid').src += '';
                 updatePlayerAttackTypeSelector();
             }
         } else if( dataInput.type == "uploadPlayerWeaponImage" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].playerAttackuploadSprite = dataInput.value;
+                document.getElementById('iframeid').src += '';
                 updateUploadedDataScheme();
             }
         } else if( dataInput.type == "updateWhichPlayerSprite" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].usePlayerSprite = dataInput.value;
+                document.getElementById('iframeid').src += '';
                 updateWhichPlayerSpriteType();
             }
         } else if( dataInput.type == "uploadPlayerSprite" ) {
