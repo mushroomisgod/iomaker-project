@@ -9,7 +9,7 @@ var updateData = function () {
         } else if (dataInput.type == "makeNewGame" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.name.push( dataInput.gname );
-                gProjects.code.push( { moveWhen : "buttonPress", moveKeyBindEnabled : true, moveKeyBind: [], changeDirWhen : "buttonPress", directionKeyBindEnabled : false, directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }], playerAppearPointSettings : "size", playerLibrarySprite : "./assets/samplePack/car.png", playerUploadSprite : "none", usePlayerSprite : "library", playerAttackSetting : { type:"shoot", keyCode:13 }, playerAttackLibrarySprite : "./assets/samplePack/axe.png", playerAttackuploadSprite : "none", usePlayerAttackSprite : "library", howCollectablesSpawn : "randomPoint", howMuchCollectablesSpawn : "alot", howManyCollectablePoint : 0, collectablesLibrarySprite : "./assets/samplePack/coin.png", collectablesUploadSprite : "none", collectablesSpriteType : "library", floorLibrarySprite : "./assets/samplePack/hexagon.png", floorUploadSprite : "none", useFloorTexture : "library", useGameTitle : "text", uploadedGameTitleImage : "none" } );
+                gProjects.code.push( { moveWhen : "buttonPress", moveKeyBindEnabled : true, moveKeyBind: [], changeDirWhen : "buttonPress", directionKeyBindEnabled : false, directionKeyBind : [{ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false }], playerAppearPointSettings : "size", playerLibrarySprite : "./assets/samplePack/car.png", playerUploadSprite : "./assets/editorMisc/blank.png", usePlayerSprite : "library", playerAttackSetting : { type:"shoot", keyCode:13 }, playerAttackLibrarySprite : "./assets/samplePack/axe.png", playerAttackuploadSprite : "./assets/editorMisc/blank.png", usePlayerAttackSprite : "library", howCollectablesSpawn : "randomPoint", howMuchCollectablesSpawn : "alot", howManyCollectablePoint : 0, collectablesLibrarySprite : "./assets/samplePack/coin.png", collectablesUploadSprite : "./assets/editorMisc/blank.png", collectablesSpriteType : "library", floorLibrarySprite : "./assets/samplePack/hexagon.png", floorUploadSprite : "./assets/editorMisc/blank.png", useFloorTexture : "library", useGameTitle : "text", uploadedGameTitleImage : "./assets/editorMisc/blank.png" } );
                 updateGameLaunchers();
             }
         } else if( dataInput.type == "newMoveKeyBind" ) {
@@ -265,7 +265,6 @@ var updateData = function () {
                 } else {
                     gProjects.code[dataInput.pID].floorLibrarySprite = "./assets/samplePack/grass.png";
                 }
-                saveProjectShou()
                 updateWhichLibraryTextureSelected();
             }
         } else if( dataInput.type == "uploadFloorTexture" ) {

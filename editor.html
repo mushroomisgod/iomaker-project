@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>iomaker - Make your very own multiplayer game</title>
+        <title>MakeIO - Make your very own multiplayer game</title>
         <meta name="viewport" content="width=device-width,user-scalable=no">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src='https://cdn.firebase.com/js/client/2.4.0/firebase.js'></script>
@@ -10,7 +10,7 @@
     <body>
         <div id="accounts">
             <div id="accountsLoginLogoWrap">
-                <h1 class="headerLogo"><span class="grey">make</span>io</h1>
+                <h1 class="headerLogo"><span class="grey">Make</span>IO</h1>
             </div>
             <form id="createAccPort" action="javascript:makeNewAccount()">
                 <h3 class="modalTitleSpan">新しいアカウントを作成</h3>
@@ -422,8 +422,8 @@
                         が押されたら<br>
                         <select class="miniselect" id="playerAttackTypeSelect" onchange="changePointAppearSettingPlayer(this)">
                             <option value="shoot">撃って</option>
-                            <option value="punch">殴って</option>
-                            <option value="eat">食べて（常時発動、ポイントが30以上の時）</option>
+                            <option value="punch" disabled>殴って（Comming Soon）</option>
+                            <option value="eat" disabled>食べて（Comming Soon）</option>
                         </select>
                         攻撃する
                     </div>

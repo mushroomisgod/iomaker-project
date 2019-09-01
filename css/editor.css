@@ -475,6 +475,7 @@ button:disabled, input:disabled {
     background: #f2f5f7;
     width: 500px;
     height: 100vh;
+    overflow: auto;
 }
 .assetSelectorSimple {
     position: absolute;

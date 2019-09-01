@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
     <head>
-        <title>iomaker - Game Player</title>
+        <title>MakeIO - Game Player</title>
         <script src='https://cdn.firebase.com/js/client/2.4.0/firebase.js'></script>
         <link rel="stylesheet" href="./js/player/player.css">
     </head>
     <body>
-        <div id="loadingCurtain">Now Loading...</div>
+        <div id="loadingCurtain">ロード中、、、</div>
         <div id="introG">
             <div>
                 <div id="textT" class="textBasedTitle"><span id="textBasedTitle">Test Game</span>.io</div>
@@ -15,10 +15,10 @@
                     <div class="namePortalWrapper">
                         <input placeholder="ニックネーム" id="nickput" class="nickput">
                         <button id="joinGameBtn" class="joinGameBtn" disabled>Play</button><br>
-                        <span class="littleNote">made with <a href="./editor.html">iomaker</a></span>
+                        <span class="littleNote">made with <a href="./editor.html">MakeIO</a></span>
                         <hr>
                         <h3 class="TitleSpan">遊び方</h3>
-                        <div class="howToPlayWrappers">
+                        <div id="howToPlayWrappers">
                             loading...
                         </div>
                     </div>
@@ -40,8 +40,12 @@
         <div class="rankingBoardWrapper">
             <h3 class="TitleSpan">ランキング</h3>
             <div id="rankingBoard">
-                loading...
+                プレイヤーがいません
             </div>
+        </div>
+        <div id="gameOver">
+            <h3 class="gameOverSpan">ゲームオーバー</h3>
+            <h4 class="gameOverRefresh">３秒後にリロードします</h4>
         </div>
         <script src="./js/player/player.js"></script>
     </body>

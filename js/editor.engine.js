@@ -19,6 +19,7 @@ function updateMeasurement() {
 function updateSimpleMes() {
     document.getElementById("simpleCodePort").style.width = window.innerWidth - 800 + "px";
     document.getElementById("codeAreaSimp").style.height = window.innerHeight - 50 + "px";
+    document.getElementById("simplePreviewPort").style.height = window.innerHeight + "px";
 }
 
 //users io game data

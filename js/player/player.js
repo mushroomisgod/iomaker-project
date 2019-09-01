@@ -4,6 +4,9 @@ var db = new Firebase("https://makeio.firebaseio.com/");
 var mainPlayer = document.getElementById("mainPlayer");
 var garea = document.getElementById("garea");
 var collectablesSpriteWrapper = document.getElementById("collectablesSpriteWrapper");
+var otherPlayersWrapper = document.getElementById("otherPlayersWrapper");
+
+var howToPlayWrappers = document.getElementById("howToPlayWrappers");
 
 var urlString = window.location.href;
 var urlParams = parseURLParams(urlString);
@@ -68,8 +71,12 @@ var myName = "";
 var isJoined = false;
 
 var playerData = {
+    name : [],
+    position : [],
+    points : []
+};
 
-}
+var respondedCall = true;
 
 var faultStars = true;
 
@@ -273,11 +280,15 @@ var updateData = function () {
                 gProjects.code[dataInput.pID].collectablesSpriteType = dataInput.value;
             }
         } else if( dataInput.type == "whichLibraryFloorTexture" ) {
+            console.log("reet");
             if( dataInput.user == loggedUser ) {
                 if( dataInput.value == 'hexagon' ) {
                     gProjects.code[dataInput.pID].floorLibrarySprite = "./assets/samplePack/hexagon.png";
+                    updateFloorTexture();
                 } else {
                     gProjects.code[dataInput.pID].floorLibrarySprite = "./assets/samplePack/grass.png";
+                    updateFloorTexture();
+                    console.log("reet2");
                 }
             }
         } else if( dataInput.type == "uploadFloorTexture" ) {
@@ -287,6 +298,7 @@ var updateData = function () {
         } else if( dataInput.type == "whichTouseForFloorTextureUpdate" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].useFloorTexture = dataInput.value;
+                updateFloorTexture();
             }
         } else if( dataInput.type == "updateWhichTypeOfTitleImageToUseSelector" ) {
             console.log("then how tf");
@@ -297,6 +309,58 @@ var updateData = function () {
         } else if( dataInput.type == "uploadGameTitleImage" ) {
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].uploadedGameTitleImage = dataInput.value;
+            }
+        }
+
+        //game server
+        if( dataInput.type == "newplayerjoin" ) {
+            if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
+                playerData.name.push(dataInput.playerName);
+                playerData.position.push("0,0");
+                playerData.points.push(0);
+                if( dataInput.playerName != myName ) {
+                    var spritey;
+                    if( gProjects.code[gameId].usePlayerSprite == "libraryImage" ) {
+                        spritey = gProjects.code[gameId].playerLibrarySprite;
+                    } else {
+                        spritey = gProjects.code[gameId].playerUploadSprite;
+                    }
+                    otherPlayersWrapper.innerHTML += "<img src='"+spritey+"' class='oPlayerSprite' id='otherPlayerSprite!"+dataInput.playerName+"'>";
+                }
+            }
+        } else if( dataInput.type == "playerPositionUpdate" ) {
+            if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
+                var arrayPlayerPosA = playerData.name.indexOf( dataInput.playerName );
+                playerData.position[arrayPlayerPosA] = dataInput.positionData;
+            }
+        } else if( dataInput.type == "checkAliveMsg" ) {
+            if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId && dataInput.playerName == myName ) {
+                db.push({ type:"confirmAliveMsg",gameCreator:loggedUser,gameId:gameId,reciever:dataInput.sentBy });
+            }
+        } else if( dataInput.type == "confirmAliveMsg" ) {
+            if(  dataInput.gameCreator == loggedUser && dataInput.gameId == gameId && dataInput.reciever == myName ) {
+                respondedCall = true;
+            }
+        } else if( dataInput.type == "killPlayer" ) {
+            if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
+                var killingName = dataInput.playerName;
+                document.getElementById("otherPlayerSprite!"+killingName).remove();
+                var arrayPlayerPos = playerData.name.indexOf( killingName );
+                playerData.name.splice( arrayPlayerPos, 1 );
+                playerData.position.splice( arrayPlayerPos, 1 );
+                playerData.points.splice( arrayPlayerPos, 1 );
+            }
+        } else if( dataInput.type == "playerPointsUpdate" ) {
+            if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
+                var arrayPlayerPosB = playerData.name.indexOf( dataInput.playerName );
+                playerData.points[arrayPlayerPosB] = parseInt(dataInput.pointsData);
+            }
+        } else if( dataInput.type == "damagePlayer" ) {
+            if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
+                if( dataInput.playerName == myName ) {
+                    playerPoints -= gProjects.code[gameId].howManyCollectablePoint*2;
+                    document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
+                }
             }
         }
     });
@@ -317,12 +381,50 @@ function initG() {
         document.getElementById("gameTitleImageHolder").src = gProjects.code[gameId].uploadedGameTitleImage;
     }
 
-    //floortexture
-    if( gProjects.code[gameId].useFloorTexture == "libraryImage" ) {
-        document.getElementById("garea").backgroundImage = "../." + gProjects.code[gameId].floorLibrarySprite;
-    } else {
-        document.getElementById("garea").backgroundImage = gProjects.code[gameId].floorUploadSprite;
+    //
+
+    //how to play update
+    //if buttonPress movement setting
+    var movementControlConfirm;
+    var attackControlConfirm;
+
+    if( gProjects.code[gameId].moveWhen == "buttonPress" ) {
+        howToPlayWrappers.innerHTML = "";
+        if( gProjects.code[gameId].moveKeyBind.length != 0 ) {
+            var whichDirectionToGo;
+            for( i=0; i<gProjects.code[gameId].moveKeyBind.length; i++ ) {
+                var keyBindData = allKeyCodeReverse[allKeyCodeList.indexOf(gProjects.code[gameId].moveKeyBind[i].keyCodeA)];
+                if( parseInt(gProjects.code[gameId].moveKeyBind[i].toX) < 0 && parseInt(gProjects.code[gameId].moveKeyBind[i].toY) == 0 ) {
+                    whichDirectionToGo = "左";
+                } else if( parseInt(gProjects.code[gameId].moveKeyBind[i].toX) > 0 && parseInt(gProjects.code[gameId].moveKeyBind[i].toY) == 0 ) {
+                    whichDirectionToGo = "右";
+                } else if( parseInt(gProjects.code[gameId].moveKeyBind[i].toX) == 0 && parseInt(gProjects.code[gameId].moveKeyBind[i].toY) < 0 ) {
+                    whichDirectionToGo = "下";
+                } else if( parseInt(gProjects.code[gameId].moveKeyBind[i].toX) == 0 && parseInt(gProjects.code[gameId].moveKeyBind[i].toY) > 0 ) {
+                    whichDirectionToGo = "上";
+                } else if(　parseInt(gProjects.code[gameId].moveKeyBind[i].toX) < 0 && parseInt(gProjects.code[gameId].moveKeyBind[i].toY) < 0　) {
+                    whichDirectionToGo = "左下"
+                } else if(　parseInt(gProjects.code[gameId].moveKeyBind[i].toX) > 0 && parseInt(gProjects.code[gameId].moveKeyBind[i].toY) < 0　) {
+                    whichDirectionToGo = "右下"
+                } else if(　parseInt(gProjects.code[gameId].moveKeyBind[i].toX) < 0 && parseInt(gProjects.code[gameId].moveKeyBind[i].toY) > 0　) {
+                    whichDirectionToGo = "左上"
+                } else if(　parseInt(gProjects.code[gameId].moveKeyBind[i].toX) > 0 && parseInt(gProjects.code[gameId].moveKeyBind[i].toY) > 0　) {
+                    whichDirectionToGo = "右上"
+                }
+                howToPlayWrappers.innerHTML += "<strong class='keyButtonSpan'>" + keyBindData + "</strong>: "+whichDirectionToGo+"へ移動<br>";
+            }
+            movementControlConfirm = true;
+        } else {
+            movementControlConfirm = false;
+        }
     }
+
+    //attack how to play stuff
+    if( movementControlConfirm = false ) {
+        howToPlayWrappers.innerHTML = "";
+    }
+
+    howToPlayWrappers.innerHTML += "<strong class='keyButtonSpan'>" + allKeyCodeReverse[allKeyCodeList.indexOf(gProjects.code[gameId].playerAttackSetting.keyCode)] + "</strong>: 攻撃する";
 
     //player settings inititatw
     //load player playerSprite
@@ -364,7 +466,7 @@ function preInit(zekk) {
 }
 
 document.getElementById("nickput").onkeyup = function () {
-    if( document.getElementById("nickput").value.length != 0 && namesRegistered.indexOf(document.getElementById("nickput").value) == -1 ) {
+    if( document.getElementById("nickput").value.length != 0 && playerData.name.indexOf(document.getElementById("nickput").value) == -1 ) {
         document.getElementById("joinGameBtn").disabled = false;
     } else {
         document.getElementById("joinGameBtn").disabled = true;
@@ -375,6 +477,9 @@ document.getElementById("joinGameBtn").onclick = function () {
     myName = document.getElementById("nickput").value;
     isJoined = true;
     document.getElementById("introG").style.display = "none";
+
+    db.push({type:"newplayerjoin",gameCreator:loggedUser,gameId:gameId,playerName:document.getElementById("nickput").value});
+
     gameLoop();
 }
 
@@ -403,6 +508,7 @@ function gameLoop() {
     if( gCode.moveWhen == "buttonPress" ) {
         for( i=0;i<gProjects.code[gameId].moveKeyBind.length;i++ ) {
             if( downKeyholder.indexOf(gProjects.code[gameId].moveKeyBind[i].keyCodeA) != -1 ) {
+                var pickUped = false;
                 cameraPos.x -= parseInt(gProjects.code[gameId].moveKeyBind[i].toX)*100;
                 cameraPos.y += parseInt(gProjects.code[gameId].moveKeyBind[i].toY)*100;
 
@@ -434,9 +540,11 @@ function gameLoop() {
                 cameraPos.x -= 0; //this has no meaning
             } else if( (mainPCenterX-100)>mousePosX ) {
                 cameraPos.x += 50;
+                var pickUped = false;
                 lastRL = "left";
             } else if( (mainPCenterX+100)<mousePosX ) {
                 cameraPos.x -= 50;
+                var pickUped = false;
                 lastRL = "right";
             }
 
@@ -444,18 +552,22 @@ function gameLoop() {
                 cameraPos.y -= 0; //this has no meaning
             } else if( (mainPCenterY-100)>mousePosY ) {
                 cameraPos.y += 50;
+                var pickUped = false;
                 lastUD = "up";
             } else if( (mainPCenterY+100)<mousePosY ) {
                 cameraPos.y -= 50;
+                var pickUped = false;
                 lastUD = "down";
             }
             lastDirectionPointed = lastRL + "," + lastUD;
         } else {
             if( rlDirAssist == "right" ) {
                 cameraPos.x -= 50;
+                var pickUped = false;
                 lastRL = "right";
             } else if( rlDirAssist == "left" ) {
                 cameraPos.x += 50;
+                var pickUped = false;
                 lastRL = "left";
             } else {
                 cameraPos.x += 0;
@@ -464,9 +576,11 @@ function gameLoop() {
 
             if( udDirAssist == "up" ) {
                 cameraPos.y += 50;
+                var pickUped = false;
                 lastUD = "up";
             } else if( udDirAssist == "down" ) {
                 cameraPos.y -= 50;
+                var pickUped = false;
                 lastUD = "down";
             } else {
                 cameraPos.y += 0;
@@ -515,6 +629,8 @@ function gameLoop() {
                     bulletManagementClub.push( lastDirectionPointed );
                     bulletExpireManagement.push( 0 );
                     bulletId += 1;
+                    playerPoints -= 10;
+                    document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
                 } else {
                     var bulletStartX = Math.floor(pX/100)*100;
                     var bulletStartY = Math.floor(pY/100)*100;
@@ -522,6 +638,8 @@ function gameLoop() {
                     bulletManagementClub.push( lastDirectionPointed );
                     bulletExpireManagement.push( 0 );
                     bulletId += 1;
+                    playerPoints -= 10;
+                    document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
                 }
             }
         }
@@ -587,12 +705,105 @@ function gameLoop() {
         // if( document.getElementById(pX+"collectablesAppearanceHolder"+pY) != null ) {
         //     document.getElementById(pX+"collectablesAppearanceHolder"+pY).style.display = "none";
         // }
-
-        playerPoints += parseInt(gCode.howManyCollectablePoint);
+        if( pickUped == false ) {
+            playerPoints += parseInt(gCode.howManyCollectablePoint);
+            pickUped = true;
+        }
         if( gCode.playerAppearPointSettings == "size" ) {
             playerAddSize += parseInt(gCode.howManyCollectablePoint)/10;
         }
         document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
+    }
+
+    db.push({ type: "checkAlive", gameCreator:loggedUser, gameId:gameId, playerName:myName });
+
+    //check peer activity, if not active, kill player
+    if( respondedCall == true ) {
+        if( playerData.name.indexOf(myName) != 0 ) {
+            var whichNameToCheck = playerData.name[playerData.name.indexOf(myName)-1];
+        } else {
+            var whichNameToCheck = playerData.name[playerData.name.length-1];
+        }
+        db.push({ type : "checkAliveMsg", gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck, sentBy:myName })
+        respondedCall = false;
+    } else {
+        if( playerData.name.length != 1 ) {
+            //kill player
+            if( playerData.name.indexOf(myName) != 0 ) {
+                var whichNameToCheck = playerData.name[playerData.name.indexOf(myName)-1];
+            } else {
+                var whichNameToCheck = playerData.name[playerData.name.length-1];
+            }
+            db.push({ type:"killPlayer",gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck })
+        }
+    }
+
+    //update where player is
+    db.push({ type:"playerPositionUpdate",gameCreator:loggedUser, gameId:gameId, playerName:myName, positionData:pX+","+pY });
+
+    //update player points
+    db.push({ type:"playerPointsUpdate",gameCreator:loggedUser, gameId:gameId,playerName:myName,pointsData:playerPoints });
+
+    //update ranking
+    var rankingSteps = [];
+    var rankingBelow;
+    var rankingAbove;
+    var addedPP = false;
+    rankingSteps.push(playerData.name[0]);
+    for( i=1;i<playerData.name.length;i++ ) {
+        addedPP = false;
+        for( p=0;p<rankingSteps.length;p++ ) {
+            if(playerData.points[i]<playerData.points[playerData.name.indexOf(rankingSteps[p])]) {
+                if( addedPP == false ) {
+                    rankingBelow = rankingSteps.slice(0,p+1);
+                    rankingBelow.push(playerData.name[i]);
+                    rankingAbove = rankingSteps.slice(p+1,rankingSteps.length);
+
+                    rankingSteps = rankingBelow.concat(rankingAbove);
+                    addedPP = true;
+                }
+            }
+        }
+        if( addedPP == false ) {
+            rankingSteps.push( playerData.name[i] );
+        }
+    }
+
+    if( playerData.name.length != 0 ) {
+        document.getElementById("rankingBoard").innerHTML = "";
+        for( i=0; i<rankingSteps.length; i++ ) {
+            document.getElementById("rankingBoard").innerHTML += (i+1)+"位. <strong>" + rankingSteps[rankingSteps.length-(i+1)] + "</strong>: " + playerData.points[playerData.name.indexOf(rankingSteps[rankingSteps.length-(i+1)])] + "点";
+        }
+
+    }
+
+    //update other player positions
+    for( i=0; i<playerData.name.length; i++ ) {
+        if( playerData.name[i] != myName ) {
+            document.getElementById("otherPlayerSprite!"+playerData.name[i]).style.top = playerData.position[i].split(",")[1];
+            document.getElementById("otherPlayerSprite!"+playerData.name[i]).style.left = playerData.position[i].split(",")[0];
+        }
+    }
+
+    //hurt other players
+    if( gCode.playerAttackSetting.type == "shoot" ) {
+        for( i=0; i<bulletManagementClub.length; i++ ) {
+            var bulletY = parseInt(document.getElementById("bulletContent"+(bulletTrashedCount+i)).style.top.split("px")[0]);
+            var bulletX = parseInt(document.getElementById("bulletContent"+(bulletTrashedCount+i)).style.left.split("px")[0]);
+
+            for( p=0; p<playerData.name.length; p++ ) {
+                if(playerData.position[p] == bulletX+","+bulletY ) {
+                    if( playerData.name[p] != myName ) {
+                        db.push({type:"damagePlayer",gameCreator:loggedUser,gameId:gameId,playerName:playerData.name[p]});
+                    }
+                }
+            }
+
+        }
+    }
+
+    if( playerPoints < 0 ) {
+        gameOver();
     }
 
     setTimeout( function () {
@@ -673,4 +884,26 @@ window.onmousemove = function (e) {
     mousePosY = e.clientY;
 }
 
+function updateFloorTexture() {
+    console.log(document.getElementById("garea").background);
+    if( gProjects.code[gameId].useFloorTexture == "libraryImage" ) {
+        document.getElementById("garea").style.background = "url(./" + gProjects.code[gameId].floorLibrarySprite+ ")";
+    } else {
+        document.getElementById("garea").style.background = "url("+gProjects.code[gameId].floorUploadSprite+")";
+    }
+}
+
 var allKeyCodeList = [13, 8, 9, 16, 17, 18, 27, 32, 37, 38, 39, 40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90];
+var allKeyCodeReverse = ["Enter","Backspace / Delete","Tab","Shift","Ctrl","Alt","esc (Escape)","スペース","左矢印","上矢印","右矢印","下矢印","0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+
+window.onload = function () {
+    document.body.style.width = window.innerWidth + "px";
+    document.body.style.height = window.innerHeight + "px";
+}
+
+function gameOver() {
+    document.getElementById("gameOver").style.display = "block";
+    setTimeout( function () {
+        location.reload();
+    }, 3000)
+}
