@@ -758,6 +758,7 @@ button:disabled, input:disabled {
     border-color: #eb2d55!important;
     font-size: 13px;
     padding: 10px;
+    width: 150px;
 }
 .logoutBtn:active {
     margin-top: 17px;
