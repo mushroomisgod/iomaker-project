@@ -33,3 +33,12 @@
     useGameTitle : "text",
     uploadedGameTitleImage : "none"
 }
+
+var onKeyDown = function ( event ) {
+    //event.keyCode
+};
+var onKeyUp = function ( event ) {
+	//event.keyCode
+};
+document.addEventListener( 'keydown', onKeyDown, false );
+document.addEventListener( 'keyup', onKeyUp, false );

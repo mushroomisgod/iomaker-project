@@ -111,7 +111,7 @@ function updateCodeBlocks(pID) {
     if( gProjects.code[pID].moveKeyBind.length != 0 ) {
         document.getElementById("keyControlsWrapper").innerHTML = "";
         for(i=0;i<gProjects.code[pID].moveKeyBind.length;i++) {
-            document.getElementById("keyControlsWrapper").innerHTML += '<div class="keyBindWrapper"><select onchange="updatePlayerMovementKeyBindOption(this)" class="miniselect"'+' id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'directionPlayerChooseRL'+i+'" class="miniselect" onchange="updateRLdirectionPlayer(this)"><option value="right">右</option><option value="left">左</option></select>に<input onchange="changeRLspeedPlayer(this)" id="'+pID+'RLspeedPlayer'+i+'" type="number" placeholder="速度を入力" class="textput textminiput nomargin"><br><select onchange="updateUDdirectionPlayer(this)" id="'+pID+'directionPlayerChooseUD'+i+'"  class="miniselect"><option>上</option><option>下</option></select>に<input id="'+pID+'UDspeedPlayer'+i+'" class="textput textminiput nomargin" type="number" placeholder="速度を入力" onchange="changeUDspeedPlayer(this)"><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerMovementCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
+            document.getElementById("keyControlsWrapper").innerHTML += '<div class="keyBindWrapper"><select onchange="updatePlayerMovementKeyBindOption(this)" class="miniselect"'+' id="'+ pID +'selectorBlockKeyBind'+ i + '"' + keyCodeSelectorFullHtml + 'キーが押された時<br><select id="'+pID+'directionPlayerChooseRL'+i+'" class="miniselect" onchange="updateRLdirectionPlayer(this)"><option value="right">右</option><option value="left">左</option></select>に<input onchange="changeRLspeedPlayer(this)" id="'+pID+'RLspeedPlayer'+i+'" type="number" placeholder="速度を入力（最小１００）"  min="100" class="textput textminiput nomargin"><br><select onchange="updateUDdirectionPlayer(this)" id="'+pID+'directionPlayerChooseUD'+i+'"  class="miniselect"><option>上</option><option>下</option></select>に<input id="'+pID+'UDspeedPlayer'+i+'" class="textput textminiput nomargin" min="100" type="number" placeholder="速度を入力（最小１００）" onchange="changeUDspeedPlayer(this)"><hr class="whiteHR"><button id="'+pID+'deleteBtnTrigger'+i+'" onclick="deleteThisPlayerMovementCodeBlock(this)" class="deleteBtn"><img class="deleteIcon" src="./assets/editorMisc/delete.svg"></button></div>';
         }
         for (i = 0; i < gProjects.code[pID].moveKeyBind.length; i++ ) {
             var preSelectedCode = allKeyCodeList.indexOf(gProjects.code[pID].moveKeyBind[i].keyCodeA);
@@ -266,12 +266,18 @@ function updateUDdirectionPlayer(ele) {
 function changeRLspeedPlayer(ele) {
     ele.value = Math.abs(parseInt(ele.value));
     var idHolder= ele.id.split("RLspeedPlayer");
+    if( ele.value == "" ) {
+        ele.value = 0
+    }
     var valueVelRL = ele.value;
     db.push({type:"changeRLspeedPlayer",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],speed:valueVelRL});
 }
 function changeUDspeedPlayer(ele) {
     ele.value = Math.abs(parseInt(ele.value));
     var idHolder= ele.id.split("UDspeedPlayer");
+    if( ele.value == "" ) {
+        ele.value = 0
+    }
     var valueVelUD = ele.value;
     db.push({type:"changeUDspeedPlayer",user:loggedUser,pID:idHolder[0],whichI:idHolder[1],speed:valueVelUD});
 }

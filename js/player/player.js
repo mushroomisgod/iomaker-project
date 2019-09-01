@@ -120,11 +120,11 @@ var updateData = function () {
             }
         } else if( dataInput.type == "changeRLspeedPlayer" ) {
             if( dataInput.user == loggedUser ) {
-                gProjects.code[dataInput.pID].moveKeyBind[dataInput.whichI].toX = dataInput.speed;
+                gProjects.code[dataInput.pID].moveKeyBind[dataInput.whichI].toX = parseInt(dataInput.speed);
             }
         } else if( dataInput.type == "changeUDspeedPlayer" ) {
             if( dataInput.user == loggedUser ) {
-                gProjects.code[dataInput.pID].moveKeyBind[dataInput.whichI].toY = dataInput.speed;
+                gProjects.code[dataInput.pID].moveKeyBind[dataInput.whichI].toY = parseInt(dataInput.speed);
             }
         } else if( dataInput.type == "changeWhatToMovePlayer" ) {
             if( dataInput.user == loggedUser ) {
@@ -289,8 +289,10 @@ var updateData = function () {
                 gProjects.code[dataInput.pID].useFloorTexture = dataInput.value;
             }
         } else if( dataInput.type == "updateWhichTypeOfTitleImageToUseSelector" ) {
+            console.log("then how tf");
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].useGameTitle = dataInput.value;
+                console.log("then how tf");
             }
         } else if( dataInput.type == "uploadGameTitleImage" ) {
             if( dataInput.user == loggedUser ) {
@@ -310,7 +312,16 @@ function initG() {
         //change template name
         document.getElementById("textBasedTitle").innerHTML = gProjects.name[gameId];
     } else  {
-        //ToDO: image game title setting
+        document.getElementById("imageT").style.display = "block";
+        document.getElementById("textT").style.display = "none";
+        document.getElementById("gameTitleImageHolder").src = gProjects.code[gameId].uploadedGameTitleImage;
+    }
+
+    //floortexture
+    if( gCode.useFloorTexture == "libraryImage" ) {
+        document.getElementById("garea").backgroundImage = "../." + gCode.floorLibrarySprite;
+    } else {
+        document.getElementById("garea").backgroundImage = gCode.floorUploadSprite;
     }
 
     //player settings inititatw
@@ -372,7 +383,13 @@ function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
+var playerAddSize = 0;
+
 function gameLoop() {
+
+    mainPlayer.style.top = window.innerHeight/2 - 95 - playerAddSize/2 + "px";
+    mainPlayer.style.left = window.innerWidth/2 - 82 - playerAddSize/2 - mainPlayer.offsetWidth/2 + "px";
+
     //player actual position, but floored
     var pX = Math.floor( ((cameraPos.x*-1)+(window.innerWidth/2))/100 )*100;
     var pY = Math.floor( ((cameraPos.y*-1)+(window.innerHeight/2))/100)*100;
@@ -385,8 +402,11 @@ function gameLoop() {
     if( gCode.moveWhen == "buttonPress" ) {
         for( i=0;i<gProjects.code[gameId].moveKeyBind.length;i++ ) {
             if( downKeyholder.indexOf(gProjects.code[gameId].moveKeyBind[i].keyCodeA) != -1 ) {
-                cameraPos.x -= Math.round(parseInt(gProjects.code[gameId].moveKeyBind[i].toX)/100)*100;
-                cameraPos.y += Math.round(parseInt(gProjects.code[gameId].moveKeyBind[i].toY)/100)*100;
+                cameraPos.x -= parseInt(gProjects.code[gameId].moveKeyBind[i].toX)*100;
+                cameraPos.y += parseInt(gProjects.code[gameId].moveKeyBind[i].toY)*100;
+
+                cameraPos.x = Math.floor(cameraPos.x/100)*100;
+                cameraPos.y = Math.floor(cameraPos.y/100)*100;
 
                 //update direction
                 if( parseInt(gProjects.code[gameId].moveKeyBind[i].toX) > 0 ) {
@@ -568,6 +588,9 @@ function gameLoop() {
         // }
 
         playerPoints += parseInt(gCode.howManyCollectablePoint);
+        if( gCode.playerAppearPointSettings == "size" ) {
+            playerAddSize += parseInt(gCode.howManyCollectablePoint)/10;
+        }
         document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
     }
 

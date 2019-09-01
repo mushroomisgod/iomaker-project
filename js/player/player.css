@@ -180,3 +180,12 @@ body {
     transition: 0.3s;
     transition-timing-function: linear;
 }
+#imageT {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 40px;
+}
+#gameTitleImageHolder {
+    height: 50px;
+}
