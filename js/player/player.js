@@ -100,7 +100,6 @@ var updateData = function () {
             }
         } else if( dataInput.type == "newChangeDirKeyBind" ) {
             if( dataInput.user == loggedUser ) {
-                console.log("as");
                 gProjects.code[dataInput.oprojectID].directionKeyBind.push({ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false });
             }
         } else if( dataInput.type == "deletePlayerMovementCodeBlock" ) {
@@ -149,7 +148,6 @@ var updateData = function () {
             }
         } else if( dataInput.type == "updateKeyForDirectionKeyBindBlock" ) {
             if( dataInput.user == loggedUser ) {
-                console.log(dataInput.whichI);
                 gProjects.code[gameId].directionKeyBind[parseInt(dataInput.whichI)].keyCodeB = parseInt(dataInput.value);
             }
         } else if( dataInput.type == "updateRLdirectionPlayerChoose" ) {
@@ -824,34 +822,29 @@ function gameLoop() {
     db.push({ type:"playerPositionUpdate",gameCreator:loggedUser, gameId:gameId, playerName:myName, positionData:pX+","+pY });
 
     //update player points
-    db.push({ type:"playerPointsUpdate",gameCreator:loggedUser, gameId:gameId,playerName:myName,pointsData:playerPoints });
 
     //update ranking
-    var rankingSteps = [];
-    var rankingBelow;
-    var rankingAbove;
-    var addedPP = false;
-    rankingSteps.push(playerData.name[0]);
-    for( i=1;i<playerData.name.length;i++ ) {
-        addedPP = false;
-        for( p=0;p<rankingSteps.length;p++ ) {
-            if(playerData.points[i]<playerData.points[playerData.name.indexOf(rankingSteps[p])]) {
-                if( addedPP == false ) {
-                    rankingSteps = rankingSteps.slice(p+1,0,playerData.name[i]);
-                    console.log(rankingSteps.slice(p+1,0,playerData.name[i]));
-                    addedPP = true;
-                }
+    var rankDrop = [];
+    var rankDropNames = [];
+    var preStab = 0;
+    for( i=0; i<playerData.name.length; i++ ) {
+        preStab = 0
+        var testy = playerData.points[i];
+        for( p=0; p<rankDrop.length; p++ ) {
+            if( testy > rankDrop[p] ) {
+                preStab += 1;
             }
         }
-        if( addedPP == false ) {
-            rankingSteps.push( playerData.name[i] );
-        }
+        rankDrop.splice(preStab,0,testy);
+        rankDropNames.splice(preStab,0,playerData.name[i]);
     }
+
+    console.log(rankDropNames);
 
     if( playerData.name.length != 0 ) {
         document.getElementById("rankingBoard").innerHTML = "";
-        for( i=0; i<rankingSteps.length; i++ ) {
-            document.getElementById("rankingBoard").innerHTML += (i+1)+"位. <strong>" + rankingSteps[rankingSteps.length-(i+1)] + "</strong>: " + playerData.points[playerData.name.indexOf(rankingSteps[rankingSteps.length-(i+1)])] + "点<br>";
+        for( i=0; i<rankDropNames.length; i++ ) {
+            document.getElementById("rankingBoard").innerHTML += (i+1)+"位. <strong>" + rankDropNames[rankDropNames.length-(i+1)] + "</strong>: " + playerData.points[playerData.name.indexOf(rankDropNames[rankDropNames.length-(i+1)])] + "点<br>";
         }
 
     }
@@ -892,10 +885,8 @@ function gameLoop() {
         db.push({ type:"killPlayer",gameCreator:loggedUser, gameId:gameId, playerName:myName })
     }
 
-    console.log(playerData.position);
-    console.log(playerData.position.length);
-    console.log(playerData.name);
-    console.log(playerData.points);
+    db.push({ type:"playerPointsUpdate",gameCreator:loggedUser, gameId:gameId,playerName:myName,pointsData:playerPoints });
+
     setTimeout( function () {
         gameLoop();
     }, 300)
@@ -1003,15 +994,13 @@ function repondDoind() {
         respondedManagement[i] = false;
     }
 
-    respondedManagement[playerData.name.indexOf(myname)] = "itMe";
+    respondedManagement[playerData.name.indexOf(myName)] = "itMe";
 
     // check peer activity, if not active, kill player
-    if( playerData.name.indexOf(myName) == 0 ) {
-        for( i=0; i<playerData.name.length; i++ ) {
-            if( playerData.name[i] != myName ) {
-                var whichNameToCheck = playerData.name[i];
-                db.push({ type : "checkAliveMsg", gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck, sentBy:myName })
-            }
+    for( i=0; i<playerData.name.length; i++ ) {
+        if( playerData.name[i] != myName ) {
+            var whichNameToCheck = playerData.name[i];
+            db.push({ type : "checkAliveMsg", gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck, sentBy:myName })
         }
     }
 
@@ -1020,7 +1009,7 @@ function repondDoind() {
     setTimeout( function () {
         for( i=0; i<respondedManagement.length;i++ ) {
             if( respondedManagement[i] == false ) {
-                db.push({ type:"killPlayer", gameCreator:loggedUser,gameId:gameId,playerName:playerData.name[i+1] });
+                db.push({ type:"killPlayer", gameCreator:loggedUser,gameId:gameId,playerName:playerData.name[i] });
             }
         }
         repondDoind();
