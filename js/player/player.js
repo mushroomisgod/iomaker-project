@@ -34,6 +34,10 @@ var bulletExpireManagement = [];
 
 var bulletTrashedCount = 0;
 
+var respondedManagement;
+
+var respondKingCheck = false;
+
 var cameraPos = {
     x : 2500,
     y : 1500
@@ -369,6 +373,18 @@ var updateData = function () {
                     document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
                 }
             }
+        } else if( dataInput.type == "checkKingVitality" ) {
+            if( playerData.name.indexOf(myName) == 0 ) {
+                if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
+                    db.push({type:"confirmVitaliy",gameCreator:loggedUser,gameId:gameId,to:dataInput.by});
+                }
+            }
+        } else if( dataInput.type == "confirmVitaliy" ) {
+            if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
+                if( dataInput.to == myName ) {
+                    respondKingCheck = true;
+                }
+            }
         }
     });
 }
@@ -392,8 +408,8 @@ function initG() {
     document.title = gProjects.name[gameId] + ".io";
 
     //alive check manager
-    var respondedManagement = [];
-    for( i=1; i<playerData.name.length; i++ ) {
+    respondedManagement = [];
+    for( i=0; i<playerData.name.length; i++ ) {
         respondedManagement.push(false);
     }
 
@@ -821,11 +837,8 @@ function gameLoop() {
         for( p=0;p<rankingSteps.length;p++ ) {
             if(playerData.points[i]<playerData.points[playerData.name.indexOf(rankingSteps[p])]) {
                 if( addedPP == false ) {
-                    rankingBelow = rankingSteps.slice(0,p+1);
-                    rankingBelow.push(playerData.name[i]);
-                    rankingAbove = rankingSteps.slice(p+1,rankingSteps.length);
-
-                    rankingSteps = rankingBelow.concat(rankingAbove);
+                    rankingSteps = rankingSteps.slice(p+1,0,playerData.name[i]);
+                    console.log(rankingSteps.slice(p+1,0,playerData.name[i]));
                     addedPP = true;
                 }
             }
@@ -990,13 +1003,18 @@ function repondDoind() {
         respondedManagement[i] = false;
     }
 
+    respondedManagement[playerData.name.indexOf(myname)] = "itMe";
+
     // check peer activity, if not active, kill player
     if( playerData.name.indexOf(myName) == 0 ) {
-        for( i=1; i<playerData.name.length; i++ ) {
-            var whichNameToCheck = playerData.name[i];
-            db.push({ type : "checkAliveMsg", gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck, sentBy:myName })
+        for( i=0; i<playerData.name.length; i++ ) {
+            if( playerData.name[i] != myName ) {
+                var whichNameToCheck = playerData.name[i];
+                db.push({ type : "checkAliveMsg", gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck, sentBy:myName })
+            }
         }
     }
+
 
 
     setTimeout( function () {
@@ -1008,3 +1026,18 @@ function repondDoind() {
         repondDoind();
     },2000);
 }
+
+// function ponpon() {
+//     if(  ) {
+//         respondKingCheck = false;
+//         var currentKing = playerData.name[0];
+//
+//         db.push({type:"checkKingVitality", gameCreator:loggedUser,gameId:gameId,by:myName});
+//     }
+//
+//     setTimeout( function () {
+//         if( respondKingCheck == false ) {
+//             db.push({ type:"killPlayer", gameCreator:loggedUser,gameId:gameId,playerName:playerData.name[0] });
+//         }
+//     },2000);
+// }
