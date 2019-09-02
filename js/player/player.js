@@ -73,7 +73,8 @@ var isJoined = false;
 var playerData = {
     name : [],
     position : [],
-    points : []
+    points : [],
+    direction : []
 };
 
 var respondedCall = true;
@@ -95,6 +96,7 @@ var updateData = function () {
             }
         } else if( dataInput.type == "newChangeDirKeyBind" ) {
             if( dataInput.user == loggedUser ) {
+                console.log("as");
                 gProjects.code[dataInput.oprojectID].directionKeyBind.push({ keyCodeB: 13, directionRL: "right", moveRL: false, directionUD: "up", moveUD: false });
             }
         } else if( dataInput.type == "deletePlayerMovementCodeBlock" ) {
@@ -143,7 +145,8 @@ var updateData = function () {
             }
         } else if( dataInput.type == "updateKeyForDirectionKeyBindBlock" ) {
             if( dataInput.user == loggedUser ) {
-                gProjects.code[dataInput.pID].directionKeyBind[dataInput.whichI].keyCodeB = parseInt(dataInput.value);
+                console.log(dataInput.whichI);
+                gProjects.code[gameId].directionKeyBind[parseInt(dataInput.whichI)].keyCodeB = parseInt(dataInput.value);
             }
         } else if( dataInput.type == "updateRLdirectionPlayerChoose" ) {
             if( dataInput.user == loggedUser ) {
@@ -280,7 +283,6 @@ var updateData = function () {
                 gProjects.code[dataInput.pID].collectablesSpriteType = dataInput.value;
             }
         } else if( dataInput.type == "whichLibraryFloorTexture" ) {
-            console.log("reet");
             if( dataInput.user == loggedUser ) {
                 if( dataInput.value == 'hexagon' ) {
                     gProjects.code[dataInput.pID].floorLibrarySprite = "./assets/samplePack/hexagon.png";
@@ -288,7 +290,6 @@ var updateData = function () {
                 } else {
                     gProjects.code[dataInput.pID].floorLibrarySprite = "./assets/samplePack/grass.png";
                     updateFloorTexture();
-                    console.log("reet2");
                 }
             }
         } else if( dataInput.type == "uploadFloorTexture" ) {
@@ -301,10 +302,8 @@ var updateData = function () {
                 updateFloorTexture();
             }
         } else if( dataInput.type == "updateWhichTypeOfTitleImageToUseSelector" ) {
-            console.log("then how tf");
             if( dataInput.user == loggedUser ) {
                 gProjects.code[dataInput.pID].useGameTitle = dataInput.value;
-                console.log("then how tf");
             }
         } else if( dataInput.type == "uploadGameTitleImage" ) {
             if( dataInput.user == loggedUser ) {
@@ -351,7 +350,7 @@ var updateData = function () {
                 playerData.points.splice( arrayPlayerPos, 1 );
 
                 if( gProjects.code[gameId].howCollectablesSpawn != "randomPoint" ) {
-                    
+
                 }
             }
         } else if( dataInput.type == "playerPointsUpdate" ) {
@@ -421,6 +420,52 @@ function initG() {
         } else {
             movementControlConfirm = false;
         }
+    } else if( gProjects.code[gameId].moveWhen == "always" ) {
+        if( gProjects.code[gameId].changeDirWhen == "always" ) {
+            howToPlayWrappers.innerHTML = "マウスで移動<br>";
+        } else {
+            howToPlayWrappers.innerHTML = "";
+            for( i=0; i<gProjects.code[gameId].directionKeyBind.length; i++ ) {
+                var keyBindWhich = allKeyCodeReverse[allKeyCodeList.indexOf(gProjects.code[gameId].directionKeyBind[i].keyCodeB)];
+                if( gProjects.code[gameId].directionKeyBind[i].moveRL == true ) {
+                    var rlD = gProjects.code[gameId].directionKeyBind[i].directionRL;
+                } else {
+                    var rlD = "none";
+                }
+                if( gProjects.code[gameId].directionKeyBind[i].moveUD == true ) {
+                    var udD = gProjects.code[gameId].directionKeyBind[i].directionUD;
+                } else {
+                    var udD = "none";
+                }
+                var whichDir = "null";
+                if( rlD == "right" ) {
+                    if( udD == "up" ) {
+                        whichDir = "右上";
+                    } else if( udD == "down" ) {
+                        whichDir = "右下";
+                    } else {
+                        whichDir = "右";
+                    }
+                } else if( rlD == "left" ) {
+                    if( udD == "up" ) {
+                        whichDir = "左上";
+                    } else if( udD == "down" ) {
+                        whichDir = "左下";
+                    } else {
+                        whichDir = "左";
+                    }
+                } else {
+                    if( udD == "up" ) {
+                        whichDir = "上";
+                    } else if( udD == "down" ) {
+                        whichDir = "下";
+                    } else {
+                        whichDir = "上";
+                    }
+                }
+                howToPlayWrappers.innerHTML += "<strong class='keyButtonSpan'>" + keyBindWhich + "</strong>: "+whichDir+"へ方向を変える<br>";
+            }
+        }
     }
 
     //attack how to play stuff
@@ -484,6 +529,7 @@ document.getElementById("joinGameBtn").onclick = function () {
     db.push({type:"newplayerjoin",gameCreator:loggedUser,gameId:gameId,playerName:document.getElementById("nickput").value});
 
     gameLoop();
+    repondDoind();
 }
 
 //random number function is useful
@@ -536,16 +582,16 @@ function gameLoop() {
         }
     } else if( gCode.moveWhen == "always" ) {
         if( gCode.changeDirWhen == "always" ) {
-            var mainPCenterX = parseInt(mainPlayer.style.left.split("px"));
-            var mainPCenterY = parseInt(mainPlayer.style.top.split("px"));
+            var mainPCenterX = window.innerWidth/2;
+            var mainPCenterY = window.innerHeight/2;
 
             if( (mainPCenterX-30)<mousePosX && (mainPCenterX+30)>mousePosX ) {
                 cameraPos.x -= 0; //this has no meaning
-            } else if( (mainPCenterX-100)>mousePosX ) {
+            } else if( (mainPCenterX-30)>mousePosX ) {
                 cameraPos.x += 50;
                 var pickUped = false;
                 lastRL = "left";
-            } else if( (mainPCenterX+100)<mousePosX ) {
+            } else if( (mainPCenterX+30)<mousePosX ) {
                 cameraPos.x -= 50;
                 var pickUped = false;
                 lastRL = "right";
@@ -553,11 +599,11 @@ function gameLoop() {
 
             if( (mainPCenterY-30)<mousePosY && (mainPCenterY+30)>mousePosY ) {
                 cameraPos.y -= 0; //this has no meaning
-            } else if( (mainPCenterY-100)>mousePosY ) {
+            } else if( (mainPCenterY-30)>mousePosY ) {
                 cameraPos.y += 50;
                 var pickUped = false;
                 lastUD = "up";
-            } else if( (mainPCenterY+100)<mousePosY ) {
+            } else if( (mainPCenterY+30)<mousePosY ) {
                 cameraPos.y -= 50;
                 var pickUped = false;
                 lastUD = "down";
@@ -597,7 +643,6 @@ function gameLoop() {
                     if( gCode.directionKeyBind[i].moveRL == true ) {
                         if( gCode.directionKeyBind[i].directionRL == "right" ) {
                             rlDirAssist = "right";
-                            console.log(rlDirAssist);
                         } else {
                             rlDirAssist = "left";
                         }
@@ -618,6 +663,24 @@ function gameLoop() {
         }
     }
 
+    if( lastDirectionPointed == "right,none" ) {
+        mainPlayer.style.transform = "rotate(90deg)";
+    } else if( lastDirectionPointed == "left,none" ) {
+        mainPlayer.style.transform = "rotate(-90deg)";
+    } else if( lastDirectionPointed == "none,up" ) {
+        mainPlayer.style.transform = "rotate(0deg)";
+    } else if( lastDirectionPointed == "none,down" ) {
+        mainPlayer.style.transform = "rotate(180deg)";
+    } else if( lastDirectionPointed == "right,up" ) {
+        mainPlayer.style.transform = "rotate(45deg)";
+    } else if( lastDirectionPointed == "left,up" ) {
+        mainPlayer.style.transform = "rotate(-45deg)";
+    } else if( lastDirectionPointed == "left,down" ) {
+        mainPlayer.style.transform = "rotate(-135deg)";
+    } else if( lastDirectionPointed == "right,down" ) {
+        mainPlayer.style.transform = "rotate(135deg)";
+    }
+
     lastRL = "none";
     lastUD = "none";
 
@@ -632,7 +695,9 @@ function gameLoop() {
                     bulletManagementClub.push( lastDirectionPointed );
                     bulletExpireManagement.push( 0 );
                     bulletId += 1;
-                    playerPoints -= 10;
+                    if( gCode.howCollectablesSpawn == "randomPoint" ) {
+                        playerPoints -= 10;
+                    }
                     document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
                 } else {
                     var bulletStartX = Math.floor(pX/100)*100;
@@ -657,30 +722,39 @@ function gameLoop() {
                 if( bulletManagementClub[i] == "right,none" ) {
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + "px";
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.transform = "rotate(90deg)";
                 } else if( bulletManagementClub[i] == "right,up" ) {
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) - 100 + "px";
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.transform = "rotate(45deg)";
                 } else if( bulletManagementClub[i] == "left,up" ) {
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) - 100 + "px";
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) - 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.transform = "rotate(-45deg)";
                 } else if( bulletManagementClub[i] == "right,down" ) {
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + 100 + "px";
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.transform = "rotate(135deg)";
                 } else if( bulletManagementClub[i] == "left,down" ) {
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + 100 + "px";
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) - 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.transform = "rotate(-135deg)";
                 } else if( bulletManagementClub[i] == "none,up" ) {
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) - 100 + "px";
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.transform = "rotate(0deg)";
                 } else if( bulletManagementClub[i] == "none,down" ) {
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + 100 + "px";
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.transform = "rotate(180deg)";
                 } else if( bulletManagementClub[i] == "left,none" ) {
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) + "px";
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) - 100 + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.transform = "rotate(-90deg)";
                 } else if( bulletManagementClub[i] == "none,none" ) {
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.top) - 100 + "px";
                     document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left = parseInt(document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.left) + "px";
+                    document.getElementById("bulletContent"+(i+bulletTrashedCount)).style.transform = "rotate(0deg)";
                 }
                 bulletExpireManagement[i] += 1;
             } else {
@@ -701,7 +775,6 @@ function gameLoop() {
 
     //checkIfPickUp
     if( collectablesPosition.indexOf( String(pX+"!"+pY) ) != -1 ) {
-        console.log("before remove: " + document.getElementById(pX+"collectablesAppearanceHolder"+pY));
         if( document.getElementById(pX+"collectablesAppearanceHolder"+pY) != null ) {
             document.getElementById(pX+"collectablesAppearanceHolder"+pY).remove();
         }
@@ -719,27 +792,6 @@ function gameLoop() {
     }
 
     db.push({ type: "checkAlive", gameCreator:loggedUser, gameId:gameId, playerName:myName });
-
-    //check peer activity, if not active, kill player
-    if( respondedCall == true ) {
-        if( playerData.name.indexOf(myName) != 0 ) {
-            var whichNameToCheck = playerData.name[playerData.name.indexOf(myName)-1];
-        } else {
-            var whichNameToCheck = playerData.name[playerData.name.length-1];
-        }
-        db.push({ type : "checkAliveMsg", gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck, sentBy:myName })
-        respondedCall = false;
-    } else {
-        if( playerData.name.length != 1 ) {
-            //kill player
-            if( playerData.name.indexOf(myName) != 0 ) {
-                var whichNameToCheck = playerData.name[playerData.name.indexOf(myName)-1];
-            } else {
-                var whichNameToCheck = playerData.name[playerData.name.length-1];
-            }
-            db.push({ type:"killPlayer",gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck })
-        }
-    }
 
     //update where player is
     db.push({ type:"playerPositionUpdate",gameCreator:loggedUser, gameId:gameId, playerName:myName, positionData:pX+","+pY });
@@ -775,7 +827,7 @@ function gameLoop() {
     if( playerData.name.length != 0 ) {
         document.getElementById("rankingBoard").innerHTML = "";
         for( i=0; i<rankingSteps.length; i++ ) {
-            document.getElementById("rankingBoard").innerHTML += (i+1)+"位. <strong>" + rankingSteps[rankingSteps.length-(i+1)] + "</strong>: " + playerData.points[playerData.name.indexOf(rankingSteps[rankingSteps.length-(i+1)])] + "点";
+            document.getElementById("rankingBoard").innerHTML += (i+1)+"位. <strong>" + rankingSteps[rankingSteps.length-(i+1)] + "</strong>: " + playerData.points[playerData.name.indexOf(rankingSteps[rankingSteps.length-(i+1)])] + "点<br>";
         }
 
     }
@@ -806,6 +858,12 @@ function gameLoop() {
     }
 
     if( playerPoints < 0 ) {
+        gameOver();
+        db.push({ type:"killPlayer",gameCreator:loggedUser, gameId:gameId, playerName:myName })
+    }
+
+    //check if outside map
+    if( pX < 0 || pY < 0 || pX > 5000 || pY > 3000 ) {
         gameOver();
         db.push({ type:"killPlayer",gameCreator:loggedUser, gameId:gameId, playerName:myName })
     }
@@ -889,7 +947,6 @@ window.onmousemove = function (e) {
 }
 
 function updateFloorTexture() {
-    console.log(document.getElementById("garea").background);
     if( gProjects.code[gameId].useFloorTexture == "libraryImage" ) {
         document.getElementById("garea").style.background = "url(./" + gProjects.code[gameId].floorLibrarySprite+ ")";
     } else {
@@ -910,4 +967,34 @@ function gameOver() {
     setTimeout( function () {
         location.reload();
     }, 3000)
+}
+
+
+
+function repondDoind() {
+    // check peer activity, if not active, kill player
+    if( respondedCall == true ) {
+        if( playerData.name.indexOf(myName) != 0 ) {
+            var whichNameToCheck = playerData.name[playerData.name.indexOf(myName)-1];
+        } else {
+            var whichNameToCheck = playerData.name[playerData.name.length-1];
+        }
+        db.push({ type : "checkAliveMsg", gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck, sentBy:myName })
+        respondedCall = false;
+    }
+
+    setTimeout( function () {
+        if( respondedCall == false ) {
+            if( playerData.name.length != 1 ) {
+                //kill player
+                if( playerData.name.indexOf(myName) != 0 ) {
+                    var whichNameToCheck = playerData.name[playerData.name.indexOf(myName)-1];
+                } else {
+                    var whichNameToCheck = playerData.name[playerData.name.length-1];
+                }
+                db.push({ type:"killPlayer",gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck })
+            }
+        }
+        repondDoind();
+    },2000);
 }

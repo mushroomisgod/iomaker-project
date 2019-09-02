@@ -110,6 +110,7 @@ body {
     height: 70px;
     z-index: 90;
     transition-timing-function: linear;
+    transform: rotate(0deg);
 }
 .oPlayerSprite {
     position: absolute;
@@ -121,7 +122,7 @@ body {
     filter: brightness(90%);
     transition-timing-function: linear;
 }
-#howToPlayWrappers {
+.howToPlayWrappers {
     margin-top: 10px;
     font-size: 15px;
     border: 1px solid #c4c8cc;
@@ -232,4 +233,7 @@ body {
 }
 .gameOverRefresh {
     text-align: center;
+}
+li {
+    font-size: 10px;
 }
