@@ -343,11 +343,15 @@ var updateData = function () {
         } else if( dataInput.type == "killPlayer" ) {
             if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
                 var killingName = dataInput.playerName;
-                document.getElementById("otherPlayerSprite!"+killingName).remove();
+                if( document.getElementById("otherPlayerSprite!"+killingName) != null ) {
+                    document.getElementById("otherPlayerSprite!"+killingName).remove();
+                }
                 var arrayPlayerPos = playerData.name.indexOf( killingName );
-                playerData.name.splice( arrayPlayerPos, 1 );
-                playerData.position.splice( arrayPlayerPos, 1 );
-                playerData.points.splice( arrayPlayerPos, 1 );
+                if( arrayPlayerPos != -1 ) {
+                    playerData.name.splice( arrayPlayerPos, 1 );
+                    playerData.position.splice( arrayPlayerPos, 1 );
+                    playerData.points.splice( arrayPlayerPos, 1 );
+                }
 
                 if( gProjects.code[gameId].howCollectablesSpawn != "randomPoint" ) {
 
@@ -383,6 +387,9 @@ function initG() {
         document.getElementById("textT").style.display = "none";
         document.getElementById("gameTitleImageHolder").src = gProjects.code[gameId].uploadedGameTitleImage;
     }
+
+    //chenge tab title
+    document.title = gProjects.name[gameId] + ".io";
 
     //
 
@@ -835,8 +842,8 @@ function gameLoop() {
     //update other player positions
     for( i=0; i<playerData.name.length; i++ ) {
         if( playerData.name[i] != myName ) {
-            document.getElementById("otherPlayerSprite!"+playerData.name[i]).style.top = playerData.position[i].split(",")[1];
-            document.getElementById("otherPlayerSprite!"+playerData.name[i]).style.left = playerData.position[i].split(",")[0];
+            document.getElementById("otherPlayerSprite!"+playerData.name[i]).style.top = playerData.position[i].split(",")[1] + "px";
+            document.getElementById("otherPlayerSprite!"+playerData.name[i]).style.left = playerData.position[i].split(",")[0] + "px";
         }
     }
 
@@ -868,6 +875,10 @@ function gameLoop() {
         db.push({ type:"killPlayer",gameCreator:loggedUser, gameId:gameId, playerName:myName })
     }
 
+    console.log(playerData.position);
+    console.log(playerData.position.length);
+    console.log(playerData.name);
+    console.log(playerData.points);
     setTimeout( function () {
         gameLoop();
     }, 300)
