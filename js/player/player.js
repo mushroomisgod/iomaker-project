@@ -368,6 +368,7 @@ var updateData = function () {
             if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
                 if( dataInput.playerName == myName ) {
                     playerPoints -= gProjects.code[gameId].howManyCollectablePoint*2;
+                    damagedEffect();
                     document.getElementById("howManyPlayerPoints").innerHTML = playerPoints;
                 }
             }
@@ -1030,3 +1031,10 @@ function repondDoind() {
 //         }
 //     },2000);
 // }
+
+function damagedEffect() {
+    document.getElementById("redHurt").style.display = "block";
+    setTimeout( function () {
+        document.getElementById("redHurt").style.display = "none";
+    },500)
+}
