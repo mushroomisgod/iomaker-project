@@ -349,6 +349,10 @@ var updateData = function () {
                 playerData.name.splice( arrayPlayerPos, 1 );
                 playerData.position.splice( arrayPlayerPos, 1 );
                 playerData.points.splice( arrayPlayerPos, 1 );
+
+                if( gProjects.code[gameId].howCollectablesSpawn != "randomPoint" ) {
+                    
+                }
             }
         } else if( dataInput.type == "playerPointsUpdate" ) {
             if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
@@ -458,9 +462,8 @@ function preInit(zekk) {
             gCode = gProjects.code[gameId];
 
             //collectables spawn function
-            if( gProjects.code[gameId].howCollectablesSpawn == "randomPoint" ) {
-                maintainCollectablesToRandomPoint();
-            }
+
+            maintainCollectablesToRandomPoint();
         }, 1000)
     }
 }
@@ -804,6 +807,7 @@ function gameLoop() {
 
     if( playerPoints < 0 ) {
         gameOver();
+        db.push({ type:"killPlayer",gameCreator:loggedUser, gameId:gameId, playerName:myName })
     }
 
     setTimeout( function () {
