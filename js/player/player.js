@@ -334,11 +334,11 @@ var updateData = function () {
             }
         } else if( dataInput.type == "checkAliveMsg" ) {
             if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId && dataInput.playerName == myName ) {
-                db.push({ type:"confirmAliveMsg",gameCreator:loggedUser,gameId:gameId,reciever:dataInput.sentBy });
+                db.push({ type:"confirmAliveMsg",gameCreator:loggedUser,gameId:gameId,cha:myName,reciever:dataInput.sentBy });
             }
         } else if( dataInput.type == "confirmAliveMsg" ) {
             if(  dataInput.gameCreator == loggedUser && dataInput.gameId == gameId && dataInput.reciever == myName ) {
-                respondedCall = true;
+                respondedManagement[playerData.name.indexOf(dataInput.cha)] = true;
             }
         } else if( dataInput.type == "killPlayer" ) {
             if( dataInput.gameCreator == loggedUser && dataInput.gameId == gameId ) {
@@ -391,7 +391,11 @@ function initG() {
     //chenge tab title
     document.title = gProjects.name[gameId] + ".io";
 
-    //
+    //alive check manager
+    var respondedManagement = [];
+    for( i=1; i<playerData.name.length; i++ ) {
+        respondedManagement.push(false);
+    }
 
     //how to play update
     //if buttonPress movement setting
@@ -981,29 +985,24 @@ function gameOver() {
 }
 
 
-
 function repondDoind() {
-    // check peer activity, if not active, kill player
-    if( respondedCall == true ) {
-        if( playerData.name.indexOf(myName) != 0 ) {
-            var whichNameToCheck = playerData.name[playerData.name.indexOf(myName)-1];
-        } else {
-            var whichNameToCheck = playerData.name[playerData.name.length-1];
-        }
-        db.push({ type : "checkAliveMsg", gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck, sentBy:myName })
-        respondedCall = false;
+    for( i=0; i<respondedManagement; i++ ) {
+        respondedManagement[i] = false;
     }
 
+    // check peer activity, if not active, kill player
+    if( playerData.name.indexOf(myName) == 0 ) {
+        for( i=1; i<playerData.name.length; i++ ) {
+            var whichNameToCheck = playerData.name[i];
+            db.push({ type : "checkAliveMsg", gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck, sentBy:myName })
+        }
+    }
+
+
     setTimeout( function () {
-        if( respondedCall == false ) {
-            if( playerData.name.length != 1 ) {
-                //kill player
-                if( playerData.name.indexOf(myName) != 0 ) {
-                    var whichNameToCheck = playerData.name[playerData.name.indexOf(myName)-1];
-                } else {
-                    var whichNameToCheck = playerData.name[playerData.name.length-1];
-                }
-                db.push({ type:"killPlayer",gameCreator:loggedUser, gameId:gameId, playerName:whichNameToCheck })
+        for( i=0; i<respondedManagement.length;i++ ) {
+            if( respondedManagement[i] == false ) {
+                db.push({ type:"killPlayer", gameCreator:loggedUser,gameId:gameId,playerName:playerData.name[i+1] });
             }
         }
         repondDoind();
